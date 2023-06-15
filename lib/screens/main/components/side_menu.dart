@@ -1,5 +1,11 @@
+import 'package:admin/routing/route_names.dart';
+import 'package:admin/screens/supplier/supplier_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../../../constants.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({
@@ -17,15 +23,29 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             title: "Dashboard",
             svgSrc: "assets/icons/menu_dashboard.svg",
-            press: () {},
+            press: () {
+              Get.back();
+              navigationController.navigateTo(dashboardPageRoute);
+            },
           ),
           DrawerListTile(
-            title: "Transaction",
+            title: "Đơn Hàng",
             svgSrc: "assets/icons/menu_tran.svg",
-            press: () {},
+            press: () {
+              Get.back();
+              navigationController.navigateTo(ordersPageRoute);
+            },
           ),
           DrawerListTile(
-            title: "Task",
+            title: "Nhà Cung Cấp",
+            svgSrc: "assets/icons/menu_tran.svg",
+            press: () {
+              Get.back();
+              navigationController.navigateTo(suppliersPageRoute);
+            },
+          ),
+          DrawerListTile(
+            title: "Sản Phẩm",
             svgSrc: "assets/icons/menu_task.svg",
             press: () {},
           ),
