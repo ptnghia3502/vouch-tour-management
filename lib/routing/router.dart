@@ -10,12 +10,12 @@ Route<dynamic>? generateRoute(RouteSettings settings){
   switch (settings.name){
     case dashboardPageRoute:
       return _getPageRoute(DashboardScreen());
-    case suppliersPageRoute:
-      return _getPageRoute(SupplierScreen());
     case ordersPageRoute:
       return _getPageRoute(OrderScreen());
     case productsPageRoute:
       return _getPageRoute(ProductScreen());
+    case suppliersPageRoute:
+      return _getPageRoute(SupplierScreen());
     default:
   }
   return null;

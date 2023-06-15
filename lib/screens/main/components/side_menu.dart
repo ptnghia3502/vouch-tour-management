@@ -47,12 +47,17 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             title: "Sản Phẩm",
             svgSrc: "assets/icons/menu_task.svg",
-            press: () {},
+            press: () {
+              Get.back();
+              navigationController.navigateTo(ordersPageRoute);
+            },
           ),
           DrawerListTile(
             title: "Documents",
             svgSrc: "assets/icons/menu_doc.svg",
-            press: () {},
+            press: () {
+
+            },
           ),
           DrawerListTile(
             title: "Store",

@@ -3,10 +3,10 @@ import 'package:admin/screens/dashboard/components/my_fields.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
-import '../supplier/components/header.dart';
+import '../product/components/header.dart';
 
-import '../supplier/components/recent_files.dart';
-import '../supplier/components/storage_details.dart';
+import '../product/components/recent_files.dart';
+import '../product/components/storage_details.dart';
 
 class ProductScreen extends StatelessWidget {
   @override

@@ -3,10 +3,10 @@ import 'package:admin/screens/dashboard/components/my_fields.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
-import '../supplier/components/header.dart';
+import '../order/components/header.dart';
 
-import '../supplier/components/recent_files.dart';
-import '../supplier/components/storage_details.dart';
+import '../order/components/recent_files.dart';
+import '../order/components/storage_details.dart';
 
 class OrderScreen extends StatelessWidget {
   @override
