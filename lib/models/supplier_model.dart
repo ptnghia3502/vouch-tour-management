@@ -1,5 +1,3 @@
-import 'package:http/http.dart' as http;
-
 class Supplier{
   String id;
   String email;
