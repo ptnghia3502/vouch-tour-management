@@ -1,4 +1,5 @@
 import 'package:admin/controllers/category_controller.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -52,17 +53,17 @@ class CategoryTable extends StatelessWidget {
                         ),                      
                       ),
                     ),
-
                   ],
                   rows: categoryController.categoryList.map((data) {
                     return DataRow(
                       cells: [
                         DataCell(
-                          Container(
-                            width: 50,
-                            height: 50,
-                            child: Image.network('${data.url}'),
-                          )
+                           Align(
+                            alignment: Alignment.center,
+                             child: Image.network( data.url,
+                                fit: BoxFit.cover,
+                              ),
+                           ),
                         ),
                         DataCell(Text(data.id,)),
                         DataCell(Text(data.categoryName)),

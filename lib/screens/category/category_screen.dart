@@ -4,7 +4,7 @@ import 'package:admin/screens/category/components/category_table.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
-import '../supplier/components/header.dart';
+import '../category/components/header.dart';
 
 
 class CategoryScreen extends StatelessWidget {
@@ -27,7 +27,6 @@ class CategoryScreen extends StatelessWidget {
                     children: [
                       CategoryHeaderTable(),
                       SizedBox(height: defaultPadding),
-                      
                       CategoryTable(),
                       if (Responsive.isMobile(context))
                         SizedBox(height: defaultPadding),
