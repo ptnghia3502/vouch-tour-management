@@ -3,6 +3,7 @@ import 'package:admin/screens/dashboard/dashboard_screen.dart';
 import 'package:admin/screens/product/product_screen.dart';
 import 'package:admin/screens/supplier/supplier_screen.dart';
 import 'package:admin/screens/order/order_screen.dart';
+import 'package:admin/screens/tourguide/tourguide_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,8 @@ Route<dynamic>? generateRoute(RouteSettings settings){
       return _getPageRoute(ProductScreen());
     case suppliersPageRoute:
       return _getPageRoute(SupplierScreen());
+    case tourguidesPageRoute:
+      return _getPageRoute(TourGuideScreen());
     default:
   }
   return null;

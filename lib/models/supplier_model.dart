@@ -1,12 +1,12 @@
 import 'package:http/http.dart' as http;
 
 class Supplier{
-late  String id;
-late  String email;
-late  String supplierName;
-late  String address;
-late  String phoneNumber;
-late  String adminId;
+  String id;
+  String email;
+  String supplierName;
+  String address;
+  String phoneNumber;
+  String adminId;
 
   //Constructor
   Supplier({

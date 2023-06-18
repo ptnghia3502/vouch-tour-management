@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:admin/models/global.dart';
+import 'package:admin/models/tourguide_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-
-import '../models/supplier_model.dart';
-class SupplierController extends GetxController{
-  var supplierList = <Supplier>[].obs;
+class TourGuideController extends GetxController{
+  var tourguideList = <TourGuide>[].obs;
   static String jwtToken = '';
   static String currentEmail = 'hieuvh0804@gmail.com';
   
@@ -14,7 +13,7 @@ class SupplierController extends GetxController{
   @override
   Future<void> onInit() async{
     super.onInit();
-    fetchSupplier();
+    fetchTourGuide();
   }
 
 //AUTHENTICATION API
@@ -56,23 +55,23 @@ class SupplierController extends GetxController{
     }
   }
 
-   void fetchSupplier() async{
-    String jwtToken = SupplierController.jwtToken;
+   void fetchTourGuide() async{
+    String jwtToken = TourGuideController.jwtToken;
 
     if (jwtToken.isEmpty) {
-      jwtToken = await SupplierController.fetchJwtToken(
-          SupplierController.currentEmail); // Fetch the JWT token if it's empty
+      jwtToken = await TourGuideController.fetchJwtToken(
+          TourGuideController.currentEmail); // Fetch the JWT token if it's empty
     }
       http.Response response = await http.get(Uri.parse(
-        '${BASE_URL}suppliers'),
+        '${BASE_URL}tour-guides'),
         headers: {
           'Authorization': 'Bearer $jwtToken'
         }
         );
       if(response.statusCode == 200){
         //data successfully
-        final List<dynamic> supplierJson = jsonDecode(response.body);
-        supplierList.value = supplierJson.map((json) => Supplier.fromJson(json)).toList();
+        final List<dynamic> tourguideJson = jsonDecode(response.body);
+        tourguideList.value = tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
     }
     else{
       throw Exception('Failed to fetch suppliers');

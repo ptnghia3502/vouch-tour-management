@@ -1,9 +1,7 @@
 import 'package:admin/routing/route_names.dart';
-import 'package:admin/screens/supplier/supplier_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../constants.dart';
 
@@ -18,16 +16,20 @@ class SideMenu extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            child: Image.asset("assets/images/logo.png"),
+            child: Image.asset("assets/images/tour_logo.png",
+            width: 25,
+            height: 25,
+            ),
+            
           ),
-          DrawerListTile(
-            title: "Dashboard",
-            svgSrc: "assets/icons/menu_dashboard.svg",
-            press: () {
-              Get.back();
-              navigationController.navigateTo(dashboardPageRoute);
-            },
-          ),
+          ListTile(
+            title: Center(
+              child: Text(
+                  "GIAO HÀNG"  ,
+                  style: TextStyle(color: Colors.blueGrey),
+              ),
+            )
+            ),
           DrawerListTile(
             title: "Đơn Hàng",
             svgSrc: "assets/icons/menu_tran.svg",
@@ -37,15 +39,47 @@ class SideMenu extends StatelessWidget {
             },
           ),
           DrawerListTile(
+            title: "Thống kê",
+            svgSrc: "assets/icons/menu_dashboard.svg",
+            press: () {
+              Get.back();
+              navigationController.navigateTo(dashboardPageRoute);
+            },
+          ),
+          ListTile(
+            title: Center(
+              child: Text(
+                  "HỆ THỐNG"  ,
+                  style: TextStyle(color: Colors.blueGrey),
+              ),
+            )
+            ),
+          DrawerListTile(
             title: "Nhà Cung Cấp",
-            svgSrc: "assets/icons/menu_tran.svg",
+            svgSrc: "assets/icons/menu_supplier.svg",
             press: () {
               Get.back();
               navigationController.navigateTo(suppliersPageRoute);
             },
           ),
           DrawerListTile(
+            title: "Tour Guide",
+            svgSrc: "assets/icons/menu_tourguide.svg",
+            press: () {
+              Get.back();
+              navigationController.navigateTo(tourguidesPageRoute);
+            },
+          ),          
+          DrawerListTile(
             title: "Sản Phẩm",
+            svgSrc: "assets/icons/menu_product.svg",
+            press: () {
+              Get.back();
+              navigationController.navigateTo(productsPageRoute);
+            },
+          ),
+          DrawerListTile(
+            title: " Loại sản Phẩm",
             svgSrc: "assets/icons/menu_task.svg",
             press: () {
               Get.back();

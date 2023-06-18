@@ -1,13 +1,13 @@
-import 'package:admin/controllers/supplier_controller.dart';
+import 'package:admin/controllers/tourguide_controller.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';
 
-class SupplierTable extends StatelessWidget {
-  final SupplierController supplierController = Get.put(SupplierController());
-  SupplierTable({
+class TourGuideTable extends StatelessWidget {
+  final TourGuideController tourguideController = Get.put(TourGuideController());
+  TourGuideTable({
     Key? key,
   }) : super(key: key);
 
@@ -36,54 +36,70 @@ class SupplierTable extends StatelessWidget {
                       label: Text("Id",
                       style: TextStyle(fontSize: 16, 
                               color: Color.fromARGB(247, 119, 200, 240)
-                        ),
+                        ),                       
                       ),
                     ),
                     DataColumn(
-                      label: Text("Email",
+                      label: Text("Name",
                       style: TextStyle(fontSize: 16, 
                               color: Color.fromARGB(247, 119, 200, 240)
-                        ),                                            
+                        ),                       
                       ),
                     ),
                     DataColumn(
-                      label: Text("Supplier Name",
+                      label: Text("Sex",
                       style: TextStyle(fontSize: 16, 
                               color: Color.fromARGB(247, 119, 200, 240)
-                        ),                      
+                        ),                       
                       ),
-                    ),
-                    DataColumn(
-                      label: Text("Address",
-                      style: TextStyle(fontSize: 16, 
-                              color: Color.fromARGB(247, 119, 200, 240)
-                        ),                      
-                      )
                     ),
                     DataColumn(
                       label: Text("Phone Number",
                       style: TextStyle(fontSize: 16, 
                               color: Color.fromARGB(247, 119, 200, 240)
-                        ),                      
+                        ),                       
+                      )
+                    ),                   
+                    DataColumn(
+                      label: Text("Email",
+                      style: TextStyle(fontSize: 16, 
+                              color: Color.fromARGB(247, 119, 200, 240)
+                        ),                       
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text("Status",
+                      style: TextStyle(fontSize: 16, 
+                              color: Color.fromARGB(247, 119, 200, 240)
+                        ),                       
+                      )
+                    ),
+                    DataColumn(
+                      label: Text("Address",
+                      style: TextStyle(fontSize: 16, 
+                              color: Color.fromARGB(247, 119, 200, 240)
+                        ),                       
                       )
                     ),
                     DataColumn(
                       label: Text("Admin Id",
                       style: TextStyle(fontSize: 16, 
                               color: Color.fromARGB(247, 119, 200, 240)
-                        ),                      
+                        ),                       
                       )
                     ),
                   ],
-                  rows: supplierController.supplierList.map((data) {
+                  rows: tourguideController.tourguideList.map((data) {
                     return DataRow(
                       cells: [
-                        DataCell(Text(data.id,)),
-                        DataCell(Text(data.email)),
-                        DataCell(Text(data.supplierName)),
-                        DataCell(Text(data.address)),
+                        DataCell(Text(data.id)),
+                        DataCell(Text(data.name)),
+                        DataCell(Text(data.sex.toString())),
                         DataCell(Text(data.phoneNumber)),
-                        DataCell(Text(data.adminId))
+                        DataCell(Text(data.email)),
+                        DataCell(Text(data.status)),
+                        DataCell(Text(data.address)),
+                        DataCell(Text(data.adminId)),
                       ],
                     );
                   }).toList()

@@ -2,8 +2,8 @@
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
-class SupplierHeaderTable extends StatelessWidget {
-  const SupplierHeaderTable({
+class TourGuideHeaderTable extends StatelessWidget {
+  const TourGuideHeaderTable({
     Key? key,
   }) : super(key: key);
 
@@ -15,7 +15,7 @@ class SupplierHeaderTable extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Danh sách các nhà cung cấp",
+              "Danh sách các tour guide",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Colors.lightBlue,
                 fontSize: 22

@@ -22,7 +22,7 @@ class Header extends StatelessWidget {
           ),
         if (!Responsive.isMobile(context))
           Text(
-            "Nhà Cung Cấp",
+            "Tour Guide",
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Colors.blue,
               fontSize: 25
