@@ -6,7 +6,9 @@ import 'package:http/http.dart' as http;
 
 import '../models/supplier_model.dart';
 class SupplierController extends GetxController{
+  static SupplierController instance = Get.find();
   var supplierList = <Supplier>[].obs;
+  var foundsupplierList = <Supplier>[].obs;
   static String jwtToken = '';
   static String currentEmail = 'hieuvh0804@gmail.com';
   
@@ -73,9 +75,21 @@ class SupplierController extends GetxController{
         //data successfully
         final List<dynamic> supplierJson = jsonDecode(response.body);
         supplierList.value = supplierJson.map((json) => Supplier.fromJson(json)).toList();
+        foundsupplierList.value = supplierJson.map((json) => Supplier.fromJson(json)).toList();        
     }
     else{
       throw Exception('Failed to fetch suppliers');
     }
+  }
+
+    void filterSupplier(String supplierName){
+    var results = [];
+    if(supplierName.isEmpty){
+      results = supplierList;
+    }
+    else{
+      results = supplierList.where((element) => element.supplierName.toString().toLowerCase().contains(supplierName.toLowerCase())).toList();
+    }
+    foundsupplierList.value = results as List<Supplier>;
   }
 }

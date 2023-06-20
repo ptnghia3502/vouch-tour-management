@@ -5,7 +5,9 @@ import 'package:admin/models/category_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 class CategoryController extends GetxController{
+  static CategoryController instance = Get.find();
   var categoryList = <Category>[].obs;
+  var foundCategoryList = <Category>[].obs;
   static String jwtToken = '';
   static String currentEmail = 'hieuvh0804@gmail.com';
   
@@ -72,9 +74,22 @@ class CategoryController extends GetxController{
         //data successfully
         final List<dynamic> categoryJson = jsonDecode(response.body);
         categoryList.value = categoryJson.map((json) => Category.fromJson(json)).toList();
+        foundCategoryList.value = categoryJson.map((json) => Category.fromJson(json)).toList();        
     }
     else{
       throw Exception('Failed to fetch suppliers');
     }
+  }
+
+  //search
+  void filterCategory(String categoryName){
+    var results = [];
+    if(categoryName.isEmpty){
+      results = categoryList;
+    }
+    else{
+      results = categoryList.where((element) => element.categoryName.toString().toLowerCase().contains(categoryName.toLowerCase())).toList();
+    }
+    foundCategoryList.value = results as List<Category>;
   }
 }

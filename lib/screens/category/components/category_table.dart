@@ -1,12 +1,9 @@
-import 'package:admin/controllers/category_controller.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';
 
 class CategoryTable extends StatelessWidget {
-  final CategoryController categoryController = Get.put(CategoryController());
   CategoryTable({
     Key? key,
   }) : super(key: key);
@@ -54,7 +51,7 @@ class CategoryTable extends StatelessWidget {
                       ),
                     ),
                   ],
-                  rows: categoryController.categoryList.map((data) {
+                  rows: categoryController.foundCategoryList.map((data) {
                     return DataRow(
                       cells: [
                         DataCell(

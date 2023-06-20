@@ -1,4 +1,3 @@
-import 'package:admin/controllers/supplier_controller.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +5,6 @@ import 'package:get/get.dart';
 import '../../../constants.dart';
 
 class SupplierTable extends StatelessWidget {
-  final SupplierController supplierController = Get.put(SupplierController());
   SupplierTable({
     Key? key,
   }) : super(key: key);
@@ -75,7 +73,7 @@ class SupplierTable extends StatelessWidget {
                       )
                     ),
                   ],
-                  rows: supplierController.supplierList.map((data) {
+                  rows: supplierController.foundsupplierList.map((data) {
                     return DataRow(
                       cells: [
                         DataCell(Text(data.id,)),

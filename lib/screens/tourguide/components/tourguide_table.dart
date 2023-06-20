@@ -1,4 +1,3 @@
-import 'package:admin/controllers/tourguide_controller.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +5,6 @@ import 'package:get/get.dart';
 import '../../../constants.dart';
 
 class TourGuideTable extends StatelessWidget {
-  final TourGuideController tourguideController = Get.put(TourGuideController());
   TourGuideTable({
     Key? key,
   }) : super(key: key);
@@ -17,12 +15,12 @@ class TourGuideTable extends StatelessWidget {
       padding: EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
         color: secondaryColor,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),      
       ),
+      
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: SingleChildScrollView(
@@ -89,7 +87,7 @@ class TourGuideTable extends StatelessWidget {
                       )
                     ),
                   ],
-                  rows: tourguideController.tourguideList.map((data) {
+                  rows: tourGuideController.foundTourGuide.map((data) {
                     return DataRow(
                       cells: [
                         DataCell(Text(data.id)),

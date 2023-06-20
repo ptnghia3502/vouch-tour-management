@@ -82,6 +82,7 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: (value) => tourGuideController.filterTourGuide(value),
       decoration: InputDecoration(
         hintText: "Search",
         fillColor: secondaryColor,
@@ -89,18 +90,6 @@ class SearchField extends StatelessWidget {
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: const BorderRadius.all(Radius.circular(10)),
-        ),
-        suffixIcon: InkWell(
-          onTap: () {},
-          child: Container(
-            padding: EdgeInsets.all(defaultPadding * 0.75),
-            margin: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-            decoration: BoxDecoration(
-              color: primaryColor,
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-            ),
-            child: SvgPicture.asset("assets/icons/Search.svg"),
-          ),
         ),
       ),
     );
