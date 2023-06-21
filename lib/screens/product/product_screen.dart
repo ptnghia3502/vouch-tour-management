@@ -1,12 +1,11 @@
+import 'package:admin/controllers/product_controller.dart';
 import 'package:admin/responsive.dart';
-import 'package:admin/screens/dashboard/components/my_fields.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
 import '../product/components/header.dart';
-
-import '../product/components/recent_files.dart';
-import '../product/components/storage_details.dart';
+import 'components/product_header_table.dart';
+import 'components/product_table.dart';
 
 class ProductScreen extends StatelessWidget {
   @override
@@ -23,26 +22,23 @@ class ProductScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 5,
+                  flex: 7,
                   child: Column(
                     children: [
-                      MyFiles(),
+                      ProductHeaderTable(),
                       SizedBox(height: defaultPadding),
-                      RecentFiles(),
+
+                      ProductTable(),
                       if (Responsive.isMobile(context))
                         SizedBox(height: defaultPadding),
-                      if (Responsive.isMobile(context)) StorageDetails(),
+                      // if (Responsive.isMobile(context)) StorageDetails(),
                     ],
                   ),
                 ),
+
                 if (!Responsive.isMobile(context))
                   SizedBox(width: defaultPadding),
                 // On Mobile means if the screen is less than 850 we don't want to show it
-                if (!Responsive.isMobile(context))
-                  Expanded(
-                    flex: 2,
-                    child: StorageDetails(),
-                  ),
               ],
             )
           ],

@@ -13,3 +13,6 @@ const productsPageRoute = "/screens/product";
 
 const tourguidesPageDisplayName = "TourGuides";
 const tourguidesPageRoute = "/screens/tourguide";
+
+const loginPageDisplayName = "Login";
+const loginPageRoute = "/screens/login";
