@@ -59,5 +59,34 @@
     });
   });
   </script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyA__MARXRUpXlzu4GTnvBAi7v5s0XPlXKQ",
+      authDomain: "fir-authendemo-644b6.firebaseapp.com",
+      projectId: "fir-authendemo-644b6",
+      storageBucket: "fir-authendemo-644b6.appspot.com",
+      messagingSenderId: "978745240815",
+      appId: "1:978745240815:web:43d4cb2a41d1b3cfecff1a",
+      measurementId: "G-HTQTV2004N"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+  <script src="https://apis.google.com/js/client.js"></script>
+<script type="text/javascript">
+    window.flutterWebRenderer = "html";
+</script>
 </body>
 </html>
