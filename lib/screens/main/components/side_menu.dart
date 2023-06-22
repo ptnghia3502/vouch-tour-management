@@ -83,7 +83,7 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_task.svg",
             press: () {
               Get.back();
-              navigationController.navigateTo(productsPageRoute);
+              navigationController.navigateTo(categoriesPageRoute);
             },
           ),
           DrawerListTile(
