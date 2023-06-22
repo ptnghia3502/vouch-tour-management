@@ -16,16 +16,15 @@ class SupplierController extends GetxController{
   var foundsupplierList = <Supplier>[].obs;
   static String jwtToken = '';
   static String currentEmail = 'hieuvh0804@gmail.com';
-  
 
   @override
-  Future<void> onInit() async{
+  Future<void> onInit() async {
     super.onInit();
     fetchSupplier();
   }
 
 //AUTHENTICATION API
-   static Future<String> fetchJwtToken(String email) async {
+  static Future<String> fetchJwtToken(String email) async {
     final url = Uri.parse('${BASE_URL}authentication');
     final body = jsonEncode({
       'eMail': currentEmail,
@@ -38,8 +37,7 @@ class SupplierController extends GetxController{
       final data = json.decode(response.body);
       jwtToken = data['accessToken'];
       return jwtToken;
-    }
-    else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401) {
       // Access token expired, try refreshing the token using the refresh token
       final refreshToken = json.decode(response.body)['refreshToken'];
       final refreshResponse = await http.post(
