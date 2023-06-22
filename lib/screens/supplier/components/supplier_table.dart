@@ -20,7 +20,6 @@ class SupplierTable extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: SingleChildScrollView(
@@ -73,10 +72,10 @@ class SupplierTable extends StatelessWidget {
                       )
                     ),
                   ],
-                  rows: supplierController.foundsupplierList.map((data) {
+                  rows: supplierController.currentItems.map((data) {
                     return DataRow(
                       cells: [
-                        DataCell(Text(data.id,)),
+                        DataCell(Text(data.id,style: TextStyle(overflow: TextOverflow.ellipsis), )),
                         DataCell(Text(data.email)),
                         DataCell(Text(data.supplierName)),
                         DataCell(Text(data.address)),
@@ -85,9 +84,26 @@ class SupplierTable extends StatelessWidget {
                       ],
                     );
                   }).toList()
-              ),
+              ),         
             ),),
-          )
+          ),
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  supplierController.previousPage();   
+                },
+                child: Text('Previous'),
+              ),
+              SizedBox(width: 16), // Add some spacing between the buttons
+              ElevatedButton(
+                onPressed: () {
+                  supplierController.nextPage();
+                },
+                child: Text('Next'),
+              ),
+            ],
+          ),               
         ],
       ),
     );

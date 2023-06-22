@@ -1,12 +1,17 @@
 import 'dart:convert';
 
 import 'package:admin/models/global.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/supplier_model.dart';
 class SupplierController extends GetxController{
   static SupplierController instance = Get.find();
+  TextEditingController emailController = TextEditingController();
+   TextEditingController passwordController = TextEditingController();
+  var currentPage = 0.obs;
+  final itemsPerPage = 10;
   var supplierList = <Supplier>[].obs;
   var foundsupplierList = <Supplier>[].obs;
   static String jwtToken = '';
@@ -58,6 +63,7 @@ class SupplierController extends GetxController{
     }
   }
 
+  //fetch api
    void fetchSupplier() async{
     String jwtToken = SupplierController.jwtToken;
 
@@ -81,7 +87,7 @@ class SupplierController extends GetxController{
       throw Exception('Failed to fetch suppliers');
     }
   }
-
+  // this method is searching
     void filterSupplier(String supplierName){
     var results = [];
     if(supplierName.isEmpty){
@@ -92,4 +98,23 @@ class SupplierController extends GetxController{
     }
     foundsupplierList.value = results as List<Supplier>;
   }
+
+  //this method is paging
+    List<Supplier> get currentItems{
+      final startIndex = currentPage.value * itemsPerPage;
+      final endIndex = (startIndex + itemsPerPage).clamp(0, supplierList.length);
+      return foundsupplierList.sublist(startIndex, endIndex);
+    }
+
+    void nextPage(){
+      if(currentPage.value < (foundsupplierList.length / itemsPerPage).ceil() - 1){
+        currentPage.value++;
+      }
+    }
+
+    void previousPage(){
+      if(currentPage.value > 0){
+        currentPage.value--;
+      }
+    }
 }

@@ -1,6 +1,7 @@
 
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../../constants.dart';
 class SupplierHeaderTable extends StatelessWidget {
   const SupplierHeaderTable({
@@ -30,27 +31,114 @@ class SupplierHeaderTable extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                showDialog(
-            context: context,
-            builder: (context) {
-              return Dialog(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-                elevation: 16,
-                child: Container(
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      SizedBox(height: 20),
-                      Center(child: Text('Leaderboard')),
-                      SizedBox(height: 20),
-                    ],
+             showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    backgroundColor: bgColor,
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                ),
-              );
-            },
-          );},
+                    scrollable: true,
+                    title: Center(
+                      child: Text('TẠO MỚI NHÀ CUNG CẤP',
+                            style:  TextStyle(fontSize: 16, 
+                                color: Colors.white)
+                      ),
+                    ),
+                    content: Container(
+                      width: 700,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Form(
+                          
+                          child: Container(
+                            width: 500,
+                            color: secondaryColor,
+                            child: Column(
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Container(
+                                    width: 400,
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                        border:  OutlineInputBorder(),                                  
+                                        labelText: 'Email',
+                                        icon: Icon(Icons.email),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                 padding: EdgeInsets.all(10.0),
+                                  child: Container(
+                                    width: 400,
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                        border:  OutlineInputBorder(),
+                                        labelText: 'Supplier Name',
+                                        icon: Icon(Icons.message),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                
+                                Padding(
+                                 padding: EdgeInsets.all(10.0),
+                                  child: Container(
+                                    width: 400,
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                        border:  OutlineInputBorder(),                                  
+                                        labelText: 'Address',
+                                        icon: Icon(Icons.home),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                 padding: EdgeInsets.all(10.0),                                
+                                  child: Container(
+                                    width: 400,
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                                        border:  OutlineInputBorder(),
+                                        labelText: 'Phone Number',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('Cancel',
+                          style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                          // var email = emailController.text;
+                          // var message = messageController.text;
+                          Navigator.pop(context);
+                                  },
+                        child: Text('Send',
+                          style: TextStyle(color: Colors.white),                        
+                        ),
+          ),
+                    ],
+                  );
+                });
+                },
               icon: Icon(Icons.add),
-              label: Text("Add New"),
+              label: Text("Tạo mới nhà cung cấp"),
             ),
           ],
         ),

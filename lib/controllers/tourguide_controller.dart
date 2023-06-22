@@ -7,8 +7,10 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 class TourGuideController extends GetxController{
   static TourGuideController instance = Get.find();
-  var tourguideList = <TourGuide>[].obs;
+  var tourguideList = <TourGuide>[];
   var foundTourGuide = <TourGuide>[].obs;
+  var currentPage = 0.obs;
+  var itemsPerPage = 5;
   TextEditingController searchController = TextEditingController();
   static String jwtToken = '';
   static String currentEmail = 'hieuvh0804@gmail.com';
@@ -75,7 +77,7 @@ class TourGuideController extends GetxController{
       if(response.statusCode == 200){
         //data successfully
         final List<dynamic> tourguideJson = jsonDecode(response.body);
-        tourguideList.value = tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
+        tourguideList = tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
         foundTourGuide.value = tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
     }
     else{
@@ -93,4 +95,23 @@ class TourGuideController extends GetxController{
     }
     foundTourGuide.value = results as List<TourGuide>;
   }
+
+    //this method is paging
+    List<TourGuide> get currentItems{
+      final startIndex = currentPage.value * itemsPerPage;
+      final endIndex = (startIndex + itemsPerPage).clamp(0, tourguideList.length);
+      return foundTourGuide.sublist(startIndex, endIndex);
+    }
+
+    void nextPage(){
+      if(currentPage.value < (foundTourGuide.length / itemsPerPage).ceil() - 1){
+        currentPage.value++;
+      }
+    }
+
+    void previousPage(){
+      if(currentPage.value > 0){
+        currentPage.value--;
+      }
+    }
 }

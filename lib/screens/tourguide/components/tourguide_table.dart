@@ -87,10 +87,13 @@ class TourGuideTable extends StatelessWidget {
                       )
                     ),
                   ],
-                  rows: tourGuideController.foundTourGuide.map((data) {
+                  rows: tourGuideController.currentItems.map((data) {
                     return DataRow(
                       cells: [
-                        DataCell(Text(data.id)),
+                        DataCell(
+                          ConstrainedBox( 
+                            constraints: BoxConstraints(maxHeight: 100, maxWidth: 250),
+                            child: Text(data.id, style: TextStyle(overflow: TextOverflow.ellipsis),))),
                         DataCell(Text(data.name)),
                         DataCell(Text(data.sex.toString())),
                         DataCell(Text(data.phoneNumber)),
@@ -103,7 +106,24 @@ class TourGuideTable extends StatelessWidget {
                   }).toList()
               ),
             ),),
-          )
+          ),
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  tourGuideController.previousPage();   
+                },
+                child: Text('Previous'),
+              ),
+              SizedBox(width: 16), // Add some spacing between the buttons
+              ElevatedButton(
+                onPressed: () {
+                  tourGuideController.nextPage();
+                },
+                child: Text('Next'),
+              ),
+            ],
+          ),          
         ],
       ),
     );
