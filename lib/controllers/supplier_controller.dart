@@ -4,18 +4,26 @@ import 'package:admin/models/global.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+// import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/supplier_model.dart';
-class SupplierController extends GetxController{
+
+class SupplierController extends GetxController {
   static SupplierController instance = Get.find();
-  TextEditingController emailController = TextEditingController();
-   TextEditingController passwordController = TextEditingController();
   var currentPage = 0.obs;
   final itemsPerPage = 10;
   var supplierList = <Supplier>[].obs;
   var foundsupplierList = <Supplier>[].obs;
   static String jwtToken = '';
   static String currentEmail = 'hieuvh0804@gmail.com';
+  Supplier? supplierModel;
+
+  //texteditingcontroller
+  TextEditingController supplierNameTextController = TextEditingController();
+  TextEditingController supplierEmailTextController = TextEditingController();
+  TextEditingController supplierAdressTextController = TextEditingController();
+  TextEditingController supplierPhoneNumberTextController =
+      TextEditingController();
 
   @override
   Future<void> onInit() async {
@@ -23,7 +31,7 @@ class SupplierController extends GetxController{
     fetchSupplier();
   }
 
-//AUTHENTICATION API
+//=====================Authentication ======================
   static Future<String> fetchJwtToken(String email) async {
     final url = Uri.parse('${BASE_URL}authentication');
     final body = jsonEncode({
@@ -61,58 +69,163 @@ class SupplierController extends GetxController{
     }
   }
 
-  //fetch api
-   void fetchSupplier() async{
+  //=====================get all supplier======================
+  void fetchSupplier() async {
     String jwtToken = SupplierController.jwtToken;
 
     if (jwtToken.isEmpty) {
       jwtToken = await SupplierController.fetchJwtToken(
           SupplierController.currentEmail); // Fetch the JWT token if it's empty
     }
-      http.Response response = await http.get(Uri.parse(
-        '${BASE_URL}suppliers'),
-        headers: {
-          'Authorization': 'Bearer $jwtToken'
-        }
-        );
-      if(response.statusCode == 200){
-        //data successfully
-        final List<dynamic> supplierJson = jsonDecode(response.body);
-        supplierList.value = supplierJson.map((json) => Supplier.fromJson(json)).toList();
-        foundsupplierList.value = supplierJson.map((json) => Supplier.fromJson(json)).toList();        
-    }
-    else{
+    http.Response response = await http.get(Uri.parse('${BASE_URL}suppliers'),
+        headers: {'Authorization': 'Bearer $jwtToken'});
+    if (response.statusCode == 200) {
+      //data successfully
+      final List<dynamic> supplierJson = jsonDecode(response.body);
+      supplierList.value =
+          supplierJson.map((json) => Supplier.fromJson(json)).toList();
+      foundsupplierList.value =
+          supplierJson.map((json) => Supplier.fromJson(json)).toList();
+    } else {
       throw Exception('Failed to fetch suppliers');
     }
   }
-  // this method is searching
-    void filterSupplier(String supplierName){
+
+  //=====================this method is searching======================
+  void filterSupplier(String supplierName) {
     var results = [];
-    if(supplierName.isEmpty){
+    if (supplierName.isEmpty) {
       results = supplierList;
-    }
-    else{
-      results = supplierList.where((element) => element.supplierName.toString().toLowerCase().contains(supplierName.toLowerCase())).toList();
+    } else {
+      results = supplierList
+          .where((element) => element.supplierName
+              .toString()
+              .toLowerCase()
+              .contains(supplierName.toLowerCase()))
+          .toList();
     }
     foundsupplierList.value = results as List<Supplier>;
   }
 
-  //this method is paging
-    List<Supplier> get currentItems{
-      final startIndex = currentPage.value * itemsPerPage;
-      final endIndex = (startIndex + itemsPerPage).clamp(0, supplierList.length);
-      return foundsupplierList.sublist(startIndex, endIndex);
-    }
+  //=====================this method is paging======================
+  List<Supplier> get currentItems {
+    final startIndex = currentPage.value * itemsPerPage;
+    final endIndex = (startIndex + itemsPerPage).clamp(0, supplierList.length);
+    return foundsupplierList.sublist(startIndex, endIndex);
+  }
 
-    void nextPage(){
-      if(currentPage.value < (foundsupplierList.length / itemsPerPage).ceil() - 1){
-        currentPage.value++;
-      }
+  void nextPage() {
+    if (currentPage.value <
+        (foundsupplierList.length / itemsPerPage).ceil() - 1) {
+      currentPage.value++;
     }
+  }
 
-    void previousPage(){
-      if(currentPage.value > 0){
-        currentPage.value--;
-      }
+  void previousPage() {
+    if (currentPage.value > 0) {
+      currentPage.value--;
     }
+  }
+
+  //clear TextEditingController
+  Future<void> clearTextController() async {
+    supplierAdressTextController.clear();
+    supplierEmailTextController.clear();
+    supplierPhoneNumberTextController.clear();
+    supplierNameTextController.clear();
+  }
+
+  //============================post supplier==================
+  Future<bool> insertSupplier() async {
+    try {
+      String jwtToken = SupplierController.jwtToken;
+
+      if (jwtToken.isEmpty) {
+        jwtToken = await SupplierController.fetchJwtToken(SupplierController
+            .currentEmail); // Fetch the JWT token if it's empty
+      }
+      final Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $jwtToken'
+      };
+      var url = Uri.parse('${BASE_URL}suppliers');
+      Map body = {
+        'email': supplierEmailTextController.text,
+        'supplierName': supplierNameTextController.text,
+        'address': supplierAdressTextController.text,
+        'phoneNumber': supplierPhoneNumberTextController.text
+      };
+      http.Response response =
+          await http.post(url, body: jsonEncode(body), headers: headers);
+      if (response.statusCode == 201) {
+        print('Post success');
+        clearTextController();
+        fetchSupplier();
+        return true;
+      }
+      else{
+        return false;
+      }
+      
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  //=====================get supplier by id======================
+  Future<void> fetchSupplierById(String id) async {
+    String jwtToken = SupplierController.jwtToken;
+
+    if (jwtToken.isEmpty) {
+      jwtToken = await SupplierController.fetchJwtToken(
+          SupplierController.currentEmail); // Fetch the JWT token if it's empty
+    }
+    http.Response response = await http.get(
+        Uri.parse('${BASE_URL}suppliers/$id'),
+        headers: {'Authorization': 'Bearer $jwtToken'});
+    if (response.statusCode == 200) {
+      //data successfully
+      var supplierJson = jsonDecode(response.body);
+      print(supplierJson);
+      supplierModel = Supplier.fromJson(supplierJson);
+      supplierNameTextController.text = supplierJson['supplierName'];
+      supplierEmailTextController.text = supplierJson['email'];
+      supplierAdressTextController.text = supplierJson['address'];
+      supplierPhoneNumberTextController.text = supplierJson['phoneNumber'];
+    } else {
+      throw Exception('Failed to fetch suppliers');
+    }
+  }
+
+  //=====================delete supplier======================
+  Future<bool> deleteSupplier(String id) async {
+    try {
+      String jwtToken = SupplierController.jwtToken;
+
+      if (jwtToken.isEmpty) {
+        jwtToken = await SupplierController.fetchJwtToken(SupplierController
+            .currentEmail); // Fetch the JWT token if it's empty
+      }
+      final Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $jwtToken'
+      };
+      var url = Uri.parse('${BASE_URL}suppliers/$id');
+      http.Response response =
+          await http.delete(url, headers: headers);
+      if (response.statusCode == 200) {
+        print('Post success');
+        fetchSupplier();
+        return true;
+      }
+      else{
+        return false;
+      }
+      
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
 }

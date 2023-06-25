@@ -14,6 +14,16 @@ class TourGuideController extends GetxController{
   TextEditingController searchController = TextEditingController();
   static String jwtToken = '';
   static String currentEmail = 'hieuvh0804@gmail.com';
+
+  //textEditing
+  TextEditingController tourguideNameTextController = TextEditingController();
+  TextEditingController tourguideEmailTextController = TextEditingController();
+  TextEditingController tourguidePhoneNumerTextController = TextEditingController();
+  TextEditingController tourguideSexTextController = TextEditingController();
+  TextEditingController tourguideBirthDayTextController = TextEditingController();
+  TextEditingController tourguideAddressTextController = TextEditingController();
+
+
   
 
   @override
@@ -114,4 +124,85 @@ class TourGuideController extends GetxController{
         currentPage.value--;
       }
     }
+    //clear text
+    Future<void> clearTextController() async{
+          this.tourguideAddressTextController.clear();
+          this.tourguideBirthDayTextController.clear();
+          this.tourguideEmailTextController.clear();
+          this.tourguideNameTextController.clear();
+          this.tourguideSexTextController.clear();
+          this.tourguidePhoneNumerTextController.clear();
+    }
+
+    //======================post tourguide==============
+    Future<bool> insertTourGuide() async {
+      try{
+        String jwtToken = TourGuideController.jwtToken;
+
+        if(jwtToken.isEmpty){
+          jwtToken = await TourGuideController.fetchJwtToken(
+            TourGuideController.currentEmail
+          );
+        }
+
+        final Map<String, String> headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken',
+        };
+
+        var url = Uri.parse('${BASE_URL}tour-guides');
+        Map body = {
+          'email': this.tourguideEmailTextController.text,
+          'name' : this.tourguideNameTextController.text,
+          'dateOfBirth': this.tourguideBirthDayTextController.text,
+          'sex': this.tourguideSexTextController.text.trim() == 'Name' ? 0 : 1,
+          'address': this.tourguideAddressTextController.text,
+          'phoneNumber': this.tourguidePhoneNumerTextController.text
+        };
+        http.Response response = await http.post(url, body: jsonEncode(body), headers: headers);
+        if(response.statusCode == 201){
+          print('Post Sucess');
+          clearTextController();
+          fetchTourGuide();
+          return true;
+        }else{
+          return false;
+        }
+      }
+      catch(e)
+      {
+      }
+      return false;
+    }
+
+    //===================delete tourguide==========
+      Future<bool> deleteTourGuide(String id) async {
+    try {
+      String jwtToken = TourGuideController.jwtToken;
+
+      if (jwtToken.isEmpty) {
+        jwtToken = await TourGuideController.fetchJwtToken(TourGuideController
+            .currentEmail); // Fetch the JWT token if it's empty
+      }
+      final Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $jwtToken'
+      };
+      var url = Uri.parse('${BASE_URL}tour-guides/$id');
+      http.Response response =
+          await http.delete(url, headers: headers);
+      if (response.statusCode == 200) {
+        print('Post success');
+        fetchTourGuide();
+        return true;
+      }
+      else{
+        return false;
+      }
+      
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
 }

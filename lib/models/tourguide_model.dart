@@ -7,6 +7,9 @@ class TourGuide {
   String status;
   String address;
   String adminId;
+  int numberOfGroup;
+  int numberOfProductSold;
+  int point;
 
   //Contructor
   TourGuide(
@@ -18,6 +21,9 @@ class TourGuide {
       required this.email,
       required this.status,
       required this.address,
+      required this.numberOfGroup,
+      required this.numberOfProductSold,
+      required this.point,
       required this.adminId});
 
   factory TourGuide.fromJson(Map<String, dynamic> json) {
@@ -29,7 +35,10 @@ class TourGuide {
           email : json['email'],
           status : json['status'],
           address : json['address'],
-          adminId : json['adminId']
+          adminId : json['adminId'],
+          numberOfGroup: json['numberOfGroup'],
+          numberOfProductSold: json['numberOfProductSold'],
+          point: json['point']
     );
   }
 
@@ -43,6 +52,9 @@ class TourGuide {
     _data['status'] = this.status;
     _data['address'] = this.address;
     _data['adminId'] = this.adminId;
+    _data['numberOfGroup'] = this.numberOfGroup;
+    _data['numberOfProductSold'] = this.numberOfProductSold;
+    _data['point'] = this.point;
     return _data;
   }
 
