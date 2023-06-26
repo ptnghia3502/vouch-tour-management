@@ -23,6 +23,7 @@ class Supplier{
       phoneNumber: json['phoneNumber'],
     );
   }
+  
   Map<String, dynamic> toJson(){
     final _data = <String, dynamic>{};
     _data['id'] = this.id;

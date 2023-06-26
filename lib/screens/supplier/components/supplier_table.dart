@@ -55,14 +55,14 @@ class SupplierTable extends StatelessWidget {
                       ),
                       DataColumn(
                           label: Text(
-                        "Địa chỉ",
+                        "Địa Chỉ",
                         style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                       DataColumn(
                           label: Text(
-                        "Số điện thoại",
+                        "Số Điện Thoại",
                         style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
@@ -90,8 +90,6 @@ class SupplierTable extends StatelessWidget {
                           //delete
                           DataCell(ElevatedButton(
                             onPressed: () {
-                              supplierController.fetchSupplierById(data.id);
-
                               //popups
                               showDialog(
                                   context: context,

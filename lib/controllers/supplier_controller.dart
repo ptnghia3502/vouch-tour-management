@@ -138,8 +138,12 @@ class SupplierController extends GetxController {
   //============================post supplier==================
   Future<bool> insertSupplier() async {
     try {
-      String jwtToken = SupplierController.jwtToken;
-
+      if(supplierAdressTextController.text.isEmpty || supplierEmailTextController.text.isEmpty
+        || supplierNameTextController.text.isEmpty || supplierPhoneNumberTextController.text.isEmpty)
+      {
+        return false;
+      }else{
+        String jwtToken = SupplierController.jwtToken;
       if (jwtToken.isEmpty) {
         jwtToken = await SupplierController.fetchJwtToken(SupplierController
             .currentEmail); // Fetch the JWT token if it's empty
@@ -148,13 +152,14 @@ class SupplierController extends GetxController {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $jwtToken'
       };
-      var url = Uri.parse('${BASE_URL}suppliers');
+      var url = Uri.parse('${BASE_URL}suppliers');      
       Map body = {
         'email': supplierEmailTextController.text,
         'supplierName': supplierNameTextController.text,
         'address': supplierAdressTextController.text,
         'phoneNumber': supplierPhoneNumberTextController.text
       };
+      
       http.Response response =
           await http.post(url, body: jsonEncode(body), headers: headers);
       if (response.statusCode == 201) {
@@ -166,6 +171,7 @@ class SupplierController extends GetxController {
       else{
         return false;
       }
+      }
       
     } catch (e) {
       print(e);
@@ -173,30 +179,7 @@ class SupplierController extends GetxController {
     return false;
   }
 
-  //=====================get supplier by id======================
-  Future<void> fetchSupplierById(String id) async {
-    String jwtToken = SupplierController.jwtToken;
 
-    if (jwtToken.isEmpty) {
-      jwtToken = await SupplierController.fetchJwtToken(
-          SupplierController.currentEmail); // Fetch the JWT token if it's empty
-    }
-    http.Response response = await http.get(
-        Uri.parse('${BASE_URL}suppliers/$id'),
-        headers: {'Authorization': 'Bearer $jwtToken'});
-    if (response.statusCode == 200) {
-      //data successfully
-      var supplierJson = jsonDecode(response.body);
-      print(supplierJson);
-      supplierModel = Supplier.fromJson(supplierJson);
-      supplierNameTextController.text = supplierJson['supplierName'];
-      supplierEmailTextController.text = supplierJson['email'];
-      supplierAdressTextController.text = supplierJson['address'];
-      supplierPhoneNumberTextController.text = supplierJson['phoneNumber'];
-    } else {
-      throw Exception('Failed to fetch suppliers');
-    }
-  }
 
   //=====================delete supplier======================
   Future<bool> deleteSupplier(String id) async {

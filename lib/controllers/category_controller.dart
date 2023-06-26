@@ -1,24 +1,29 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:admin/models/global.dart';
 import 'package:admin/models/category_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
+import 'package:http_parser/http_parser.dart';
+import 'dart:html' as html;
 class CategoryController extends GetxController{
   static CategoryController instance = Get.find();
+  //paging
   var currentPage = 0.obs;
   final itemsPerPage = 10;
+
   var categoryList = <Category>[].obs;
   var foundCategoryList = <Category>[].obs;
+
+  //
   static String jwtToken = '';
   static String currentEmail = 'hieuvh0804@gmail.com';
-  //image
-  bool imageAvailable = false;
-  late Uint8List imageFile;
+  
+  //upload image
+  List<int>? selectedFile;
+  Uint8List? bytesData;
 
 
   //textEditingController
@@ -127,17 +132,67 @@ class CategoryController extends GetxController{
       currentPage.value--;
     }
   }
+  //clear textcontroller
+  Future<void> clearTextController() async{
+    categoryNameTextController.clear();
+  }
 
   //==================insert Catefory===========
-  Future<File> uint8ListToFile(Uint8List imageInUnit8List) async {
-    final tempDir = await getTemporaryDirectory();
-    File file = await File('${tempDir.path}/image.png').create();
-  file.writeAsBytesSync(imageInUnit8List);
+  File uint8ListToFile(Uint8List imageInUnit8List, String filename) {
+    final bytes = Uint8List.fromList(imageInUnit8List);
+    final blob = html.Blob([bytes]);
+    File file = html.File([blob], filename) as File;
     return file;
-    
   }
 
   Future<bool> insertCategory() async {
+    try{
+      //get jwtToken
+      String jwtToken = CategoryController.jwtToken;
+      if (jwtToken.isEmpty) {
+        jwtToken = await CategoryController.fetchJwtToken(
+            CategoryController.currentEmail); // Fetch the JWT token if it's empty
+      }      
+
+      //MultiPart request
+      var request = http.MultipartRequest(
+        'POST', Uri.parse('${BASE_URL}categories')
+      );
+      Map<String, String> headers = {
+        'Authorization': 'Bearer $jwtToken',
+        'Content-type' : 'multipart/form-data'
+      };
+      request.files.add( await
+        http.MultipartFile.fromBytes(
+          'File',
+          selectedFile!,
+          filename: 'any_name',
+          contentType: MediaType('image','png')
+          )
+      );
+
+      request.headers.addAll(headers);
+      request.fields.addAll({
+        'CategoryName': categoryNameTextController.text,
+      });
+      //send the request
+      var response = await request.send();
+      
+      //check the response status
+      if(response.statusCode == 201){
+        fetchCategory();
+        return true;
+      }
+    return false;
+    }
+    catch(e){
+      print(e);
+    }
+    return false;
+  }
+
+  //===============delete category===========
+  Future<bool> deleteCategory(String id) async {
     try{
       String jwtToken = CategoryController.jwtToken;
 
@@ -149,21 +204,21 @@ class CategoryController extends GetxController{
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $jwtToken'
       };
-      var url = Uri.parse('${BASE_URL}categories');
-      Map body = {
-        'categoryName' : categoryNameTextController.text,
-        'File' : uint8ListToFile(imageFile)
-      };
-      http.Response response = await http.post(url, body: jsonEncode(body), headers: headers);
-      if(response.statusCode == 201){
+      var url = Uri.parse('${BASE_URL}categories/$id');
+      http.Response response =
+          await http.delete(url, headers: headers);
+      if (response.statusCode == 200) {
         print('Post success');
+        fetchCategory();
         return true;
       }
-
+      else{
+        return false;
+      }
     }
     catch(e){
-
+      print(e);
     }
     return false;
-  }
+  } 
 }

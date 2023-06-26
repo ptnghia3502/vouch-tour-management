@@ -1,8 +1,12 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import '../../../constants.dart';
+import 'dart:html' as html;
 
 class CategoryHeaderTable extends StatelessWidget {
   const CategoryHeaderTable({
@@ -84,7 +88,6 @@ class CategoryHeaderTable extends StatelessWidget {
                               // Handle delete button press
                               bool isInserted =
                                   await categoryController.insertCategory();
-
                               if (isInserted) {
                                 Fluttertoast.showToast(
                                   msg: 'Thêm mới thành công',
@@ -172,6 +175,34 @@ class UploadImage extends StatefulWidget {
 }
 
 class _UploadImageState extends State<UploadImage> {
+
+  List<int>? _selectedFile;
+  Uint8List? _bytesData;
+
+  startwebFilePicker() async{
+    html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
+    uploadInput.multiple = false;
+    uploadInput.draggable = true;
+    uploadInput.click();
+
+    uploadInput.onChange.listen((event) {
+      final files = uploadInput.files;
+      final file = files![0];
+      final reader = html.FileReader();
+
+      reader.onLoadEnd.listen((event) {
+        setState(() {
+          _bytesData = Base64Decoder().convert(reader.result.toString().split(',').last);
+          _selectedFile = _bytesData;
+          categoryController.bytesData = _bytesData;
+          categoryController.selectedFile = _selectedFile;
+        });
+      });
+      reader.readAsDataUrl(file);
+     });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -179,34 +210,33 @@ class _UploadImageState extends State<UploadImage> {
         Padding(
           padding: EdgeInsets.all(10.0),
           child: Container(
-              width: 400,
+              width: 120,
               child: Container(
                 height: 120,
-                width: 120,
+                width: 200,
                 color: Colors.blue,
-                child: categoryController.imageAvailable
-                    ? Image.memory(categoryController.imageFile)
+                child: _bytesData != null
+                    ? Image.memory(_bytesData!)
                     : const SizedBox(),
               )),
         ),
         Padding(
           padding: EdgeInsets.all(10.0),
           child: Container(
-            width: 400,
-            child: GestureDetector(
-                onTap: () async {
-                  final image = await ImagePickerWeb.getImageAsBytes();
-                  setState(() {
-                    categoryController.imageFile = image!;
-                    categoryController.imageAvailable = true;
-                  });
-                },
-                child: Container(
-                  height: 50,
-                  width: 150,
-                  color: Colors.blue,
-                  child: Center(child: Text('Chọn hình')),
-                )),
+            width: 150,
+            child:  MaterialButton(
+              color: Colors.blue,
+              elevation: 8,
+              highlightElevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8)
+              ),
+              textColor: Colors.white,
+              child: Text("Chọn Ảnh"),
+              onPressed: () {
+                startwebFilePicker();
+              },
+            ),
           ),
         )
       ],

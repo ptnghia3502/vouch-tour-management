@@ -142,8 +142,6 @@ class TourGuideTable extends StatelessWidget {
  //delete
                           DataCell(ElevatedButton(
                             onPressed: () {
-                              supplierController.fetchSupplierById(data.id);
-
                               //popups
                               showDialog(
                                   context: context,
