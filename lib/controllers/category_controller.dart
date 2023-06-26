@@ -138,13 +138,6 @@ class CategoryController extends GetxController{
   }
 
   //==================insert Catefory===========
-  File uint8ListToFile(Uint8List imageInUnit8List, String filename) {
-    final bytes = Uint8List.fromList(imageInUnit8List);
-    final blob = html.Blob([bytes]);
-    File file = html.File([blob], filename) as File;
-    return file;
-  }
-
   Future<bool> insertCategory() async {
     try{
       //get jwtToken
