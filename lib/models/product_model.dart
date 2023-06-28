@@ -1,4 +1,3 @@
-import 'package:admin/models/product_image_modal.dart';
 import 'package:admin/models/supplier_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +7,8 @@ import 'category_model.dart';
 class Product {
   String id;
   String productName;
-  int resellPrice;
-  int retailPrice;
+  double resellPrice;
+  double retailPrice;
   String description;
   String status;
   List<ProductImage> images;
@@ -48,46 +47,19 @@ class Product {
     );
   }
 }
+class ProductImage {
+  String fileURL;
+  String fileName;
 
-class ProductList extends StatelessWidget {
-  final List<Product> products;
+  ProductImage({
+    required this.fileURL,
+    required this.fileName,
+  });
 
-  ProductList({required this.products});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        final product = products[index];
-        return InkWell(
-          onTap: () {
-            showProductImages(context, product);
-          },
-          child: ListTile(
-            title: Text(product.productName),
-            subtitle: Text(product.description),
-            // Hiển thị hình ảnh đầu tiên của sản phẩm
-            leading: Image.network(product.images[0].fileURL),
-          ),
-        );
-      },
-    );
-  }
-
-  void showProductImages(BuildContext context, Product product) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(product.productName),
-          content: Column(
-            children: product.images
-                .map((image) => Image.network(image.fileURL))
-                .toList(),
-          ),
-        );
-      },
+  factory ProductImage.fromJson(Map<String, dynamic> json) {
+    return ProductImage(
+      fileURL: json['fileURL'],
+      fileName: json['fileName'],
     );
   }
 }

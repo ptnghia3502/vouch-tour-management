@@ -7,11 +7,20 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 class TourGuideController extends GetxController{
   static TourGuideController instance = Get.find();
-  var tourguideList = <TourGuide>[];
+  //
+  var tourguideList = <TourGuide>[].obs;
   var foundTourGuide = <TourGuide>[].obs;
-  var currentPage = 0.obs;
+  
+  //paging and searching
+  var currentPage = 1.obs;
   var itemsPerPage = 5;
   TextEditingController searchController = TextEditingController();
+
+  //sorting
+  var sortColumnIndex = 0.obs;
+  var isAscending = true.obs;
+
+  //authorization
   static String jwtToken = '';
   static String currentEmail = 'hieuvh0804@gmail.com';
 
@@ -23,14 +32,20 @@ class TourGuideController extends GetxController{
   TextEditingController tourguideBirthDayTextController = TextEditingController();
   TextEditingController tourguideAddressTextController = TextEditingController();
 
-
-  
+  //filtering
+  final selectedGender = 'Nam'.obs;
+  List<String> listGender = <String>['Nam','Nữ'];
 
   @override
   Future<void> onInit() async{
     super.onInit();
     fetchTourGuide();
   }
+
+  Future<void> setSelectedGender(String value) async{
+      selectedGender.value = value;
+  }
+
 
 //AUTHENTICATION API
    static Future<String> fetchJwtToken(String email) async {
@@ -70,7 +85,7 @@ class TourGuideController extends GetxController{
       throw Exception('Failed to fetch JWT token');
     }
   }
-
+  //====================get all tourguide=============
    void fetchTourGuide() async{
     String jwtToken = TourGuideController.jwtToken;
 
@@ -87,14 +102,49 @@ class TourGuideController extends GetxController{
       if(response.statusCode == 200){
         //data successfully
         final List<dynamic> tourguideJson = jsonDecode(response.body);
-        tourguideList = tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
+        tourguideList.value = tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
         foundTourGuide.value = tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
     }
     else{
       throw Exception('Failed to fetch suppliers');
     }
   }
+  //==============sorting=============
+  Future<void> sortList(int columnIndex) async{
+    if(sortColumnIndex.value == columnIndex){
+      //Reverse the sort order if the same column is clicked again
+      isAscending.value = !isAscending.value;
+    }
+    else{
+      //sort the list in ascending order by default when a new column is clicked
+      sortColumnIndex.value = columnIndex;
+      isAscending.value = true;
+    }
+    tourguideList.sort((a,b) {
+      if(columnIndex == 0){
+        return a.id.compareTo(b.id);
+      } else if(columnIndex == 1){
+        return a.name.compareTo(b.name);
+      } else if(columnIndex == 2){
+        return a.sex.compareTo(b.sex);
+      } else if(columnIndex == 4){
+        return a.email.compareTo(b.email);
+      } else if(columnIndex == 7){
+        return a.numberOfProductSold.compareTo(b.numberOfProductSold);
+      } else if(columnIndex == 8){
+        return a.numberOfGroup.compareTo(b.numberOfGroup);
+      } else if(columnIndex == 9){
+        return a.point.compareTo(b.point);
+      }
+      return 0;
+    });
 
+    if (!isAscending.value){
+      tourguideList = tourguideList.reversed.toList().obs;
+    }
+  }
+
+  //==============searching============
   void filterTourGuide(String tourguideName){
     var results = [];
     if(tourguideName.isEmpty){
@@ -107,23 +157,26 @@ class TourGuideController extends GetxController{
   }
 
     //this method is paging
-    List<TourGuide> get currentItems{
-      final startIndex = currentPage.value * itemsPerPage;
-      final endIndex = (startIndex + itemsPerPage).clamp(0, tourguideList.length);
-      return foundTourGuide.sublist(startIndex, endIndex);
-    }
+  List<TourGuide> get paginatedTourGuide{
+    final startIndex = (currentPage.value - 1) * itemsPerPage;
+    final endIndex = startIndex + itemsPerPage;
 
-    void nextPage(){
-      if(currentPage.value < (foundTourGuide.length / itemsPerPage).ceil() - 1){
-        currentPage.value++;
-      }
-    }
+    return tourguideList.length >= endIndex 
+            ? foundTourGuide.sublist(startIndex, endIndex)
+            : foundTourGuide.sublist(startIndex);
+  }
 
-    void previousPage(){
-      if(currentPage.value > 0){
-        currentPage.value--;
-      }
+  void nextPage() {
+    if (currentPage.value * itemsPerPage < tourguideList.length){
+      currentPage.value++;
     }
+  }
+
+  void previousPage() {
+    if (currentPage.value > 1) {
+      currentPage.value--;
+    }
+  }
     //clear text
     Future<void> clearTextController() async{
           this.tourguideAddressTextController.clear();

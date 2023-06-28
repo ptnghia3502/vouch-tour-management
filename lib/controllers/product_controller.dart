@@ -2,17 +2,27 @@ import 'dart:convert';
 
 import 'package:admin/models/global.dart';
 import 'package:admin/models/product_model.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
-import '../screens/login/auth_provider.dart';
 
 class ProductController extends GetxController {
+  static ProductController instance = Get.find(); 
+
+  //searching
   var productList = <Product>[].obs;
+  var foundProductList = <Product>[].obs;
+
+  //paging
+  var currentPage = 1.obs;
+  final itemsPerPage = 5;
+
   static String jwtToken = '';
   static String currentEmail = 'hieuvh0804@gmail.com';
+
+  //sorting
+  var isAscending = true.obs;
+  var sortColumnIndex = 0.obs;
 
   @override
   Future<void> onInit() async {
@@ -58,6 +68,7 @@ class ProductController extends GetxController {
     }
   }
 
+  //==================get all products============
   void fetchProduct() async {
     String jwtToken = ProductController.jwtToken;
 
@@ -72,45 +83,78 @@ class ProductController extends GetxController {
       final List<dynamic> productJson = jsonDecode(response.body);
       productList.value =
           productJson.map((json) => Product.fromJson(json)).toList();
+
+      foundProductList.value =
+          productJson.map((json) => Product.fromJson(json)).toList();          
     } else {
       throw Exception('Failed to fetch product');
     }
   }
 
-  Future<Product> findProductById(String Id) async {
-    final url = Uri.parse('${BASE_URL}products/$Id');
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      return Product.fromJson(jsonData);
+  //=================sorting=================================
+  Future<void> sortList(int columnIndex) async {
+    if (sortColumnIndex.value == columnIndex) {
+      //Reverse the sort order if the same column is clicked again
+      isAscending.value = !isAscending.value;
     } else {
-      throw Exception('Failed to find category by ID');
+      //sort the list in ascending order by default when a new column is clicked
+      sortColumnIndex.value = columnIndex;
+      isAscending.value = true;
+    }
+    productList.sort((a, b) {
+      if (columnIndex == 1) {
+        return a.id.compareTo(b.id);
+      } else if (columnIndex == 2) {
+        return a.productName.compareTo(b.productName);
+      } else if (columnIndex == 3) {
+        return a.resellPrice.compareTo(b.resellPrice);
+      } else if (columnIndex == 4) {
+        return a.retailPrice.compareTo(b.retailPrice);
+      }
+      return 0;
+    });
+
+    if (!isAscending.value) {
+      productList = productList.reversed.toList().obs;
     }
   }
 
-  Future<Product> UpdateProduct(String Id) async {
-    final url = Uri.parse('${BASE_URL}products/$Id');
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      return Product.fromJson(jsonData);
-    } else {
-      throw Exception('Failed to find category by ID');
+  //=================paging==============
+  List<Product> get paginatedProduct{
+    final startIndex = (currentPage.value - 1) * itemsPerPage;
+    final endIndex = startIndex + itemsPerPage;
+
+    return productList.length >= endIndex 
+            ? foundProductList.sublist(startIndex, endIndex)
+            : foundProductList.sublist(startIndex);
+  }
+
+  void nextPage() {
+    if (currentPage.value * itemsPerPage < productList.length){
+      currentPage.value++;
     }
   }
 
-  Future<bool> DeleteProduct(String Id) async {
-    final url = Uri.parse('${BASE_URL}products/$Id');
-    final response = await http.delete(url);
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-
-      fetchProduct();
-
-      return true;
-    } else {
-      //throw Exception('Failed to delete product by ID');
-      return false;
+  void previousPage() {
+    if (currentPage.value > 1) {
+      currentPage.value--;
     }
   }
+
+//==============searching===============
+  void filterProduct(String productName) {
+    var results = [];
+    if (productName.isEmpty) {
+      results = productList;
+    } else {
+      results = productList
+          .where((element) => element.productName
+              .toString()
+              .toLowerCase()
+              .contains(productName.toLowerCase()))
+          .toList();
+    }
+    productList.value = results as List<Product>;
+  }
+
 }

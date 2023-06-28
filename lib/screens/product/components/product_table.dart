@@ -1,13 +1,11 @@
-import 'package:admin/controllers/product_controller.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';
 
 class ProductTable extends StatelessWidget {
-  final ProductController productController = Get.put(ProductController());
   ProductTable({
     Key? key,
   }) : super(key: key);
@@ -34,6 +32,16 @@ class ProductTable extends StatelessWidget {
                     columns: [
                       DataColumn(
                         label: Text(
+                          "Ảnh",
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Color.fromARGB(247, 119, 200, 240)),
+                        ),
+                      ),
+                      DataColumn(
+                        onSort: (columnIndex, _) =>
+                            {productController.sortList(columnIndex)},
+                        label: Text(
                           "Id",
                           style: TextStyle(
                               fontSize: 16,
@@ -41,74 +49,78 @@ class ProductTable extends StatelessWidget {
                         ),
                       ),
                       DataColumn(
+                        onSort: (columnIndex, _) =>
+                            {productController.sortList(columnIndex)},
                         label: Text(
-                          "Product Name",
+                          "Tên Sản Phẩm",
                           style: TextStyle(
                               fontSize: 16,
                               color: Color.fromARGB(247, 119, 200, 240)),
                         ),
                       ),
                       DataColumn(
+                        onSort: (columnIndex, _) =>
+                            {productController.sortList(columnIndex)},
                         label: Text(
-                          "Resell Price",
+                          "Giá Bán Lại",
                           style: TextStyle(
                               fontSize: 16,
                               color: Color.fromARGB(247, 119, 200, 240)),
                         ),
                       ),
                       DataColumn(
+                          onSort: (columnIndex, _) =>
+                              {productController.sortList(columnIndex)},
                           label: Text(
-                        "Retail Price",
+                            "Giá Bán Lẻ",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color.fromARGB(247, 119, 200, 240)),
+                          )),
+                      DataColumn(
+                          label: Text(
+                        "Mô Tả",
                         style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                       DataColumn(
                           label: Text(
-                        "Description",
+                        "Trạng Thái",
                         style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                       DataColumn(
                           label: Text(
-                        "Status",
+                        "Nhà Cung Cấp",
                         style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                       DataColumn(
                           label: Text(
-                        "Suppiler Name",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(247, 119, 200, 240)),
-                      )),
-                      DataColumn(
-                          label: Text(
-                        "Category Name",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(247, 119, 200, 240)),
-                      )),
-                      DataColumn(
-                          label: Text(
-                        "Delete",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(247, 119, 200, 240)),
-                      )),
-                      DataColumn(
-                          label: Text(
-                        "Update",
+                        "Loại Sản Phẩm",
                         style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                     ],
-                    rows: productController.productList.map((data) {
+                    rows: productController.paginatedProduct.map((data) {
                       return DataRow(
                         cells: [
+                          DataCell(
+                            Align(
+                              alignment: Alignment.center,
+                              child: CachedNetworkImage(
+                                imageUrl: data.images[0].fileURL,
+                                placeholder: (context, url) =>
+                                    new CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    new Icon(Icons.error),
+                              ),
+                            ),
+                          ),
                           DataCell(Text(
                             data.id,
                           )),
@@ -127,48 +139,29 @@ class ProductTable extends StatelessWidget {
                           DataCell(Text(data.status)),
                           DataCell(Text(data.supplier.supplierName)),
                           DataCell(Text(data.category.categoryName)),
-                          DataCell(ElevatedButton(
-                            onPressed: () async {
-                              // Handle delete button press
-                              bool isDeleted =
-                                  await productController.DeleteProduct(
-                                      data.id);
-                              if (isDeleted) {
-                                // Xử lý khi xóa thành công
-                                Fluttertoast.showToast(
-                                  msg: 'Product deleted successfully',
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 10,
-                                  backgroundColor: Colors.green,
-                                  textColor: Colors.white,
-                                );
-                              } else {
-                                // Xử lý khi xóa thất bại
-                                Fluttertoast.showToast(
-                                  msg: 'Failed to delete product',
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 10,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                );
-                              }
-                            },
-                            child: Text('Delete'),
-                          )),
-                          DataCell(ElevatedButton(
-                            onPressed: () {
-                              // Handle delete button press
-                            },
-                            child: Text('Update'),
-                          )),
                         ],
                       );
                     }).toList()),
               ),
             ),
-          )
+          ),
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  productController.previousPage();
+                },
+                child: Text('Trước'),
+              ),
+              SizedBox(width: 16), // Add some spacing between the buttons
+              ElevatedButton(
+                onPressed: () {
+                  productController.nextPage();
+                },
+                child: Text('Sau'),
+              ),
+            ],
+          ),
         ],
       ),
     );

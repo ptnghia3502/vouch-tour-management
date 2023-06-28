@@ -1,9 +1,11 @@
+import 'package:admin/screens/category/components/category_delete_form.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';
+import 'category_upload_image.dart';
 
 class CategoryTable extends StatelessWidget {
   CategoryTable({
@@ -39,6 +41,9 @@ class CategoryTable extends StatelessWidget {
                         ),
                       ),
                       DataColumn(
+                        onSort: (columnIndex, _) => {
+                          categoryController.sortList(columnIndex)
+                        },  
                         label: Text(
                           "Id",
                           style: TextStyle(
@@ -47,6 +52,9 @@ class CategoryTable extends StatelessWidget {
                         ),
                       ),
                       DataColumn(
+                        onSort: (columnIndex, _) => {
+                          categoryController.sortList(columnIndex)
+                        },  
                         label: Text(
                           "Tên Thể Loại",
                           style: TextStyle(
@@ -56,13 +64,20 @@ class CategoryTable extends StatelessWidget {
                       ),
                       DataColumn(
                           label: Text(
+                        "Chỉnh Sửa",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(247, 119, 200, 240)),
+                      )),                      
+                      DataColumn(
+                          label: Text(
                         "Xóa",
                         style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                     ],
-                    rows: categoryController.foundCategoryList.map((data) {
+                    rows: categoryController.paginatedCategory.map((data) {
                       return DataRow(
                         cells: [
                           DataCell(
@@ -81,8 +96,110 @@ class CategoryTable extends StatelessWidget {
                             data.id,
                           )),
                           DataCell(Text(data.categoryName)),
-          
-//delete
+                    //update
+                          DataCell(ElevatedButton(
+                            onPressed: () {
+                              categoryController.getCategoryById(data.id);
+                              //popups
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      backgroundColor: bgColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      scrollable: true,
+                                      title: Center(
+                                        child: Text('CHỈNH SỬA',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.white)),
+                                      ),
+                                      content: Container(
+                                        width: 700,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Form(
+                                            child: Container(
+                                              width: 500,
+                                              color: secondaryColor,
+                                              child: Column(
+                                                children: <Widget>[
+                                    TextFieldForFroms(
+                                        label: 'Tên Thể Loại',
+                                        validationResult:
+                                            'Tên thể loại không được bỏ trống',
+                                        textEditingController:
+                                            categoryController
+                                                .categoryNameTextController,
+                                        icondata: Icons.message),
+                                        
+                                    UploadImage(),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            categoryController
+                                                .clearTextController();
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            'Hủy',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            // Handle delete button press
+                                            bool isUpdated =
+                                                await categoryController
+                                                    .updateCategory(data.id);
+
+                                            if (isUpdated) {
+                                              // Xử lý khi xóa thành công
+                                              Fluttertoast.showToast(
+                                                msg:
+                                                    'Chỉnh sửa thành công',
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 10,
+                                                backgroundColor: Colors.green,
+                                                textColor: Colors.white,
+                                              );
+                                            } else {
+                                              // Xử lý khi xóa thất bại
+                                              Fluttertoast.showToast(
+                                                msg: 'Có lỗi rồi!',
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 10,
+                                                backgroundColor: Colors.red,
+                                                textColor: Colors.white,
+                                              );
+                                            }
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            'Gửi',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
+                            child: Text('Chỉnh sửa'),
+                          )),                    
+                    //delete
                           DataCell(ElevatedButton(
                             onPressed: () {
                               //popups
@@ -106,78 +223,9 @@ class CategoryTable extends StatelessWidget {
                                         width: 700,
                                         child: Padding(
                                           padding: const EdgeInsets.all(20.0),
-                                          child: Form(
-                                            child: Container(
-                                              width: 500,
-                                              color: secondaryColor,
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.all(10.0),
-                                                    child: Container(
-                                                      width: 400,
-                                                      child: Text(
-                                                          'Bạn có muốn xóa không?'),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                          child: DeleteCategoryForm(id: data.id)
                                         ),
                                       ),
-                                      actions: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            categoryController
-                                                .clearTextController();
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            'Không',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            // Handle delete button press
-                                            bool isDeleted =
-                                                await categoryController
-                                                    .deleteCategory(data.id);
-
-                                            if (isDeleted) {
-                                              // Xử lý khi xóa thành công
-                                              Fluttertoast.showToast(
-                                                msg:
-                                                    'Xóa thành công',
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.BOTTOM,
-                                                timeInSecForIosWeb: 10,
-                                                backgroundColor: Colors.green,
-                                                textColor: Colors.white,
-                                              );
-                                            } else {
-                                              // Xử lý khi xóa thất bại
-                                              Fluttertoast.showToast(
-                                                msg: 'Có lỗi rồi!',
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.BOTTOM,
-                                                timeInSecForIosWeb: 10,
-                                                backgroundColor: Colors.red,
-                                                textColor: Colors.white,
-                                              );
-                                            }
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            'Có',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                      ],
                                     );
                                   });
                             },
@@ -188,9 +236,68 @@ class CategoryTable extends StatelessWidget {
                     }).toList()),
               ),
             ),
-          )
+          ),
+           Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  categoryController.previousPage();
+                },
+                child: Text('Trước'),
+              ),
+              SizedBox(width: 16), // Add some spacing between the buttons
+              ElevatedButton(
+                onPressed: () {
+                  categoryController.nextPage();
+                },
+                child: Text('Sau'),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 }
+
+// ignore: must_be_immutable
+class TextFieldForFroms extends StatelessWidget {
+  String label;
+  String validationResult;
+  IconData icondata;
+  TextEditingController textEditingController;
+  TextFieldForFroms({
+    super.key,
+    required this.label,
+    required this.validationResult,
+    required this.textEditingController,
+    required this.icondata,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Container(
+        width: 400,
+        child: TextFormField(
+          controller: this.textEditingController,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: this.label,
+            icon: Icon(this.icondata),
+          ),
+          validator: (value) {
+            if (value!.isEmpty) {
+              return this.validationResult;
+            }
+            return null;
+          },
+        ),
+      ),
+    );
+  }
+}
+
+
+

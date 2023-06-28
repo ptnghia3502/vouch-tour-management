@@ -1,22 +1,20 @@
 class Category {
   String id;
   String categoryName;
-  String image;
+  String fileName;
   String url;
   Category({
     required this.id,
     required this.categoryName,
-    required this.image,
+    required this.fileName,
     required this.url
   });
 
   factory Category.fromJson(Map<String, dynamic> json) {
-    final String image =
-        'lib/assets/images/${json["categoryName"].toLowerCase()}_image.png';
     return Category(
       id: json['id'],
       categoryName: json['categoryName'],
-      image: image,
+      fileName: json['fileName'],
       url: json['url']
     );
   }

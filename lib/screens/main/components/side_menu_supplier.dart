@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 
 import '../../../constants.dart';
 
-class SideMenuAdmin extends StatelessWidget {
-  const SideMenuAdmin({
+class SideMenuSupplier extends StatelessWidget {
+  const SideMenuSupplier({
     Key? key,
   }) : super(key: key);
 
@@ -55,35 +55,11 @@ class SideMenuAdmin extends StatelessWidget {
             )
             ),
           DrawerListTile(
-            title: "Nhà Cung Cấp",
-            svgSrc: "assets/icons/menu_supplier.svg",
-            press: () {
-              Get.back();
-              navigationController.navigateTo(suppliersPageRoute);
-            },
-          ),
-          DrawerListTile(
-            title: "Tour Guide",
-            svgSrc: "assets/icons/menu_tourguide.svg",
-            press: () {
-              Get.back();
-              navigationController.navigateTo(tourguidesPageRoute);
-            },
-          ),          
-          DrawerListTile(
             title: "Sản Phẩm",
             svgSrc: "assets/icons/menu_product.svg",
             press: () {
               Get.back();
               navigationController.navigateTo(productsPageRoute);
-            },
-          ),
-          DrawerListTile(
-            title: " Loại sản Phẩm",
-            svgSrc: "assets/icons/menu_task.svg",
-            press: () {
-              Get.back();
-              navigationController.navigateTo(categoriesPageRoute);
             },
           ),
           DrawerListTile(

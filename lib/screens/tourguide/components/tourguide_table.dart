@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';
+import 'tourguide_delete_form.dart';
 
 class TourGuideTable extends StatelessWidget {
   TourGuideTable({
@@ -30,6 +30,9 @@ class TourGuideTable extends StatelessWidget {
                     // minWidth: 600,
                     columns: [
                       DataColumn(
+                        onSort: (columnIndex, _) => {
+                          tourGuideController.sortList(columnIndex)
+                        },                        
                         label: Text(
                           "Id",
                           style: TextStyle(
@@ -38,6 +41,9 @@ class TourGuideTable extends StatelessWidget {
                         ),
                       ),
                       DataColumn(
+                        onSort: (columnIndex, _) => {
+                          tourGuideController.sortList(columnIndex)
+                        },  
                         label: Text(
                           "Tên",
                           style: TextStyle(
@@ -46,6 +52,9 @@ class TourGuideTable extends StatelessWidget {
                         ),
                       ),
                       DataColumn(
+                        onSort: (columnIndex, _) => {
+                          tourGuideController.sortList(columnIndex)
+                        },  
                         label: Text(
                           "Giới tính",
                           style: TextStyle(
@@ -61,6 +70,9 @@ class TourGuideTable extends StatelessWidget {
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                       DataColumn(
+                        onSort: (columnIndex, _) => {
+                          tourGuideController.sortList(columnIndex)
+                        },  
                         label: Text(
                           "Email",
                           style: TextStyle(
@@ -83,6 +95,9 @@ class TourGuideTable extends StatelessWidget {
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                       DataColumn(
+                        onSort: (columnIndex, _) => {
+                          tourGuideController.sortList(columnIndex)
+                        },  
                           label: Text(
                         "Số lượng sản phẩm bán được",
                         style: TextStyle(
@@ -90,6 +105,9 @@ class TourGuideTable extends StatelessWidget {
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                       DataColumn(
+                        onSort: (columnIndex, _) => {
+                          tourGuideController.sortList(columnIndex)
+                        },  
                           label: Text(
                         "Số lượng nhóm",
                         style: TextStyle(
@@ -97,6 +115,9 @@ class TourGuideTable extends StatelessWidget {
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                       DataColumn(
+                        onSort: (columnIndex, _) => {
+                          tourGuideController.sortList(columnIndex)
+                        },  
                           label: Text(
                         "Điểm",
                         style: TextStyle(
@@ -118,7 +139,7 @@ class TourGuideTable extends StatelessWidget {
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                     ],
-                    rows: tourGuideController.currentItems.map((data) {
+                    rows: tourGuideController.paginatedTourGuide.map((data) {
                       return DataRow(
                         cells: [
                           DataCell(ConstrainedBox(
@@ -130,7 +151,7 @@ class TourGuideTable extends StatelessWidget {
                                     TextStyle(overflow: TextOverflow.ellipsis),
                               ))),
                           DataCell(Text(data.name)),
-                          DataCell(Text(data.sex == 0 ? 'Name' : 'Nữ')),
+                          DataCell(Text(data.sex == 0 ? 'Nam' : 'Nữ')),
                           DataCell(Text(data.phoneNumber)),
                           DataCell(Text(data.email)),
                           DataCell(Text(data.status)),
@@ -139,7 +160,7 @@ class TourGuideTable extends StatelessWidget {
                           DataCell(Text(data.numberOfGroup.toString())),
                           DataCell(Text(data.point.toString())),
                           DataCell(Text(data.adminId)),
- //delete
+                        //delete
                           DataCell(ElevatedButton(
                             onPressed: () {
                               //popups
@@ -163,78 +184,9 @@ class TourGuideTable extends StatelessWidget {
                                         width: 700,
                                         child: Padding(
                                           padding: const EdgeInsets.all(20.0),
-                                          child: Form(
-                                            child: Container(
-                                              width: 500,
-                                              color: secondaryColor,
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.all(10.0),
-                                                    child: Container(
-                                                      width: 400,
-                                                      child: Text(
-                                                          'Bạn có muốn xóa không?'),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                          child: DeleteTourGuideForm(id: data.id)
                                         ),
                                       ),
-                                      actions: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            tourGuideController
-                                                .clearTextController();
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            'Không',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            // Handle delete button press
-                                            bool isDeleted =
-                                                await tourGuideController
-                                                    .deleteTourGuide(data.id);
-
-                                            if (isDeleted) {
-                                              // Xử lý khi xóa thành công
-                                              Fluttertoast.showToast(
-                                                msg:
-                                                    'Xóa thành công',
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.BOTTOM,
-                                                timeInSecForIosWeb: 10,
-                                                backgroundColor: Colors.green,
-                                                textColor: Colors.white,
-                                              );
-                                            } else {
-                                              // Xử lý khi xóa thất bại
-                                              Fluttertoast.showToast(
-                                                msg: 'Có lỗi rồi!',
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.BOTTOM,
-                                                timeInSecForIosWeb: 10,
-                                                backgroundColor: Colors.red,
-                                                textColor: Colors.white,
-                                              );
-                                            }
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            'Có',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                      ],
                                     );
                                   });
                             },

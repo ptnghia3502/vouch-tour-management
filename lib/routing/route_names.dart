@@ -16,3 +16,9 @@ const tourguidesPageRoute = "/screens/tourguide";
 
 const categoriesPageDisplayName = "Categories";
 const categoriesPageRoute = "/screens/category";
+
+const adminPageDisplayName = "Admin";
+const adminPageRoute = "/admin";
+
+const supplierRolePageDisplayName = "Supplier";
+const supplierRolePageRoute = "/supplier";

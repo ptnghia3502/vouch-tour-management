@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';
+import 'supplier_delete_form.dart';
 
 class SupplierTable extends StatelessWidget {
   SupplierTable({
@@ -30,6 +30,9 @@ class SupplierTable extends StatelessWidget {
                     // minWidth: 600,
                     columns: [
                       DataColumn(
+                        onSort: (columnIndex, _) => {
+                          supplierController.sortList(columnIndex)
+                        },
                         label: Text(
                           "Id",
                           style: TextStyle(
@@ -38,6 +41,9 @@ class SupplierTable extends StatelessWidget {
                         ),
                       ),
                       DataColumn(
+                        onSort: (columnIndex, _) => {
+                          supplierController.sortList(columnIndex)
+                        },
                         label: Text(
                           "Email",
                           style: TextStyle(
@@ -46,6 +52,9 @@ class SupplierTable extends StatelessWidget {
                         ),
                       ),
                       DataColumn(
+                        onSort: (columnIndex, _) => {
+                          supplierController.sortList(columnIndex)
+                        },                        
                         label: Text(
                           "Tên",
                           style: TextStyle(
@@ -54,6 +63,9 @@ class SupplierTable extends StatelessWidget {
                         ),
                       ),
                       DataColumn(
+                        onSort: (columnIndex, _) => {
+                          supplierController.sortList(columnIndex)
+                        },                        
                           label: Text(
                         "Địa Chỉ",
                         style: TextStyle(
@@ -75,7 +87,7 @@ class SupplierTable extends StatelessWidget {
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                     ],
-                    rows: supplierController.currentItems.map((data) {
+                    rows: supplierController.paginatedSupplier.map((data) {
                       return DataRow(
                         cells: [
                           DataCell(Text(
@@ -110,79 +122,9 @@ class SupplierTable extends StatelessWidget {
                                       content: Container(
                                         width: 700,
                                         child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: Form(
-                                            child: Container(
-                                              width: 500,
-                                              color: secondaryColor,
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.all(10.0),
-                                                    child: Container(
-                                                      width: 400,
-                                                      child: Text(
-                                                          'Bạn có muốn xóa không?'),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: DeleteSupplierForm(id: data.id)),
                                       ),
-                                      actions: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            supplierController
-                                                .clearTextController();
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            'Không',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            // Handle delete button press
-                                            bool isDeleted =
-                                                await supplierController
-                                                    .deleteSupplier(data.id);
-
-                                            if (isDeleted) {
-                                              // Xử lý khi xóa thành công
-                                              Fluttertoast.showToast(
-                                                msg:
-                                                    'Xóa thành công',
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.BOTTOM,
-                                                timeInSecForIosWeb: 10,
-                                                backgroundColor: Colors.green,
-                                                textColor: Colors.white,
-                                              );
-                                            } else {
-                                              // Xử lý khi xóa thất bại
-                                              Fluttertoast.showToast(
-                                                msg: 'Có lỗi rồi!',
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.BOTTOM,
-                                                timeInSecForIosWeb: 10,
-                                                backgroundColor: Colors.red,
-                                                textColor: Colors.white,
-                                              );
-                                            }
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            'Có',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                      ],
                                     );
                                   });
                             },
@@ -216,3 +158,4 @@ class SupplierTable extends StatelessWidget {
     );
   }
 }
+
