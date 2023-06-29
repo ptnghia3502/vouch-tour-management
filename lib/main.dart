@@ -3,6 +3,7 @@ import 'package:admin/constants.dart';
 import 'package:admin/controllers/category_controller.dart';
 import 'package:admin/controllers/navigation_controller.dart';
 import 'package:admin/controllers/product_controller.dart';
+import 'package:admin/controllers/product_supplier_controller.dart';
 import 'package:admin/controllers/supplier_controller.dart';
 import 'package:admin/controllers/tourguide_controller.dart';
 import 'package:admin/routing/route_names.dart';
@@ -16,7 +17,8 @@ void main() {
   Get.put(SupplierController());
   Get.put(TourGuideController());
   Get.put(CategoryController());
-  Get.put(ProductController());  
+  Get.put(ProductController());
+  Get.put(ProductSupplierController());      
   runApp(MyApp());
 }
 
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
         initialRoute: adminPageRoute,
         getPages: [
-        GetPage(name: rootRoute, page: () {
+        GetPage(name: adminPageRoute, page: () {
           return AdminScreen();
         }),
         GetPage(name: supplierRolePageRoute, page: () => SupplierRoleScreen()),

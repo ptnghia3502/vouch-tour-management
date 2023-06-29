@@ -166,7 +166,7 @@ class CategoryController extends GetxController{
     categoryNameTextController.clear();
   }
 
-  //==================insert Catefory==============
+  //==================insert Category==============
   Future<bool> insertCategory() async {
     try{
       //get jwtToken

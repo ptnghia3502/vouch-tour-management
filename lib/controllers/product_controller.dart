@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:admin/models/global.dart';
 import 'package:admin/models/product_model.dart';
@@ -23,6 +24,11 @@ class ProductController extends GetxController {
   //sorting
   var isAscending = true.obs;
   var sortColumnIndex = 0.obs;
+
+  //upload image
+  List<int>? selectedFile;
+  Uint8List? bytesData;
+  String? filename;
 
   @override
   Future<void> onInit() async {

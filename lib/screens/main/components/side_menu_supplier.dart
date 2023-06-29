@@ -25,30 +25,6 @@ class SideMenuSupplier extends StatelessWidget {
           ListTile(
             title: Center(
               child: Text(
-                  "GIAO HÀNG"  ,
-                  style: TextStyle(color: Colors.blueGrey),
-              ),
-            )
-            ),
-          DrawerListTile(
-            title: "Đơn Hàng",
-            svgSrc: "assets/icons/menu_tran.svg",
-            press: () {
-              Get.back();
-              navigationController.navigateTo(ordersPageRoute);
-            },
-          ),
-          DrawerListTile(
-            title: "Thống kê",
-            svgSrc: "assets/icons/menu_dashboard.svg",
-            press: () {
-              Get.back();
-              navigationController.navigateTo(dashboardPageRoute);
-            },
-          ),
-          ListTile(
-            title: Center(
-              child: Text(
                   "HỆ THỐNG"  ,
                   style: TextStyle(color: Colors.blueGrey),
               ),
@@ -59,7 +35,7 @@ class SideMenuSupplier extends StatelessWidget {
             svgSrc: "assets/icons/menu_product.svg",
             press: () {
               Get.back();
-              navigationController.navigateTo(productsPageRoute);
+              navigationController.navigateTo(productssupplierPageRoute);
             },
           ),
           DrawerListTile(

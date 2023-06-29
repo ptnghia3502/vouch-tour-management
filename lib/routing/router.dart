@@ -2,6 +2,7 @@ import 'package:admin/routing/route_names.dart';
 import 'package:admin/screens/category/category_screen.dart';
 import 'package:admin/screens/dashboard/dashboard_screen.dart';
 import 'package:admin/screens/product/product_screen.dart';
+import 'package:admin/screens/product_supplier/product_supplier_screen.dart';
 import 'package:admin/screens/supplier/supplier_screen.dart';
 import 'package:admin/screens/order/order_screen.dart';
 import 'package:admin/screens/tourguide/tourguide_screen.dart';
@@ -22,6 +23,8 @@ Route<dynamic>? generateRoute(RouteSettings settings){
       return _getPageRoute(TourGuideScreen());
     case categoriesPageRoute:
       return _getPageRoute(CategoryScreen());
+    case productssupplierPageRoute:
+      return _getPageRoute(ProductSupplierScreen());      
     default:
   }
   return null;

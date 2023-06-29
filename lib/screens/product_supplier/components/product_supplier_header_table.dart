@@ -1,11 +1,10 @@
 import 'package:admin/responsive.dart';
+import 'package:admin/screens/product_supplier/components/product_supplier_create_form.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
 
-import 'category_create_form.dart';
-
-class CategoryHeaderTable extends StatelessWidget {
-  const CategoryHeaderTable({
+class ProductHeaderSupplierTable extends StatelessWidget {
+  const ProductHeaderSupplierTable({
     Key? key,
   }) : super(key: key);
 
@@ -17,7 +16,7 @@ class CategoryHeaderTable extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Danh sách các loại sản phẩm",
+              "Danh sách sản phẩm ",
               style: Theme.of(context)
                   .textTheme
                   .titleMedium
@@ -42,7 +41,7 @@ class CategoryHeaderTable extends StatelessWidget {
                         ),
                         scrollable: true,
                         title: Center(
-                          child: Text('TẠO MỚI THỂ LOẠI',
+                          child: Text('TẠO MỚI SẢN PHẨM',
                               style:
                                   TextStyle(fontSize: 16, color: Colors.white)),
                         ),
@@ -50,13 +49,13 @@ class CategoryHeaderTable extends StatelessWidget {
                           width: 700,
                           child: Padding(
                               padding: const EdgeInsets.all(20.0),
-                              child: CreateCategoryForm()),
+                              child: CreateProductForm()),
                         ),
                       );
-                    });
+                    });                
               },
               icon: Icon(Icons.add),
-              label: Text("Tạo mới thể loại"),
+              label: Text("Tạo mới sản phẩm"),
             ),
           ],
         ),
@@ -64,5 +63,3 @@ class CategoryHeaderTable extends StatelessWidget {
     );
   }
 }
-
-

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
@@ -25,12 +24,13 @@ class _UploadImageState extends State<UploadImage> {
       final files = uploadInput.files;
       final file = files![0];
       final reader = html.FileReader();
-      categoryController.filename = basename(file.name);
+      productsupplierController.filename = basename(file.name);
 
       reader.onLoadEnd.listen((event) {
         setState(() {
-         categoryController.bytesData= Base64Decoder().convert(reader.result.toString().split(',').last);
-          categoryController.selectedFile = categoryController.bytesData;
+          productsupplierController.bytesData = Base64Decoder().convert(reader.result.toString().split(',').last);
+          productsupplierController.selectedFile = productsupplierController.bytesData;
+
         });
       });
       reader.readAsDataUrl(file);
@@ -50,8 +50,8 @@ class _UploadImageState extends State<UploadImage> {
                 height: 120,
                 width: 200,
                 color: Colors.blue,
-                child: categoryController.bytesData != null
-                    ? Image.memory(categoryController.bytesData!)
+                child: productsupplierController.bytesData != null
+                    ? Image.memory(productsupplierController.bytesData!)
                     : const SizedBox(),
               )),
         ),

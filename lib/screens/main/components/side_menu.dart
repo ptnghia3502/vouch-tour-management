@@ -25,19 +25,11 @@ class SideMenuAdmin extends StatelessWidget {
           ListTile(
             title: Center(
               child: Text(
-                  "GIAO HÀNG"  ,
+                  "QUẢN LÍ"  ,
                   style: TextStyle(color: Colors.blueGrey),
               ),
             )
             ),
-          DrawerListTile(
-            title: "Đơn Hàng",
-            svgSrc: "assets/icons/menu_tran.svg",
-            press: () {
-              Get.back();
-              navigationController.navigateTo(ordersPageRoute);
-            },
-          ),
           DrawerListTile(
             title: "Thống kê",
             svgSrc: "assets/icons/menu_dashboard.svg",

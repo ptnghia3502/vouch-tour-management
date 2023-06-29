@@ -1,7 +1,4 @@
 import 'package:admin/models/supplier_model.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
-
 import 'category_model.dart';
 
 class Product {
