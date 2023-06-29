@@ -15,7 +15,7 @@ class ProductSupplierController extends GetxController {
   static ProductSupplierController instance = Get.find(); 
 
   //searching
-  var productList = <Product>[].obs;
+  var productSupplierList = <Product>[].obs;
   var foundProductList = <Product>[].obs;
 
   //paging
@@ -103,7 +103,7 @@ class ProductSupplierController extends GetxController {
     if (response.statusCode == 200) {
       //data successfully
       final List<dynamic> productJson = jsonDecode(response.body);
-      productList.value =
+      productSupplierList.value =
           productJson.map((json) => Product.fromJson(json)).toList();
 
       foundProductList.value =
@@ -123,7 +123,7 @@ class ProductSupplierController extends GetxController {
       sortColumnIndex.value = columnIndex;
       isAscending.value = true;
     }
-    productList.sort((a, b) {
+    foundProductList.sort((a, b) {
       if (columnIndex == 1) {
         return a.id.compareTo(b.id);
       } else if (columnIndex == 2) {
@@ -137,7 +137,7 @@ class ProductSupplierController extends GetxController {
     });
 
     if (!isAscending.value) {
-      productList = productList.reversed.toList().obs;
+      foundProductList = foundProductList.reversed.toList().obs;
     }
   }
 
@@ -146,13 +146,13 @@ class ProductSupplierController extends GetxController {
     final startIndex = (currentPage.value - 1) * itemsPerPage;
     final endIndex = startIndex + itemsPerPage;
 
-    return productList.length >= endIndex 
+    return productSupplierList.length >= endIndex 
             ? foundProductList.sublist(startIndex, endIndex)
             : foundProductList.sublist(startIndex);
   }
 
   void nextPage() {
-    if (currentPage.value * itemsPerPage < productList.length){
+    if (currentPage.value * itemsPerPage < productSupplierList.length){
       currentPage.value++;
     }
   }
@@ -167,16 +167,16 @@ class ProductSupplierController extends GetxController {
   void filterProduct(String productName) {
     var results = [];
     if (productName.isEmpty) {
-      results = productList;
+      results = productSupplierList;
     } else {
-      results = productList
+      results = productSupplierList
           .where((element) => element.productName
               .toString()
               .toLowerCase()
               .contains(productName.toLowerCase()))
           .toList();
     }
-    productList.value = results as List<Product>;
+    productSupplierList.value = results as List<Product>;
   }
     //clear textcontroller
   Future<void> clearTextController() async{

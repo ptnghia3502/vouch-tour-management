@@ -106,7 +106,7 @@ class SupplierController extends GetxController {
       sortColumnIndex.value = columnIndex;
       isAscending.value = true;
     }
-    supplierList.sort((a, b) {
+    foundsupplierList.sort((a, b) {
       if (columnIndex == 0) {
         return a.id.compareTo(b.id);
       } else if (columnIndex == 1) {
@@ -120,7 +120,7 @@ class SupplierController extends GetxController {
     });
 
     if (!isAscending.value) {
-      supplierList = supplierList.reversed.toList().obs;
+      foundsupplierList = foundsupplierList.reversed.toList().obs;
     }
   }
 

@@ -114,7 +114,7 @@ class CategoryController extends GetxController{
       sortColumnIndex.value = columnIndex;
       isAscending.value = true;
     }
-    categoryList.sort((a,b) {
+    foundCategoryList.sort((a,b) {
       if(columnIndex == 0){
         return a.id.compareTo(b.id);
       } else if(columnIndex == 1){
@@ -124,7 +124,7 @@ class CategoryController extends GetxController{
     });
 
     if (!isAscending.value){
-      categoryList = categoryList.reversed.toList().obs;
+      foundCategoryList = foundCategoryList.reversed.toList().obs;
     }
   }
   //search

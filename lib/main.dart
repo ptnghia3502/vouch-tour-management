@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
         initialRoute: adminPageRoute,
         getPages: [
-        GetPage(name: adminPageRoute, page: () {
+        GetPage(name: rootRoute, page: () {
           return AdminScreen();
         }),
         GetPage(name: supplierRolePageRoute, page: () => SupplierRoleScreen()),

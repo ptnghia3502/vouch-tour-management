@@ -120,7 +120,7 @@ class TourGuideController extends GetxController{
       sortColumnIndex.value = columnIndex;
       isAscending.value = true;
     }
-    tourguideList.sort((a,b) {
+    foundTourGuide.sort((a,b) {
       if(columnIndex == 0){
         return a.id.compareTo(b.id);
       } else if(columnIndex == 1){
@@ -140,7 +140,7 @@ class TourGuideController extends GetxController{
     });
 
     if (!isAscending.value){
-      tourguideList = tourguideList.reversed.toList().obs;
+      foundTourGuide = foundTourGuide.reversed.toList().obs;
     }
   }
 

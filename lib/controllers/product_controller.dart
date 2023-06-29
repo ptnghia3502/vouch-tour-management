@@ -107,7 +107,7 @@ class ProductController extends GetxController {
       sortColumnIndex.value = columnIndex;
       isAscending.value = true;
     }
-    productList.sort((a, b) {
+    foundProductList.sort((a, b) {
       if (columnIndex == 1) {
         return a.id.compareTo(b.id);
       } else if (columnIndex == 2) {
@@ -121,7 +121,7 @@ class ProductController extends GetxController {
     });
 
     if (!isAscending.value) {
-      productList = productList.reversed.toList().obs;
+      foundProductList = foundProductList.reversed.toList().obs;
     }
   }
 
