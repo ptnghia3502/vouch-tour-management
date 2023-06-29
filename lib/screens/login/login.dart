@@ -1,3 +1,5 @@
+import 'package:admin/screens/main/main_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -119,9 +121,41 @@ class _SignInDemoState extends State<SignInDemo> {
   //
   // On the web, the on-click handler of the Sign In button is owned by the JS
   // SDK, so this method can be considered mobile only.
-  Future<void> _handleSignIn() async {
+  // Future<void> _handleSignIn() async {
+  //   try {
+  //     await _googleSignIn.signIn();
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
+
+  Future<UserCredential?> _handleSignIn() async {
     try {
-      await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      final User? user = userCredential.user;
+
+      if (user != null) {
+        // Đăng nhập thành công, bạn có thể sử dụng user.email để lấy email của người dùng
+        String email = user.email ?? '';
+        print('Email: $email');
+
+        setState(() {
+          _currentUser = googleUser;
+          _isAuthorized = true;
+        });
+        return userCredential;
+        //unawaited(_handleGetContact(googleUser));
+      }
     } catch (error) {
       print(error);
     }
@@ -192,7 +226,16 @@ class _SignInDemoState extends State<SignInDemo> {
           // This method is used to separate mobile from web code with conditional exports.
           // See: src/sign_in_button.dart
           ElevatedButton(
-            onPressed: _handleSignIn,
+            onPressed: () {
+              _handleSignIn().then((userCredential) {
+                if (userCredential != null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainScreen()),
+                  );
+                }
+              });
+            },
             child: const Text('SIGN IN WITH GOOGLE'),
           ),
         ],
@@ -211,4 +254,16 @@ class _SignInDemoState extends State<SignInDemo> {
           child: _buildBody(),
         ));
   }
+
+  // void handleSignInSuccess() {
+  //   String email = _currentUser!.email; // Lấy email từ _currentUser
+  //   // Chuyển đến trang mới sau khi đăng nhập thành công
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (BuildContext context) =>
+  //           MainScreen(email: email), // Truyền email vào trang mới
+  //     ),
+  //   );
+  // }
 }

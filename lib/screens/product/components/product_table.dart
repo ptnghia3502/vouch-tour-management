@@ -120,7 +120,7 @@ class ProductTable extends StatelessWidget {
                                 maxWidth: 250, maxHeight: double.infinity),
                             child: Text(
                               data.description,
-                              style: TextStyle(overflow: TextOverflow.visible),
+                              style: TextStyle(overflow: TextOverflow.ellipsis),
                               softWrap: true, //tự động xuống hàng
                             ),
                           )),
@@ -138,7 +138,7 @@ class ProductTable extends StatelessWidget {
                                 Fluttertoast.showToast(
                                   msg: 'Product deleted successfully',
                                   toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
+                                  gravity: ToastGravity.BOTTOM_RIGHT,
                                   timeInSecForIosWeb: 10,
                                   backgroundColor: Colors.green,
                                   textColor: Colors.white,
