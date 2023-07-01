@@ -1,14 +1,14 @@
-import 'package:admin/screens/category/components/category_delete_form.dart';
+import 'package:admin/screens/product_supplier/components/product_supplier_delete_form.dart';
+import 'package:admin/screens/product_supplier/components/product_supplier_update.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';
-import 'category_upload_image.dart';
 
-class CategoryTable extends StatelessWidget {
-  CategoryTable({
+class ProductSupplierTable extends StatelessWidget {
+  ProductSupplierTable({
     Key? key,
   }) : super(key: key);
 
@@ -41,9 +41,8 @@ class CategoryTable extends StatelessWidget {
                         ),
                       ),
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          categoryController.sortList(columnIndex)
-                        },  
+                        onSort: (columnIndex, _) =>
+                            {productsupplierController.sortList(columnIndex)},
                         label: Text(
                           "Id",
                           style: TextStyle(
@@ -52,16 +51,62 @@ class CategoryTable extends StatelessWidget {
                         ),
                       ),
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          categoryController.sortList(columnIndex)
-                        },  
+                        onSort: (columnIndex, _) =>
+                            {productsupplierController.sortList(columnIndex)},
                         label: Text(
-                          "Tên Thể Loại",
+                          "Tên Sản Phẩm",
                           style: TextStyle(
                               fontSize: 16,
                               color: Color.fromARGB(247, 119, 200, 240)),
                         ),
                       ),
+                      DataColumn(
+                        onSort: (columnIndex, _) =>
+                            {productsupplierController.sortList(columnIndex)},
+                        label: Text(
+                          "Giá Bán Lại",
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Color.fromARGB(247, 119, 200, 240)),
+                        ),
+                      ),
+                      DataColumn(
+                          onSort: (columnIndex, _) =>
+                              {productsupplierController.sortList(columnIndex)},
+                          label: Text(
+                            "Giá Bán Lẻ",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color.fromARGB(247, 119, 200, 240)),
+                          )),
+                      DataColumn(
+                          label: Text(
+                        "Mô Tả",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(247, 119, 200, 240)),
+                      )),
+                      DataColumn(
+                          label: Text(
+                        "Trạng Thái",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(247, 119, 200, 240)),
+                      )),
+                      DataColumn(
+                          label: Text(
+                        "Nhà Cung Cấp",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(247, 119, 200, 240)),
+                      )),
+                      DataColumn(
+                          label: Text(
+                        "Loại Sản Phẩm",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(247, 119, 200, 240)),
+                      )),
                       DataColumn(
                           label: Text(
                         "Chỉnh Sửa",
@@ -75,16 +120,16 @@ class CategoryTable extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
-                      )),
+                      )),                      
                     ],
-                    rows: categoryController.paginatedCategory.map((data) {
+                    rows: productsupplierController.paginatedProduct.map((data) {
                       return DataRow(
                         cells: [
                           DataCell(
                             Align(
                               alignment: Alignment.center,
                               child: CachedNetworkImage(
-                                imageUrl: data.url,
+                                imageUrl: data.images[0].fileURL,
                                 placeholder: (context, url) =>
                                     new CircularProgressIndicator(),
                                 errorWidget: (context, url, error) =>
@@ -95,11 +140,24 @@ class CategoryTable extends StatelessWidget {
                           DataCell(Text(
                             data.id,
                           )),
-                          DataCell(Text(data.categoryName)),
-                    //update
+                          DataCell(Text(data.productName)),
+                          DataCell(Text(data.resellPrice.toString())),
+                          DataCell(Text(data.retailPrice.toString())),
+                          DataCell(ConstrainedBox(
+                            constraints: BoxConstraints(
+                                maxWidth: 250, maxHeight: double.infinity),
+                            child: Text(
+                              data.description,
+                              style: TextStyle(overflow: TextOverflow.visible),
+                              softWrap: true, //tự động xuống hàng
+                            ),
+                          )),
+                          DataCell(Text(data.status)),
+                          DataCell(Text(data.supplier.supplierName)),
+                          DataCell(Text(data.category.categoryName)),
+                          //update
                           DataCell(ElevatedButton(
                             onPressed: () {
-                              categoryController.getCategoryById(data.id);
                               //popups
                               showDialog(
                                   context: context,
@@ -112,7 +170,7 @@ class CategoryTable extends StatelessWidget {
                                       ),
                                       scrollable: true,
                                       title: Center(
-                                        child: Text('CHỈNH SỬA',
+                                        child: Text('CHỈNH SỬA SẢN PHẨM',
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 color: Colors.white)),
@@ -121,85 +179,15 @@ class CategoryTable extends StatelessWidget {
                                         width: 700,
                                         child: Padding(
                                           padding: const EdgeInsets.all(20.0),
-                                          child: Form(
-                                            child: Container(
-                                              width: 500,
-                                              color: secondaryColor,
-                                              child: Column(
-                                                children: <Widget>[
-                                    TextFieldForFroms(
-                                        label: 'Tên Thể Loại',
-                                        validationResult:
-                                            'Tên thể loại không được bỏ trống',
-                                        textEditingController:
-                                            categoryController
-                                                .categoryNameTextController,
-                                        icondata: Icons.message),
-                                        
-                                    UploadImage(),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                          child: UpdateProductForm(id: data.id)
                                         ),
                                       ),
-                                      actions: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            categoryController
-                                                .clearTextController();
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            'Hủy',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            // Handle delete button press
-                                            bool isUpdated =
-                                                await categoryController
-                                                    .updateCategory(data.id);
-
-                                            if (isUpdated) {
-                                              // Xử lý khi xóa thành công
-                                              Fluttertoast.showToast(
-                                                msg:
-                                                    'Chỉnh sửa thành công',
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.BOTTOM,
-                                                timeInSecForIosWeb: 10,
-                                                backgroundColor: Colors.green,
-                                                textColor: Colors.white,
-                                              );
-                                            } else {
-                                              // Xử lý khi xóa thất bại
-                                              Fluttertoast.showToast(
-                                                msg: 'Có lỗi rồi!',
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.BOTTOM,
-                                                timeInSecForIosWeb: 10,
-                                                backgroundColor: Colors.red,
-                                                textColor: Colors.white,
-                                              );
-                                            }
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            'Gửi',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                      ],
                                     );
                                   });
                             },
                             child: Text('Chỉnh sửa'),
-                          )),                    
-                    //delete
+                          )),                          
+                          //delete
                           DataCell(ElevatedButton(
                             onPressed: () {
                               //popups
@@ -223,7 +211,7 @@ class CategoryTable extends StatelessWidget {
                                         width: 700,
                                         child: Padding(
                                           padding: const EdgeInsets.all(20.0),
-                                          child: DeleteCategoryForm(id: data.id)
+                                          child: DeleteProductForm(id: data.id)
                                         ),
                                       ),
                                     );
@@ -237,18 +225,18 @@ class CategoryTable extends StatelessWidget {
               ),
             ),
           ),
-           Row(
+          Row(
             children: [
               ElevatedButton(
                 onPressed: () {
-                  categoryController.previousPage();
+                  productsupplierController.previousPage();
                 },
                 child: Text('Trước'),
               ),
               SizedBox(width: 16), // Add some spacing between the buttons
               ElevatedButton(
                 onPressed: () {
-                  categoryController.nextPage();
+                  productsupplierController.nextPage();
                 },
                 child: Text('Sau'),
               ),
@@ -259,45 +247,3 @@ class CategoryTable extends StatelessWidget {
     );
   }
 }
-
-// ignore: must_be_immutable
-class TextFieldForFroms extends StatelessWidget {
-  String label;
-  String validationResult;
-  IconData icondata;
-  TextEditingController textEditingController;
-  TextFieldForFroms({
-    super.key,
-    required this.label,
-    required this.validationResult,
-    required this.textEditingController,
-    required this.icondata,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10.0),
-      child: Container(
-        width: 400,
-        child: TextFormField(
-          controller: this.textEditingController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: this.label,
-            icon: Icon(this.icondata),
-          ),
-          validator: (value) {
-            if (value!.isEmpty) {
-              return this.validationResult;
-            }
-            return null;
-          },
-        ),
-      ),
-    );
-  }
-}
-
-
-

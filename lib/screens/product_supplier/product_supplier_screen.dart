@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 import '../../constants.dart';
 import '../product/components/header.dart';
-import 'components/product_header_table.dart';
-import 'components/product_table.dart';
+import 'components/product_supplier_header_table.dart';
+import 'components/product_supplier_table.dart';
 
-class ProductScreen extends StatelessWidget {
+class ProductSupplierScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -24,10 +24,10 @@ class ProductScreen extends StatelessWidget {
                   flex: 7,
                   child: Column(
                     children: [
-                      ProductHeaderTable(),
+                      ProductHeaderSupplierTable(),
                       SizedBox(height: defaultPadding),
 
-                      ProductTable(),
+                      ProductSupplierTable(),
                       if (Responsive.isMobile(context))
                         SizedBox(height: defaultPadding),
                       // if (Responsive.isMobile(context)) StorageDetails(),

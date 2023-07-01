@@ -1,8 +1,6 @@
 import 'package:admin/controllers/MenuAppController.dart';
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
@@ -23,13 +21,12 @@ class Header extends StatelessWidget {
           ),
         if (!Responsive.isMobile(context))
           Text(
-            "Tour Guide",
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.blue,
-              fontSize: 25
-            ),
+            "Sản phẩm",
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(color: Colors.blue, fontSize: 25),
           ),
-          
         if (!Responsive.isMobile(context))
           Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
         Expanded(child: SearchField()),
@@ -84,7 +81,7 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged: (value) => tourGuideController.filterTourGuide(value),
+      onChanged: (value) => productsupplierController.filterProduct(value),
       decoration: InputDecoration(
         hintText: "Search",
         fillColor: secondaryColor,

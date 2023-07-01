@@ -1,7 +1,9 @@
-
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../constants.dart';
+import 'tourguide_create_form.dart';
+
 class TourGuideHeaderTable extends StatelessWidget {
   const TourGuideHeaderTable({
     Key? key,
@@ -16,10 +18,10 @@ class TourGuideHeaderTable extends StatelessWidget {
           children: [
             Text(
               "Danh sách các tour guide",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Colors.lightBlue,
-                fontSize: 22
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(color: Colors.lightBlue, fontSize: 22),
             ),
             ElevatedButton.icon(
               style: TextButton.styleFrom(
@@ -29,9 +31,32 @@ class TourGuideHeaderTable extends StatelessWidget {
                       defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: bgColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        scrollable: true,
+                        title: Center(
+                          child: Text('TẠO MỚI TOUR GUIDE',
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white)),
+                        ),
+                        content: Container(
+                          width: 700,
+                          child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: CreateTourGuideForm()),
+                        ),
+                      );
+                    });
+              },
               icon: Icon(Icons.add),
-              label: Text("Add New"),
+              label: Text("Tạo mới TourGuide"),
             ),
           ],
         ),
@@ -39,5 +64,4 @@ class TourGuideHeaderTable extends StatelessWidget {
     );
   }
 }
-
 

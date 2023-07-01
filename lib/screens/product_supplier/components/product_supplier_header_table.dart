@@ -1,11 +1,10 @@
 import 'package:admin/responsive.dart';
-import 'package:admin/screens/supplier/components/supplier_create_form.dart';
+import 'package:admin/screens/product_supplier/components/product_supplier_create_form.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../../../constants.dart';
 
-class SupplierHeaderTable extends StatelessWidget {
-  const SupplierHeaderTable({
+class ProductHeaderSupplierTable extends StatelessWidget {
+  const ProductHeaderSupplierTable({
     Key? key,
   }) : super(key: key);
 
@@ -17,7 +16,7 @@ class SupplierHeaderTable extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Danh sách các nhà cung cấp",
+              "Danh sách sản phẩm ",
               style: Theme.of(context)
                   .textTheme
                   .titleMedium
@@ -42,7 +41,7 @@ class SupplierHeaderTable extends StatelessWidget {
                         ),
                         scrollable: true,
                         title: Center(
-                          child: Text('TẠO MỚI NHÀ CUNG CẤP',
+                          child: Text('TẠO MỚI SẢN PHẨM',
                               style:
                                   TextStyle(fontSize: 16, color: Colors.white)),
                         ),
@@ -50,13 +49,13 @@ class SupplierHeaderTable extends StatelessWidget {
                           width: 700,
                           child: Padding(
                               padding: const EdgeInsets.all(20.0),
-                              child: CreateSupplierForm()),
+                              child: CreateProductForm()),
                         ),
                       );
-                    });
+                    });                
               },
               icon: Icon(Icons.add),
-              label: Text("Tạo mới nhà cung cấp"),
+              label: Text("Tạo mới sản phẩm"),
             ),
           ],
         ),
@@ -64,4 +63,3 @@ class SupplierHeaderTable extends StatelessWidget {
     );
   }
 }
-

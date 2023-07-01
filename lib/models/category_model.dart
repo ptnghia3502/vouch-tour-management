@@ -10,8 +10,6 @@ class Category {
       required this.url});
 
   factory Category.fromJson(Map<String, dynamic> json) {
-    final String image =
-        'lib/assets/images/${json["categoryName"].toLowerCase()}_image.png';
     return Category(
         id: json['id'],
         categoryName: json['categoryName'],

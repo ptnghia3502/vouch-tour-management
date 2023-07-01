@@ -1,24 +1,33 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
-import 'package:admin/dto/user_authen_dto.dart';
 import 'package:admin/models/global.dart';
 import 'package:admin/models/product_model.dart';
-import 'package:admin/screens/login/user_authen_storage.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
-
-import '../screens/login/auth_provider.dart';
 
 class ProductController extends GetxController {
+  static ProductController instance = Get.find();
+
+  //searching
   var productList = <Product>[].obs;
-  //static String jwtToken = '';
+  var foundProductList = <Product>[].obs;
+
+  //paging
+  var currentPage = 1.obs;
+  final itemsPerPage = 5;
+
+  static String jwtToken = '';
   static String currentEmail = 'hieuvh0804@gmail.com';
-  String? accessToken = '';
-  String? refreshToken = '';
-  String? role = '';
-  String? id = '';
+
+  //sorting
+  var isAscending = true.obs;
+  var sortColumnIndex = 0.obs;
+
+  //upload image
+  List<int>? selectedFile;
+  Uint8List? bytesData;
+  String? filename;
 
   @override
   Future<void> onInit() async {
@@ -26,112 +35,130 @@ class ProductController extends GetxController {
     fetchProduct();
   }
 
-  //GET USER AUTHENTICATION INFO
-  Future<void> getUserAuthenInfo() async {
-    UserAuthenDTO authen = await UserAuthenStorage.getUserAuthen();
+//AUTHENTICATION API
+  static Future<String> fetchJwtToken(String email) async {
+    final url = Uri.parse('${BASE_URL}authentication');
+    final body = jsonEncode({
+      'eMail': currentEmail,
+    });
 
-    // Sử dụng authen để lấy các giá trị mong muốn
-    accessToken = authen.AccessToken;
-    refreshToken = authen.RefreshToken;
-    role = authen.Role;
-    id = authen.Id;
+    final response = await http.post(url,
+        headers: {'Content-Type': 'application/json'}, body: body);
 
-    // Tiếp tục xử lý với các giá trị đã lấy được
-    // ...
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      jwtToken = data['accessToken'];
+      return jwtToken;
+    } else if (response.statusCode == 401) {
+      // Access token expired, try refreshing the token using the refresh token
+      final refreshToken = json.decode(response.body)['refreshToken'];
+      final refreshResponse = await http.post(
+        Uri.parse('${BASE_URL}authentication/refresh'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'refreshToken': refreshToken,
+        }),
+      );
+
+      if (refreshResponse.statusCode == 200) {
+        final refreshData = json.decode(refreshResponse.body);
+        jwtToken = refreshData['accessToken'];
+        currentEmail = email;
+        return jwtToken;
+      } else {
+        throw Exception('Failed to refresh JWT token');
+      }
+    } else {
+      throw Exception('Failed to fetch JWT token');
+    }
   }
 
-//AUTHENTICATION API
-  // static Future<String> fetchJwtToken(String email) async {
-  //   final url = Uri.parse('${BASE_URL}authentication');
-  //   final body = jsonEncode({
-  //     'eMail': currentEmail,
-  //   });
-
-  //   final response = await http.post(url,
-  //       headers: {'Content-Type': 'application/json'}, body: body);
-
-  //   if (response.statusCode == 200) {
-  //     final data = json.decode(response.body);
-  //     jwtToken = data['accessToken'];
-  //     return jwtToken;
-  //   } else if (response.statusCode == 401) {
-  //     // Access token expired, try refreshing the token using the refresh token
-  //     final refreshToken = json.decode(response.body)['refreshToken'];
-  //     final refreshResponse = await http.post(
-  //       Uri.parse('${BASE_URL}authentication/refresh'),
-  //       headers: {'Content-Type': 'application/json'},
-  //       body: jsonEncode({
-  //         'refreshToken': refreshToken,
-  //       }),
-  //     );
-
-  //     if (refreshResponse.statusCode == 200) {
-  //       final refreshData = json.decode(refreshResponse.body);
-  //       jwtToken = refreshData['accessToken'];
-  //       currentEmail = email;
-  //       return jwtToken;
-  //     } else {
-  //       throw Exception('Failed to refresh JWT token');
-  //     }
-  //   } else {
-  //     throw Exception('Failed to fetch JWT token');
-  //   }
-  // }
-
+  //==================get all products============
   void fetchProduct() async {
-    // String jwtToken = ProductController.jwtToken;
+    String jwtToken = ProductController.jwtToken;
 
-    // if (jwtToken.isEmpty) {
-    //   jwtToken = await ProductController.fetchJwtToken(
-    //       ProductController.currentEmail); // Fetch the JWT token if it's empty
-    // }
+    if (jwtToken.isEmpty) {
+      jwtToken = await ProductController.fetchJwtToken(
+          ProductController.currentEmail); // Fetch the JWT token if it's empty
+    }
     http.Response response = await http.get(Uri.parse('${BASE_URL}products'),
-        headers: {'Authorization': 'Bearer $accessToken'});
+        headers: {'Authorization': 'Bearer $jwtToken'});
     if (response.statusCode == 200) {
       //data successfully
       final List<dynamic> productJson = jsonDecode(response.body);
       productList.value =
+          productJson.map((json) => Product.fromJson(json)).toList();
+
+      foundProductList.value =
           productJson.map((json) => Product.fromJson(json)).toList();
     } else {
       throw Exception('Failed to fetch product');
     }
   }
 
-  Future<Product> findProductById(String Id) async {
-    final url = Uri.parse('${BASE_URL}products/$Id');
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      return Product.fromJson(jsonData);
+  //=================sorting=================================
+  Future<void> sortList(int columnIndex) async {
+    if (sortColumnIndex.value == columnIndex) {
+      //Reverse the sort order if the same column is clicked again
+      isAscending.value = !isAscending.value;
     } else {
-      throw Exception('Failed to find category by ID');
+      //sort the list in ascending order by default when a new column is clicked
+      sortColumnIndex.value = columnIndex;
+      isAscending.value = true;
+    }
+    foundProductList.sort((a, b) {
+      if (columnIndex == 1) {
+        return a.id.compareTo(b.id);
+      } else if (columnIndex == 2) {
+        return a.productName.compareTo(b.productName);
+      } else if (columnIndex == 3) {
+        return a.resellPrice.compareTo(b.resellPrice);
+      } else if (columnIndex == 4) {
+        return a.retailPrice.compareTo(b.retailPrice);
+      }
+      return 0;
+    });
+
+    if (!isAscending.value) {
+      foundProductList = foundProductList.reversed.toList().obs;
     }
   }
 
-  Future<Product> UpdateProduct(String Id) async {
-    final url = Uri.parse('${BASE_URL}products/$Id');
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      return Product.fromJson(jsonData);
-    } else {
-      throw Exception('Failed to find category by ID');
+  //=================paging==============
+  List<Product> get paginatedProduct {
+    final startIndex = (currentPage.value - 1) * itemsPerPage;
+    final endIndex = startIndex + itemsPerPage;
+
+    return productList.length >= endIndex
+        ? foundProductList.sublist(startIndex, endIndex)
+        : foundProductList.sublist(startIndex);
+  }
+
+  void nextPage() {
+    if (currentPage.value * itemsPerPage < productList.length) {
+      currentPage.value++;
     }
   }
 
-  Future<bool> DeleteProduct(String Id) async {
-    final url = Uri.parse('${BASE_URL}products/$Id');
-    final response = await http
-        .delete(url, headers: {'Authorization': 'Bearer $accessToken'});
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-
-      fetchProduct();
-
-      return true;
-    } else {
-      //throw Exception('Failed to delete product by ID');
-      return false;
+  void previousPage() {
+    if (currentPage.value > 1) {
+      currentPage.value--;
     }
+  }
+
+//==============searching===============
+  void filterProduct(String productName) {
+    var results = [];
+    if (productName.isEmpty) {
+      results = productList;
+    } else {
+      results = productList
+          .where((element) => element.productName
+              .toString()
+              .toLowerCase()
+              .contains(productName.toLowerCase()))
+          .toList();
+    }
+    productList.value = results as List<Product>;
   }
 }
