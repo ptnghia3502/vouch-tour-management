@@ -6,7 +6,7 @@ import '../screens/dashboard/dashboard_screen.dart';
 
 class RoutePaths {
   static const String login = '/login';
-  static const String dashboard = '/dashboard';
+  static const String mainscreen = '/mainscreen';
 }
 
 class RouterConfiguration {
@@ -19,7 +19,7 @@ class RouterConfiguration {
     );
 
     router.define(
-      RoutePaths.dashboard,
+      RoutePaths.mainscreen,
       handler: Handler(handlerFunc: (_, __) => MainScreen()),
     );
 

@@ -1,3 +1,4 @@
+import 'package:admin/screens/main/main_screen.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -55,19 +56,30 @@ class UserController extends GetxController {
           prefs.setString('refreshToken', refreshToken);
           prefs.setString('role', role);
           prefs.setString('id', id);
+          // final router = FluroRouter();
+          // router.navigateTo(context, RoutePaths.mainscreen);
           // if (role == 'Admin') {
           //   //Get.toNamed('/dashboard');
+          //   //RoutePaths.mainscreen;
+          //   final router = FluroRouter();
+          //   router.navigateTo(context, RoutePaths.mainscreen);
+          // } else {
+          //   throw Exception('Failed to sign in with Google 0');
           // }
           print('Successful signing in with Google');
+          // final router = FluroRouter();
+          //Navigator.pushReplacementNamed(context, '/mainscreen');
+          Navigator.push(context,
+              new MaterialPageRoute(builder: (context) => new MainScreen()));
         } else {
-          throw Exception('Failed to sign in with Google');
+          throw Exception('Failed to sign in with Google 1');
         }
       } else {
-        throw Exception('Failed to sign in with Google');
+        throw Exception('Failed to sign in with Google 2');
       }
     } catch (e) {
       print('Error signing in with Google: $e');
-      throw Exception('Failed to sign in with Google');
+      throw Exception('Failed to sign in with Google 3');
     }
   }
 
@@ -102,7 +114,7 @@ class LoginPage extends StatelessWidget {
                 if (userController.user.value != null) {
                   useEffect(() {
                     final router = FluroRouter();
-                    router.navigateTo(context, RoutePaths.dashboard);
+                    router.navigateTo(context, RoutePaths.mainscreen);
                   });
                 }
               },

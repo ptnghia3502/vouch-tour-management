@@ -1,9 +1,14 @@
+import 'package:admin/constants.dart';
 import 'package:admin/screens/login/login_V5.dart';
+import 'package:admin/screens/main/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:admin/routing/fluro-route.dart';
-
+import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'controllers/MenuAppController.dart';
 import 'controllers/navigation_controller.dart';
 
 void main() async {
@@ -19,27 +24,11 @@ void main() async {
       // Các thông tin cấu hình khác
     ),
   );
-  //Get.put(NavigationController());
+  Get.put(NavigationController());
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    //Router router= new Router();
-    RouterConfiguration.setupRouter(); // <== Gọi phương thức setupRouter
-
-    return MaterialApp(
-      title: 'My App',
-      home: LoginPage(),
-      // Sử dụng router đã định nghĩa
-      onGenerateRoute: RouterConfiguration.router.generator,
-      //initialRoute: RoutePaths.login, // <== Đường dẫn ban đầu
-    );
-  }
-}
-/*class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -51,16 +40,17 @@ class MyApp extends StatelessWidget {
             .apply(bodyColor: Colors.white),
         canvasColor: secondaryColor,
       ),
-
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => MenuAppController(),
-          ),
-        ],
-        child: MainScreen(),
-        //child: LoginPage(),
-      ),
+      builder: (context, child) {
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (context) => MenuAppController(),
+            ),
+          ],
+          child: child,
+        );
+      },
+      home: LoginPage(),
     );
   }
-}*/
+}
