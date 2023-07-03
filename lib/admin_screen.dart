@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/MenuAppController.dart';
-class AdminScreen extends StatelessWidget {
+
+/*class AdminScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   // This widget is the root of your application.
   @override
@@ -16,6 +17,20 @@ class AdminScreen extends StatelessWidget {
             create: (context) => MenuAppController(),
           ),
         ],
+        child: MainScreen(),
+      ),
+    );
+  }
+}*/
+class AdminScreen extends StatelessWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: scaffoldKey,
+      body: ChangeNotifierProvider<MenuAppController>(
+        create: (context) => MenuAppController(),
         child: MainScreen(),
       ),
     );

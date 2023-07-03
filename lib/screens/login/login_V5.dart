@@ -1,4 +1,6 @@
+import 'package:admin/admin_screen.dart';
 import 'package:admin/screens/main/main_screen.dart';
+import 'package:admin/supplier_role_screen.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -67,10 +69,15 @@ class UserController extends GetxController {
           //   throw Exception('Failed to sign in with Google 0');
           // }
           print('Successful signing in with Google');
-          // final router = FluroRouter();
-          //Navigator.pushReplacementNamed(context, '/mainscreen');
-          Navigator.push(context,
-              new MaterialPageRoute(builder: (context) => new MainScreen()));
+          if (role == 'Admin') {
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => new AdminScreen()));
+          } else if (role == ' ') {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new SupplierRoleScreen()));
+          }
         } else {
           throw Exception('Failed to sign in with Google 1');
         }

@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import '../../controllers/category_controller.dart';
+import '../../controllers/product_controller.dart';
 import 'components/side_menu.dart';
 
-/*class MainScreen extends StatelessWidget {
+class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,41 +30,6 @@ import 'components/side_menu.dart';
                 // It takes 5/6 part of the screen
                 flex: 5,
                 child: localNavigator()),
-          ],
-        ),
-      ),
-    );
-  }
-}*/
-
-class MainScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final menuAppController = Get.find<MenuAppController>();
-
-    return Scaffold(
-      key: menuAppController.scaffoldKey,
-      drawer: SideMenuAdmin(),
-      body: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (Responsive.isDesktop(context))
-              Expanded(
-                child: SideMenuAdmin(),
-              ),
-            Expanded(
-              flex: 5,
-              child: GetBuilder<MenuAppController>(
-                builder: (menuController) {
-                  final productController = menuController.productController;
-                  final categoryController = menuController.categoryController;
-
-                  // Use productController and categoryController here
-                  return localNavigator();
-                },
-              ),
-            ),
           ],
         ),
       ),
