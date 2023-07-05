@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Authentication/sharedPreferencesManager.dart';
 import '../../models/global.dart';
 import '../../routing/route_names.dart';
 
@@ -53,12 +54,13 @@ class UserController extends GetxController {
           final role = body['role'];
           final refreshToken = body['refreshToken'];
           // Save the token to local storage
-          SharedPreferences prefs = await SharedPreferences.getInstance();
+          //SharedPreferences prefs = await SharedPreferences.getInstance();
+          SharedPreferencesManager prefs = SharedPreferencesManager();
           await prefs.setString('access_token', accessToken);
-          prefs.setString('refreshToken', refreshToken);
-          prefs.setString('role', role);
-          prefs.setString('id', id);
-          prefs.setString('emailCurrent', emailCurrentUser);
+          await prefs.setString('refreshToken', refreshToken);
+          await prefs.setString('role', role);
+          await prefs.setString('id', id);
+          await prefs.setString('emailCurrent', emailCurrentUser);
 
           print('Successful signing in with Google');
           if (role == 'Admin') {
@@ -69,7 +71,7 @@ class UserController extends GetxController {
             //   MaterialPageRoute(builder: (context) => AdminScreen()),
             // );
             Get.offNamed(adminPageRoute);
-          } else if (role == ' ') {
+          } else if (role == 'Suppiler') {
             // Navigator.pushReplacement(
             //     context,
             //     new MaterialPageRoute(

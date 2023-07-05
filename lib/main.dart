@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'Authentication/sharedPreferencesManager.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -27,6 +29,10 @@ void main() async {
       // Các thông tin cấu hình khác
     ),
   );
+
+  SharedPreferencesManager sharedPreferencesManager =
+      SharedPreferencesManager();
+  await sharedPreferencesManager.initialize();
   Get.put(NavigationController());
   Get.put(SupplierController());
   Get.put(TourGuideController());
