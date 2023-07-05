@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/global.dart';
+import '../../routing/route_names.dart';
 
 /// The scopes required by this application.
 const List<String> scopes = <String>[
@@ -58,25 +59,22 @@ class UserController extends GetxController {
           prefs.setString('role', role);
           prefs.setString('id', id);
           prefs.setString('emailCurrent', emailCurrentUser);
-          // final router = FluroRouter();
-          // router.navigateTo(context, RoutePaths.mainscreen);
-          // if (role == 'Admin') {
-          //   //Get.toNamed('/dashboard');
-          //   //RoutePaths.mainscreen;
-          //   final router = FluroRouter();
-          //   router.navigateTo(context, RoutePaths.mainscreen);
-          // } else {
-          //   throw Exception('Failed to sign in with Google 0');
-          // }
+
           print('Successful signing in with Google');
           if (role == 'Admin') {
-            Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => new AdminScreen()));
+            // Navigator.push(context,
+            //     new MaterialPageRoute(builder: (context) => new AdminScreen()));
+            // Navigator.pushReplacement(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => AdminScreen()),
+            // );
+            Get.offNamed(adminPageRoute);
           } else if (role == ' ') {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new SupplierRoleScreen()));
+            // Navigator.pushReplacement(
+            //     context,
+            //     new MaterialPageRoute(
+            //         builder: (context) => new SupplierRoleScreen()));
+            Get.offNamed(supplierRolePageRoute);
           }
         } else {
           throw Exception('Failed to sign in with Google 1');

@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute: adminPageRoute,
+      initialRoute: loginPageRoute,
       getPages: [
         GetPage(
             name: rootRoute,
@@ -49,6 +49,7 @@ class MyApp extends StatelessWidget {
               return LoginPage();
             }),
         GetPage(name: supplierRolePageRoute, page: () => SupplierRoleScreen()),
+        GetPage(name: adminPageRoute, page: () => AdminScreen()),
       ],
       debugShowCheckedModeBanner: false,
       title: 'Flutter Admin Panel',
