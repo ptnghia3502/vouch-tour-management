@@ -22,10 +22,10 @@ class Header extends StatelessWidget {
         if (!Responsive.isMobile(context))
           Text(
             "LOẠI SẢN PHẨM",
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.blue,
-              fontSize: 25
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(color: Colors.blue, fontSize: 25),
           ),
         if (!Responsive.isMobile(context))
           Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),

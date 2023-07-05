@@ -25,3 +25,6 @@ const adminPageRoute = "/admin";
 
 const supplierRolePageDisplayName = "Supplier";
 const supplierRolePageRoute = "/supplier";
+
+const loginPageDisplayName = "Login";
+const loginPageRoute = "/login";
