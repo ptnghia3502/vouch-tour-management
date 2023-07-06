@@ -99,8 +99,8 @@ class ProfileCard extends StatelessWidget {
                           await userController.logout();
                           await SharedPreferencesManager
                               .logout(); // Gọi hàm logout()
-                          Navigator.pop(context);
-                          Get.offNamed(loginPageRoute); // Đóng hộp thoại
+                          Navigator.pop(context); // Đóng hộp thoại
+                          Get.offNamed(loginPageRoute);
                         },
                         child: Text('Đồng ý'),
                       ),

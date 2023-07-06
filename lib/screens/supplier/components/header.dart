@@ -1,9 +1,14 @@
 import 'package:admin/controllers/MenuAppController.dart';
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 
+import '../../../Authentication/sharedPreferencesManager.dart';
 import '../../../constants.dart';
+import '../../../routing/route_names.dart';
+import '../../login/login.dart';
 
 class Header extends StatelessWidget {
   const Header({
@@ -40,9 +45,9 @@ class ProfileCard extends StatelessWidget {
   const ProfileCard({
     Key? key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    final UserController userController = Get.put(UserController());
     return Container(
       margin: EdgeInsets.only(left: defaultPadding),
       padding: EdgeInsets.symmetric(
@@ -64,12 +69,63 @@ class ProfileCard extends StatelessWidget {
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-              child: Text("Angelina Jolie"),
+              child: FutureBuilder<String?>(
+                future: getEmailFromSharedPreferences(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<String?> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (snapshot.hasData && snapshot.data != null) {
+                    return Text(snapshot.data!);
+                  } else {
+                    return Text('No data');
+                  }
+                },
+              ),
             ),
-          Icon(Icons.keyboard_arrow_down),
+          GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Logout'),
+                    content: Text('Bạn có chắc chắn muốn đăng xuất?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () async {
+                          await userController.logout();
+                          await SharedPreferencesManager
+                              .logout(); // Gọi hàm logout()
+                          Navigator.pop(context); // Đóng hộp thoại
+                          Get.offNamed(loginPageRoute);
+                        },
+                        child: Text('Đồng ý'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context); // Đóng hộp thoại
+                        },
+                        child: Text('Hủy'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Icon(Icons.keyboard_arrow_down),
+          ),
         ],
       ),
     );
+  }
+
+  Future<String?> getEmailFromSharedPreferences() async {
+    SharedPreferencesManager prefs = SharedPreferencesManager();
+    String? email = await prefs.getString('emailCurrent');
+    return email;
   }
 }
 

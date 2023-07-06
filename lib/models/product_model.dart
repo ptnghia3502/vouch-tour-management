@@ -44,6 +44,7 @@ class Product {
     );
   }
 }
+
 class ProductImage {
   String fileURL;
   String fileName;
