@@ -231,7 +231,7 @@ class TourGuideController extends GetxController {
   Future<void> getCategoryById(String id) async {
     jwtToken = sharedPreferencesManager.getString('access_token');
     http.Response response = await http.get(
-        Uri.parse('${BASE_URL}categories/$id'),
+        Uri.parse('${BASE_URL}tour-guides/$id'),
         headers: {'Authorization': 'Bearer $jwtToken'});
     if (response.statusCode == 200) {
       //data successfully

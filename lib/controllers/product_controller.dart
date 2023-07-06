@@ -35,8 +35,14 @@ class ProductController extends GetxController {
   Uint8List? bytesData;
   String? filename;
 
-  //textEditingController
+  //FieldRequired
   TextEditingController productNameTextController = TextEditingController();
+  TextEditingController descriptionTextController = TextEditingController();
+  TextEditingController statusTextController = TextEditingController();
+  TextEditingController categoryIdTextController = TextEditingController();
+  TextEditingController resellPriceDoubleController = TextEditingController();
+  TextEditingController retailPriceDoubleController = TextEditingController();
+  TextEditingController selectedCategoryIdController = TextEditingController();
   //clear textcontroller
   Future<void> clearTextController() async {
     productNameTextController.clear();
@@ -159,6 +165,11 @@ class ProductController extends GetxController {
       //thêm field cho request
       request.fields.addAll({
         'ProductName': productNameTextController.text,
+        'ResellPrice': resellPriceDoubleController.text,
+        'RetailPrice': retailPriceDoubleController.text,
+        'Description': descriptionTextController.text,
+        'Status': statusTextController.text,
+        'CategoryId': selectedCategoryIdController.text,
       });
       //send the request
       var response = await request.send();
@@ -209,8 +220,11 @@ class ProductController extends GetxController {
       var result = jsonDecode(response.body);
       productModel = Product.fromJson(result);
       productNameTextController.text = result['ProductName'];
-      http.Response urlReponse = await http.get(Uri.parse(categoryModel!.url));
-      bytesData = urlReponse.bodyBytes;
+
+      for (var item in productModel!.images) {
+        http.Response urlReponse = await http.get(Uri.parse(item!.fileURL));
+        bytesData = urlReponse.bodyBytes;
+      }
     } else {
       throw Exception('Failed to fetch suppliers');
     }
@@ -234,8 +248,14 @@ class ProductController extends GetxController {
       //add header
       request.headers.addAll(headers);
       //add field
-      request.fields
-          .addAll({'ProductName': productNameTextController.text, 'Id': id});
+      request.fields.addAll({
+        'ProductName': productNameTextController.text,
+        'ResellPrice': resellPriceDoubleController.text,
+        'RetailPrice': retailPriceDoubleController.text,
+        'Description': descriptionTextController.text,
+        'Status': statusTextController.text,
+        'CategoryId': selectedCategoryIdController.text,
+      });
 
       //send request
       var response = await request.send();

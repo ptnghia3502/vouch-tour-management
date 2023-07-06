@@ -71,7 +71,7 @@ class UserController extends GetxController {
             //   MaterialPageRoute(builder: (context) => AdminScreen()),
             // );
             Get.offNamed(adminPageRoute);
-          } else if (role == 'Suppiler') {
+          } else if (role == 'Supplier') {
             // Navigator.pushReplacement(
             //     context,
             //     new MaterialPageRoute(
