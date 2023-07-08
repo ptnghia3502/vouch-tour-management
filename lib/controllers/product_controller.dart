@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:admin/models/category_model.dart';
 import 'package:admin/models/global.dart';
 import 'package:admin/models/product_model.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ import 'package:http_parser/http_parser.dart';
 class ProductController extends GetxController {
   static ProductController instance = Get.find();
   Product? productModel;
+  Category? categoryModel;
 
   //searching
   var productList = <Product>[].obs;
@@ -50,9 +52,9 @@ class ProductController extends GetxController {
     if (sharedPreferencesManager.getString('access_token') != null) {
       super.onInit();
       fetchProduct();
-    } else {
-      Get.offNamed(loginPageRoute);
-    }
+     }// else {
+    //   Get.offNamed(loginPageRoute);
+    // }
   }
 
   //==================get all products============

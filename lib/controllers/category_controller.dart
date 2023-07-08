@@ -46,7 +46,7 @@ class CategoryController extends GetxController {
       super.onInit();
       fetchCategory();
     } else {
-      Get.offNamed(loginPageRoute);
+      // Get.offNamed(loginPageRoute);
     }
   }
 

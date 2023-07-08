@@ -12,8 +12,10 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Authentication/sharedPreferencesManager.dart';
+import '../../constants.dart';
 import '../../models/global.dart';
 import '../../routing/route_names.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 /// The scopes required by this application.
 const List<String> scopes = <String>[
@@ -26,16 +28,25 @@ class UserController extends GetxController {
 
   Future<void> googleSignIn(BuildContext context) async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn(
-        // Optional clientId
+      GoogleSignIn googleSignIn = GoogleSignIn(
+                // Optional clientId
         clientId:
-            '248437325496-4hrpv66dimdkj809fmtjl5vg2ekfac7e.apps.googleusercontent.com',
+           '248437325496-4hrpv66dimdkj809fmtjl5vg2ekfac7e.apps.googleusercontent.com',
         scopes: scopes,
-      ).signIn();
+      );
+    GoogleSignInAccount? googleUser =
+        kIsWeb ? await (googleSignIn.signInSilently()) : await (googleSignIn.signIn());
+
+    if (kIsWeb && googleUser == null) googleUser = await (googleSignIn.signIn());
+      // final GoogleSignInAccount? googleUser = await GoogleSignIn(
+      //   // Optional clientId
+      //   clientId:
+      //       '248437325496-4hrpv66dimdkj809fmtjl5vg2ekfac7e.apps.googleusercontent.com',
+      //   scopes: scopes,
+      // ).signIn();
       if (googleUser != null) {
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
-
         final idToken = googleAuth.idToken;
         final serverAuthCode = googleUser.serverAuthCode;
         final emailCurrentUser = googleUser.email;
@@ -71,6 +82,7 @@ class UserController extends GetxController {
             //   MaterialPageRoute(builder: (context) => AdminScreen()),
             // );
             Get.offNamed(adminPageRoute);
+            
           } else if (role == 'Suppiler') {
             // Navigator.pushReplacement(
             //     context,
