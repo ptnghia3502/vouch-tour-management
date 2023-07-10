@@ -46,6 +46,8 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserController userController = Get.put(UserController());
+    //SharedPreferencesManager sharedPreferencesManager =
+    //  new SharedPreferencesManager();
     return Container(
       margin: EdgeInsets.only(left: defaultPadding),
       padding: EdgeInsets.symmetric(

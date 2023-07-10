@@ -26,14 +26,20 @@ const List<String> scopes = <String>[
 class UserController extends GetxController {
   var user = Rx<User?>(null);
 
-  Future<void> googleSignIn(BuildContext context) async {
+  GoogleSignIn googleSignIn = GoogleSignIn(
+    // Optional clientId
+    clientId:
+        '248437325496-4hrpv66dimdkj809fmtjl5vg2ekfac7e.apps.googleusercontent.com',
+    scopes: scopes,
+  );
+  Future<void> googleSignIn1(BuildContext context) async {
     try {
-      GoogleSignIn googleSignIn = GoogleSignIn(
-        // Optional clientId
-        clientId:
-            '248437325496-4hrpv66dimdkj809fmtjl5vg2ekfac7e.apps.googleusercontent.com',
-        scopes: scopes,
-      );
+      // GoogleSignIn googleSignIn = GoogleSignIn(
+      //   // Optional clientId
+      //   clientId:
+      //       '248437325496-4hrpv66dimdkj809fmtjl5vg2ekfac7e.apps.googleusercontent.com',
+      //   scopes: scopes,
+      // );
       GoogleSignInAccount? googleUser = kIsWeb
           ? await (googleSignIn.signInSilently())
           : await (googleSignIn.signIn());
@@ -104,6 +110,7 @@ class UserController extends GetxController {
   }
 
   Future<void> logout() async {
+    await googleSignIn.disconnect();
     await FirebaseAuth.instance.signOut();
   }
 
@@ -130,7 +137,7 @@ class LoginPage extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: () {
                 // Xử lý sự kiện khi nút được nhấn
-                userController.googleSignIn(context);
+                userController.googleSignIn1(context);
                 if (userController.user.value != null) {}
               },
               icon: Icon(Icons.login),
