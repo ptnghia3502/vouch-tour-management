@@ -1,6 +1,7 @@
 import 'package:admin/routing/route_names.dart';
 import 'package:admin/screens/category/category_screen.dart';
 import 'package:admin/screens/dashboard/dashboard_screen.dart';
+import 'package:admin/screens/dashboard_supplier/dashboard_supplier_screen.dart';
 import 'package:admin/screens/product/product_screen.dart';
 import 'package:admin/screens/product_supplier/product_supplier_screen.dart';
 import 'package:admin/screens/supplier/supplier_screen.dart';
@@ -9,10 +10,12 @@ import 'package:admin/screens/tourguide/tourguide_screen.dart';
 
 import 'package:flutter/material.dart';
 
-Route<dynamic>? generateRoute(RouteSettings settings){
-  switch (settings.name){
-    case dashboardPageRoute:
-      return _getPageRoute(DashboardScreen());
+Route<dynamic>? generateRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case dashboardAdminPageRoute:
+      return _getPageRoute(DashboardScreenAdmin());
+    case dashboardSupPageRoute:
+      return _getPageRoute(DashboardScreenSupplier());
     case ordersPageRoute:
       return _getPageRoute(OrderScreen());
     case productsPageRoute:
@@ -24,12 +27,12 @@ Route<dynamic>? generateRoute(RouteSettings settings){
     case categoriesPageRoute:
       return _getPageRoute(CategoryScreen());
     case productssupplierPageRoute:
-      return _getPageRoute(ProductSupplierScreen());      
+      return _getPageRoute(ProductSupplierScreen());
     default:
   }
   return null;
 }
 
-PageRoute _getPageRoute(Widget child){
+PageRoute _getPageRoute(Widget child) {
   return MaterialPageRoute(builder: (context) => child);
 }

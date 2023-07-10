@@ -16,36 +16,34 @@ class SideMenuAdmin extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            child: Image.asset("assets/images/tour_logo.png",
-            width: 25,
-            height: 25,
+            child: Image.asset(
+              "assets/images/tour_logo.png",
+              width: 25,
+              height: 25,
             ),
-            
           ),
           ListTile(
-            title: Center(
-              child: Text(
-                  "QUẢN LÍ"  ,
-                  style: TextStyle(color: Colors.blueGrey),
-              ),
-            )
+              title: Center(
+            child: Text(
+              "QUẢN LÍ",
+              style: TextStyle(color: Colors.blueGrey),
             ),
+          )),
           DrawerListTile(
             title: "Thống kê",
             svgSrc: "assets/icons/menu_dashboard.svg",
             press: () {
               Get.back();
-              navigationController.navigateTo(dashboardPageRoute);
+              navigationController.navigateTo(dashboardAdminPageRoute);
             },
           ),
           ListTile(
-            title: Center(
-              child: Text(
-                  "HỆ THỐNG"  ,
-                  style: TextStyle(color: Colors.blueGrey),
-              ),
-            )
+              title: Center(
+            child: Text(
+              "HỆ THỐNG",
+              style: TextStyle(color: Colors.blueGrey),
             ),
+          )),
           DrawerListTile(
             title: "Nhà Cung Cấp",
             svgSrc: "assets/icons/menu_supplier.svg",
@@ -61,7 +59,7 @@ class SideMenuAdmin extends StatelessWidget {
               Get.back();
               navigationController.navigateTo(tourguidesPageRoute);
             },
-          ),          
+          ),
           DrawerListTile(
             title: "Sản Phẩm",
             svgSrc: "assets/icons/menu_product.svg",

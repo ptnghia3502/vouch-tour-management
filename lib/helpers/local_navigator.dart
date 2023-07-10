@@ -4,8 +4,13 @@ import 'package:admin/routing/router.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
 
-Navigator localNavigator() =>   Navigator(
+Navigator localNavigatorAdmin() => Navigator(
       key: navigationController.navigatorKey,
       onGenerateRoute: generateRoute,
-      initialRoute: dashboardPageRoute,
+      initialRoute: dashboardAdminPageRoute,
+    );
+Navigator localNavigatorSupplier() => Navigator(
+      key: navigationController.navigatorKey,
+      onGenerateRoute: generateRoute,
+      initialRoute: dashboardSupPageRoute,
     );

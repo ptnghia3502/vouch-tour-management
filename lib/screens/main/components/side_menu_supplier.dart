@@ -16,20 +16,34 @@ class SideMenuSupplier extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            child: Image.asset("assets/images/tour_logo.png",
-            width: 25,
-            height: 25,
+            child: Image.asset(
+              "assets/images/tour_logo.png",
+              width: 25,
+              height: 25,
             ),
-            
           ),
           ListTile(
-            title: Center(
-              child: Text(
-                  "HỆ THỐNG"  ,
-                  style: TextStyle(color: Colors.blueGrey),
-              ),
-            )
+              title: Center(
+            child: Text(
+              "QUẢN LÍ",
+              style: TextStyle(color: Colors.blueGrey),
             ),
+          )),
+          DrawerListTile(
+            title: "Thống kê",
+            svgSrc: "assets/icons/menu_dashboard.svg",
+            press: () {
+              Get.back();
+              navigationController.navigateTo(dashboardSupPageRoute);
+            },
+          ),
+          ListTile(
+              title: Center(
+            child: Text(
+              "HỆ THỐNG",
+              style: TextStyle(color: Colors.blueGrey),
+            ),
+          )),
           DrawerListTile(
             title: "Sản Phẩm",
             svgSrc: "assets/icons/menu_product.svg",

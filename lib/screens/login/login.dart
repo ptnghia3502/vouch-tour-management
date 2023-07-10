@@ -29,15 +29,17 @@ class UserController extends GetxController {
   Future<void> googleSignIn(BuildContext context) async {
     try {
       GoogleSignIn googleSignIn = GoogleSignIn(
-                // Optional clientId
+        // Optional clientId
         clientId:
-           '248437325496-4hrpv66dimdkj809fmtjl5vg2ekfac7e.apps.googleusercontent.com',
+            '248437325496-4hrpv66dimdkj809fmtjl5vg2ekfac7e.apps.googleusercontent.com',
         scopes: scopes,
       );
-    GoogleSignInAccount? googleUser =
-        kIsWeb ? await (googleSignIn.signInSilently()) : await (googleSignIn.signIn());
+      GoogleSignInAccount? googleUser = kIsWeb
+          ? await (googleSignIn.signInSilently())
+          : await (googleSignIn.signIn());
 
-    if (kIsWeb && googleUser == null) googleUser = await (googleSignIn.signIn());
+      if (kIsWeb && googleUser == null)
+        googleUser = await (googleSignIn.signIn());
       // final GoogleSignInAccount? googleUser = await GoogleSignIn(
       //   // Optional clientId
       //   clientId:
@@ -82,8 +84,7 @@ class UserController extends GetxController {
             //   MaterialPageRoute(builder: (context) => AdminScreen()),
             // );
             Get.offNamed(adminPageRoute);
-            
-          } else if (role == 'Suppiler') {
+          } else if (role == 'Supplier') {
             // Navigator.pushReplacement(
             //     context,
             //     new MaterialPageRoute(
