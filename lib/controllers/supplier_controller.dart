@@ -145,13 +145,13 @@ class SupplierController extends GetxController {
     final startIndex = (currentPage.value - 1) * itemsPerPage;
     final endIndex = startIndex + itemsPerPage;
 
-    return supplierList.length >= endIndex 
-            ? foundsupplierList.sublist(startIndex, endIndex)
-            : foundsupplierList.sublist(startIndex);
+    return supplierList.length >= endIndex
+        ? foundsupplierList.sublist(startIndex, endIndex)
+        : foundsupplierList.sublist(startIndex);
   }
 
   void nextPage() {
-    if (currentPage.value * itemsPerPage < supplierList.length){
+    if (currentPage.value * itemsPerPage < supplierList.length) {
       currentPage.value++;
     }
   }

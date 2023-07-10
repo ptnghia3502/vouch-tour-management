@@ -228,7 +228,7 @@ class TourGuideController extends GetxController {
   }
 
   //==============get Tourguid by id================
-  Future<void> getCategoryById(String id) async {
+  Future<void> getTourGuideById(String id) async {
     jwtToken = sharedPreferencesManager.getString('access_token');
     http.Response response = await http.get(
         Uri.parse('${BASE_URL}tour-guides/$id'),
