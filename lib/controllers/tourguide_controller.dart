@@ -54,7 +54,7 @@ class TourGuideController extends GetxController {
       super.onInit();
       fetchTourGuide();
     } else {
-      Get.offNamed(loginPageRoute);
+      // Get.offNamed(loginPageRoute);
     }
   }
 
