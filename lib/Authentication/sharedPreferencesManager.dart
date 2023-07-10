@@ -31,12 +31,12 @@ class SharedPreferencesManager {
   }
 
   static Future<void> logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('access_token');
-    await prefs.remove('refreshToken');
-    await prefs.remove('role');
-    await prefs.remove('id');
-    await prefs.remove('emailCurrent');
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    await _prefs.remove('access_token');
+    await _prefs.remove('refreshToken');
+    await _prefs.remove('role');
+    await _prefs.remove('id');
+    await _prefs.remove('emailCurrent');
   }
 
   // Thêm các phương thức khác tùy theo nhu cầu của bạn
