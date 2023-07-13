@@ -33,13 +33,15 @@ void main() async {
   SharedPreferencesManager sharedPreferencesManager =
       SharedPreferencesManager();
   await sharedPreferencesManager.initialize();
-  Get.put(NavigationController());
-  Get.put(SupplierController());
-  Get.put(TourGuideController());
-  Get.put(CategoryController());
-  Get.put(ProductController());
-  Get.put(ProductSupplierController());
+
   runApp(MyApp());
+  Get.put(NavigationController());
+  // Get.put(SupplierController());
+  // Get.put(TourGuideController());
+  // Get.put(CategoryController());
+  // Get.put(ProductController());
+  // Get.put(ProductSupplierController());
+  Get.put(ProductSupplierController());
 }
 
 class MyApp extends StatelessWidget {

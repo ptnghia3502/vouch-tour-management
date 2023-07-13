@@ -33,11 +33,21 @@ class ProductSupplierTable extends StatelessWidget {
                     // minWidth: 600,
                     columns: [
                       DataColumn(
-                        label: Text(
-                          "Ảnh",
-                          style: TextStyle(
+                        // label: Text(
+                        //   "Ảnh",
+                        //   style: TextStyle(
+                        //       fontSize: 16,
+                        //       color: Color.fromARGB(247, 119, 200, 240)),
+                        // ),
+                        label: Container(
+                          width: 50, // Độ rộng mong muốn của DataColumn
+                          child: Text(
+                            "Ảnh",
+                            style: TextStyle(
                               fontSize: 16,
-                              color: Color.fromARGB(247, 119, 200, 240)),
+                              color: Color.fromARGB(247, 119, 200, 240),
+                            ),
+                          ),
                         ),
                       ),
                       DataColumn(
@@ -113,16 +123,17 @@ class ProductSupplierTable extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
-                      )),                      
+                      )),
                       DataColumn(
                           label: Text(
                         "Xóa",
                         style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
-                      )),                      
+                      )),
                     ],
-                    rows: productsupplierController.paginatedProduct.map((data) {
+                    rows:
+                        productsupplierController.paginatedProduct.map((data) {
                       return DataRow(
                         cells: [
                           DataCell(
@@ -178,15 +189,15 @@ class ProductSupplierTable extends StatelessWidget {
                                       content: Container(
                                         width: 700,
                                         child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: UpdateProductForm(id: data.id)
-                                        ),
+                                            padding: const EdgeInsets.all(20.0),
+                                            child:
+                                                UpdateProductForm(id: data.id)),
                                       ),
                                     );
                                   });
                             },
                             child: Text('Chỉnh sửa'),
-                          )),                          
+                          )),
                           //delete
                           DataCell(ElevatedButton(
                             onPressed: () {
@@ -210,9 +221,9 @@ class ProductSupplierTable extends StatelessWidget {
                                       content: Container(
                                         width: 700,
                                         child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: DeleteProductForm(id: data.id)
-                                        ),
+                                            padding: const EdgeInsets.all(20.0),
+                                            child:
+                                                DeleteProductForm(id: data.id)),
                                       ),
                                     );
                                   });

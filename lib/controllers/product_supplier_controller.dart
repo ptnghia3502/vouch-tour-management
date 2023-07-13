@@ -7,12 +7,11 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
+import '../Authentication/sharedPreferencesManager.dart';
 import '../models/category_model.dart';
 
-
-
 class ProductSupplierController extends GetxController {
-  static ProductSupplierController instance = Get.find(); 
+  static ProductSupplierController instance = Get.find();
 
   //searching
   var productSupplierList = <Product>[].obs;
@@ -22,9 +21,9 @@ class ProductSupplierController extends GetxController {
   var currentPage = 1.obs;
   final itemsPerPage = 5;
 
-  static String jwtToken = '';
-  static String supplierId = '';
-  static String currentEmail = 'CauBeThoiTiet@gmail.com';
+  static String? jwtToken = '';
+  static String? supplierId = '';
+  //static String currentEmail = 'CauBeThoiTiet@gmail.com';
 
   //sorting
   var isAscending = true.obs;
@@ -42,63 +41,30 @@ class ProductSupplierController extends GetxController {
   TextEditingController productDesTextController = TextEditingController();
   TextEditingController productStatusTextController = TextEditingController();
   TextEditingController productCategoryTextController = TextEditingController();
-  TextEditingController productResellPriceTextController = TextEditingController();
-  TextEditingController productRetailPriceTextController = TextEditingController();
+  TextEditingController productResellPriceTextController =
+      TextEditingController();
+  TextEditingController productRetailPriceTextController =
+      TextEditingController();
 
+//get user login
+  SharedPreferencesManager sharedPreferencesManager =
+      SharedPreferencesManager();
   @override
   Future<void> onInit() async {
-    super.onInit();
-    fetchProductBySupplierId();
-  }
-
-//AUTHENTICATION API
-  static Future<String> fetchJwtToken(String email) async {
-    final url = Uri.parse('${BASE_URL}authentication');
-    final body = jsonEncode({
-      'eMail': currentEmail,
-    });
-
-    final response = await http.post(url,
-        headers: {'Content-Type': 'application/json'}, body: body);
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      supplierId = data['id'];
-      jwtToken = data['accessToken'];
-      return jwtToken;
-    } else if (response.statusCode == 401) {
-      // Access token expired, try refreshing the token using the refresh token
-      final refreshToken = json.decode(response.body)['refreshToken'];
-      final refreshResponse = await http.post(
-        Uri.parse('${BASE_URL}authentication/refresh'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'refreshToken': refreshToken,
-        }),
-      );
-
-      if (refreshResponse.statusCode == 200) {
-        final refreshData = json.decode(refreshResponse.body);
-        jwtToken = refreshData['accessToken'];
-        currentEmail = email;
-        return jwtToken;
-      } else {
-        throw Exception('Failed to refresh JWT token');
-      }
+    if (sharedPreferencesManager.getString('access_token') != null) {
+      super.onInit();
+      fetchProductBySupplierId();
     } else {
-      throw Exception('Failed to fetch JWT token');
+      // Get.offNamed(loginPageRoute);
     }
   }
 
   //==================get all products============
   void fetchProductBySupplierId() async {
-    String jwtToken = ProductSupplierController.jwtToken;
-
-    if (jwtToken.isEmpty) {
-      jwtToken = await ProductSupplierController.fetchJwtToken(
-          ProductSupplierController.currentEmail); // Fetch the JWT token if it's empty
-    }
-    http.Response response = await http.get(Uri.parse('${BASE_URL}suppliers/$supplierId/products'),
+    jwtToken = sharedPreferencesManager.getString('access_token');
+    supplierId = sharedPreferencesManager.getString('id');
+    http.Response response = await http.get(
+        Uri.parse('${BASE_URL}suppliers/$supplierId/products'),
         headers: {'Authorization': 'Bearer $jwtToken'});
     if (response.statusCode == 200) {
       //data successfully
@@ -107,7 +73,7 @@ class ProductSupplierController extends GetxController {
           productJson.map((json) => Product.fromJson(json)).toList();
 
       foundProductList.value =
-          productJson.map((json) => Product.fromJson(json)).toList();          
+          productJson.map((json) => Product.fromJson(json)).toList();
     } else {
       throw Exception('Failed to fetch product');
     }
@@ -142,17 +108,17 @@ class ProductSupplierController extends GetxController {
   }
 
   //=================paging==============
-  List<Product> get paginatedProduct{
+  List<Product> get paginatedProduct {
     final startIndex = (currentPage.value - 1) * itemsPerPage;
     final endIndex = startIndex + itemsPerPage;
 
-    return productSupplierList.length >= endIndex 
-            ? foundProductList.sublist(startIndex, endIndex)
-            : foundProductList.sublist(startIndex);
+    return productSupplierList.length >= endIndex
+        ? foundProductList.sublist(startIndex, endIndex)
+        : foundProductList.sublist(startIndex);
   }
 
   void nextPage() {
-    if (currentPage.value * itemsPerPage < productSupplierList.length){
+    if (currentPage.value * itemsPerPage < productSupplierList.length) {
       currentPage.value++;
     }
   }
@@ -178,67 +144,57 @@ class ProductSupplierController extends GetxController {
     }
     productSupplierList.value = results as List<Product>;
   }
-    //clear textcontroller
-  Future<void> clearTextController() async{
-  productNameTextController.clear(); 
-  productDesTextController.clear();  
-  productStatusTextController.clear();  
-  productCategoryTextController.clear();  
-  productResellPriceTextController.clear();  
-  productRetailPriceTextController.clear(); 
-  bytesData = null;
-  selectedFile = null; 
+
+  //clear textcontroller
+  Future<void> clearTextController() async {
+    productNameTextController.clear();
+    productDesTextController.clear();
+    productStatusTextController.clear();
+    productCategoryTextController.clear();
+    productResellPriceTextController.clear();
+    productRetailPriceTextController.clear();
+    bytesData = null;
+    selectedFile = null;
   }
 
 //==================insert product==============
   Future<bool> insertProduct() async {
-    try{
+    try {
       //get jwtToken
-      String jwtToken = ProductSupplierController.jwtToken;
-      if (jwtToken.isEmpty) {
-        jwtToken = await ProductSupplierController.fetchJwtToken(
-            ProductSupplierController.currentEmail); // Fetch the JWT token if it's empty
-      }      
+      jwtToken = sharedPreferencesManager.getString('access_token');
       //MultiPart request
-      var request = http.MultipartRequest(
-        'POST', Uri.parse('${BASE_URL}products')
-      );
+      var request =
+          http.MultipartRequest('POST', Uri.parse('${BASE_URL}products'));
       Map<String, String> headers = {
         'Authorization': 'Bearer $jwtToken',
-        'Content-type' : 'multipart/form-data'
+        'Content-type': 'multipart/form-data'
       };
       //thêm file cho request
-      request.files.add( await
-        http.MultipartFile.fromBytes(
-          'File',
-          selectedFile!,
-          filename: filename,
-          contentType: MediaType('image','png')
-          )
-      );
+      request.files.add(await http.MultipartFile.fromBytes(
+          'File', selectedFile!,
+          filename: filename, contentType: MediaType('image', 'png')));
       //thêm hearders
       request.headers.addAll(headers);
       //thêm field cho request
       request.fields.addAll({
         'ProductName': productNameTextController.text,
-        'ResellPrice' : productResellPriceTextController.text,
-        'RetailPrice' : productRetailPriceTextController.text,
-        'Description' : productDesTextController.text,
-        'Status' : productStatusTextController.text,
-        'CategoryId' : productCategoryTextController.text,
+        'ResellPrice': productResellPriceTextController.text,
+        'RetailPrice': productRetailPriceTextController.text,
+        'Description': productDesTextController.text,
+        'Status': productStatusTextController.text,
+        'CategoryId': productCategoryTextController.text,
       });
       //send the request
       var response = await request.send();
-      
+
       //check the response status
-      if(response.statusCode == 201){
+      if (response.statusCode == 201) {
         fetchProductBySupplierId();
         clearTextController();
         return true;
       }
-    return false;
-    }
-    catch(e){
+      return false;
+    } catch (e) {
       print(e);
     }
     return false;
@@ -246,102 +202,74 @@ class ProductSupplierController extends GetxController {
 
 //===============delete product===========
   Future<bool> deleteProduct(String id) async {
-    try{
-      String jwtToken = ProductSupplierController.jwtToken;
-
-      if (jwtToken.isEmpty) {
-        jwtToken = await ProductSupplierController.fetchJwtToken(ProductSupplierController
-            .currentEmail); // Fetch the JWT token if it's empty
-      }
+    try {
+      jwtToken = sharedPreferencesManager.getString('access_token');
       final Map<String, String> headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $jwtToken'
       };
       var url = Uri.parse('${BASE_URL}products/$id');
-      http.Response response =
-          await http.delete(url, headers: headers);
+      http.Response response = await http.delete(url, headers: headers);
       if (response.statusCode == 200) {
         print('Post success');
         fetchProductBySupplierId();
         return true;
-      }
-      else{
+      } else {
         return false;
       }
-    }
-    catch(e){
+    } catch (e) {
       print(e);
     }
     return false;
   }
 
-    //==============get producct by id================
-  Future<void> getProductById(String id) async{
-    String jwtToken = ProductSupplierController.jwtToken;
-
-    if (jwtToken.isEmpty) {
-      jwtToken = await ProductSupplierController.fetchJwtToken(
-          ProductSupplierController.currentEmail); // Fetch the JWT token if it's empty
-    }
-      http.Response response = await http.get(Uri.parse(
-        '${BASE_URL}products/$id'),
-        headers: {
-          'Authorization': 'Bearer $jwtToken'
-        }
-        );
-      if(response.statusCode == 200){
-        //data successfully
-        var result = jsonDecode(response.body);
-        productModel = Product.fromJson(result);
-        productNameTextController.text = result['productName']; 
-        productDesTextController.text = result['description']; 
-        productStatusTextController.text = result['status']; 
-        categoryModel = result['category'];
-        productCategoryTextController.text = categoryModel!.id; 
-        productResellPriceTextController.text = result['resellPrice']; 
-        productRetailPriceTextController.text = result['retailPrice'];
-    }
-    else{
+  //==============get producct by id================
+  Future<void> getProductById(String id) async {
+    jwtToken = sharedPreferencesManager.getString('access_token');
+    http.Response response = await http.get(
+        Uri.parse('${BASE_URL}products/$id'),
+        headers: {'Authorization': 'Bearer $jwtToken'});
+    if (response.statusCode == 200) {
+      //data successfully
+      var result = jsonDecode(response.body);
+      productModel = Product.fromJson(result);
+      productNameTextController.text = result['productName'];
+      productDesTextController.text = result['description'];
+      productStatusTextController.text = result['status'];
+      categoryModel = result['category'];
+      productCategoryTextController.text = categoryModel!.id;
+      productResellPriceTextController.text = result['resellPrice'];
+      productRetailPriceTextController.text = result['retailPrice'];
+    } else {
       throw Exception('Failed to fetch suppliers');
-    }    
-  } 
+    }
+  }
 
   //==============update Product=============
-  Future<bool> updateProduct(String id) async{
-    try{
-      String jwtToken = ProductSupplierController.jwtToken;
-
-      if (jwtToken.isEmpty) {
-        jwtToken = await ProductSupplierController.fetchJwtToken(ProductSupplierController
-            .currentEmail); // Fetch the JWT token if it's empty
-      }
+  Future<bool> updateProduct(String id) async {
+    try {
+      jwtToken = sharedPreferencesManager.getString('access_token');
       //multipart request
-      var request = http.MultipartRequest(
-        'PUT', Uri.parse('${BASE_URL}products')
-      );
+      var request =
+          http.MultipartRequest('PUT', Uri.parse('${BASE_URL}products'));
       Map<String, String> headers = {
         'Authorization': 'Bearer $jwtToken',
-        'Content-Type' : 'multipart/form-data'
+        'Content-Type': 'multipart/form-data'
       };
       //them file
-      request.files.add( await
-        http.MultipartFile.fromBytes(
-          'File',
-          selectedFile!,
-          filename: filename,
-          contentType: MediaType('image', 'png')
-        )
-      );
+      request.files.add(await http.MultipartFile.fromBytes(
+          'File', selectedFile!,
+          filename: filename, contentType: MediaType('image', 'png')));
       //add header
       request.headers.addAll(headers);
       //add field
       request.fields.addAll({
-        'CategoryId' : productCategoryTextController.text,
-        'ProductName' : productNameTextController.text,
-        'ResellPrice' : productResellPriceTextController.text,
-        'RetailPrice' : productRetailPriceTextController.text,
-        'Description' : productDesTextController.text,
-        'Status' : productStatusTextController.text,
+        'CategoryId': productCategoryTextController.text,
+        'ProductName': productNameTextController.text,
+        'ResellPrice': productResellPriceTextController.text,
+        'RetailPrice': productRetailPriceTextController.text,
+        'Description': productDesTextController.text,
+        'Status': productStatusTextController.text,
         'ProductId': id
       });
 
@@ -349,14 +277,12 @@ class ProductSupplierController extends GetxController {
       var response = await request.send();
 
       //check statusCode
-      if(response.statusCode == 204){
+      if (response.statusCode == 204) {
         fetchProductBySupplierId();
         return true;
       }
       return false;
-    }
-    catch(e){
-    }
+    } catch (e) {}
     return false;
   }
 }
