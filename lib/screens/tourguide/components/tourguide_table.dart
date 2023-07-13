@@ -119,6 +119,16 @@ class TourGuideTable extends StatelessWidget {
                           tourGuideController.sortList(columnIndex)
                         },  
                           label: Text(
+                        "Số lượng đơn hàng hoàn thành",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(247, 119, 200, 240)),
+                      )),                      
+                      DataColumn(
+                        onSort: (columnIndex, _) => {
+                          tourGuideController.sortList(columnIndex)
+                        },  
+                          label: Text(
                         "Điểm",
                         style: TextStyle(
                             fontSize: 16,
@@ -158,6 +168,7 @@ class TourGuideTable extends StatelessWidget {
                           DataCell(Text(data.address)),
                           DataCell(Text(data.numberOfProductSold.toString())),
                           DataCell(Text(data.numberOfGroup.toString())),
+                          DataCell(Text(data.numberOfOrderCompleted.toString())),                          
                           DataCell(Text(data.point.toString())),
                           DataCell(Text(data.adminId)),
                         //delete

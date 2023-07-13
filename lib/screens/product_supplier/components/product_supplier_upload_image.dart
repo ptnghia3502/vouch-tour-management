@@ -13,7 +13,6 @@ class UploadImage extends StatefulWidget {
 }
 
 class _UploadImageState extends State<UploadImage> {
-
   startwebFilePicker() async{
     html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
     uploadInput.multiple = false;

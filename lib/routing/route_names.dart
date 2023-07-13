@@ -5,6 +5,9 @@ const dashboardSupPageRoute = "/screens/dashboard_supplier";
 const dashboardAdminPageDisplayName = "Dashboard Admin";
 const dashboardAdminPageRoute = "/screens/dashboard";
 
+const dashboardSupplierPageDisplayName = "DashboardSupplier";
+const dashboardSupplierPageRoute = "/screens/dashboard_supplier";
+
 const suppliersPageDisplayName = "Suppliers";
 const suppliersPageRoute = "/screens/supplier";
 

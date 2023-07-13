@@ -1,7 +1,4 @@
-import 'package:admin/admin_screen.dart';
-import 'package:admin/screens/main/main_screen.dart';
-import 'package:admin/supplier_role_screen.dart';
-
+import 'package:admin/helpers/local_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -9,10 +6,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../Authentication/sharedPreferencesManager.dart';
-import '../../constants.dart';
+import '../../controllers/category_controller.dart';
+import '../../controllers/product_controller.dart';
+import '../../controllers/product_supplier_controller.dart';
+import '../../controllers/supplier_controller.dart';
+import '../../controllers/tourguide_controller.dart';
 import '../../models/global.dart';
 import '../../routing/route_names.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -25,6 +24,7 @@ const List<String> scopes = <String>[
 
 class UserController extends GetxController {
   var user = Rx<User?>(null);
+  final SharedPreferencesManager prefs = SharedPreferencesManager();
 
   GoogleSignIn googleSignIn = GoogleSignIn(
     // Optional clientId
@@ -74,7 +74,6 @@ class UserController extends GetxController {
           final refreshToken = body['refreshToken'];
           // Save the token to local storage
           //SharedPreferences prefs = await SharedPreferences.getInstance();
-          SharedPreferencesManager prefs = SharedPreferencesManager();
           await prefs.setString('access_token', accessToken);
           await prefs.setString('refreshToken', refreshToken);
           await prefs.setString('role', role);
@@ -90,12 +89,23 @@ class UserController extends GetxController {
             //   MaterialPageRoute(builder: (context) => AdminScreen()),
             // );
             Get.offNamed(adminPageRoute);
-          } else if (role == 'Supplier') {
+            Get.delete<SupplierController>();
+            Get.put(SupplierController());
+            Get.delete<TourGuideController>();            
+            Get.put(TourGuideController());
+            Get.delete<CategoryController>();            
+            Get.put(CategoryController());
+            Get.delete<ProductController>();            
+            Get.put(ProductController());
+          } else if (role == 'Suppiler') {
             // Navigator.pushReplacement(
             //     context,
             //     new MaterialPageRoute(
             //         builder: (context) => new SupplierRoleScreen()));
             Get.offNamed(supplierRolePageRoute);
+            Get.delete<ProductSupplierController>();            
+            Get.put(ProductSupplierController());
+            
           }
         } else {
           throw Exception('Failed to sign in with Google 1');
@@ -112,6 +122,8 @@ class UserController extends GetxController {
   Future<void> logout() async {
     await googleSignIn.disconnect();
     await FirebaseAuth.instance.signOut();
+    await prefs.logout1();
+    await SharedPreferencesManager.logout();
   }
 
   @override

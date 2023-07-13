@@ -23,7 +23,7 @@ class ProductController extends GetxController {
 
   //paging
   var currentPage = 1.obs;
-  final itemsPerPage = 5;
+  final itemsPerPage = 15;
 
   String? jwtToken = '';
   //static String currentEmail = 'hieuvh0804@gmail.com';
@@ -52,9 +52,9 @@ class ProductController extends GetxController {
     if (sharedPreferencesManager.getString('access_token') != null) {
       super.onInit();
       fetchProduct();
-     }// else {
-    //   Get.offNamed(loginPageRoute);
-    // }
+     } else {
+      Get.offNamed(loginPageRoute);
+    }
   }
 
   //==================get all products============

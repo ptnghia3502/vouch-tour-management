@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'controllers/MenuAppController.dart';
 class AdminScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

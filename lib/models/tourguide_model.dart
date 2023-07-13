@@ -9,6 +9,7 @@ class TourGuide {
   String adminId;
   int numberOfGroup;
   int numberOfProductSold;
+  int numberOfOrderCompleted;
   int point;
 
   //Contructor
@@ -23,6 +24,7 @@ class TourGuide {
       required this.address,
       required this.numberOfGroup,
       required this.numberOfProductSold,
+      required this.numberOfOrderCompleted,
       required this.point,
       required this.adminId});
 
@@ -38,6 +40,7 @@ class TourGuide {
           adminId : json['adminId'],
           numberOfGroup: json['numberOfGroup'],
           numberOfProductSold: json['numberOfProductSold'],
+          numberOfOrderCompleted: json['numberOfOrderCompleted'],
           point: json['point']
     );
   }
@@ -54,6 +57,7 @@ class TourGuide {
     _data['adminId'] = this.adminId;
     _data['numberOfGroup'] = this.numberOfGroup;
     _data['numberOfProductSold'] = this.numberOfProductSold;
+    _data['numberOfOrderCompleted'] = this.numberOfOrderCompleted;
     _data['point'] = this.point;
     return _data;
   }

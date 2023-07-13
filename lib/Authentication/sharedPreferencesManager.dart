@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesManager {
@@ -31,12 +29,13 @@ class SharedPreferencesManager {
   }
 
   static Future<void> logout() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    await _prefs.remove('access_token');
-    await _prefs.remove('refreshToken');
-    await _prefs.remove('role');
-    await _prefs.remove('id');
-    await _prefs.remove('emailCurrent');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('access_token');
+    await prefs.remove('refreshToken');
+    await prefs.remove('role');
+    await prefs.remove('id');
+    await prefs.remove('emailCurrent');
+    await prefs.clear();
   }
 
   // Thêm các phương thức khác tùy theo nhu cầu của bạn

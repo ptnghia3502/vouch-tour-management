@@ -38,6 +38,7 @@ class TourGuideController extends GetxController {
       TextEditingController();
   TextEditingController tourguideAddressTextController =
       TextEditingController();
+      String? selectGender = 'Nam';
 
   //TourGuid Model
   TourGuide? touGuideModel;
@@ -54,7 +55,7 @@ class TourGuideController extends GetxController {
       super.onInit();
       fetchTourGuide();
     } else {
-      // Get.offNamed(loginPageRoute);
+      Get.offNamed(loginPageRoute);
     }
   }
 
@@ -75,7 +76,7 @@ class TourGuideController extends GetxController {
       foundTourGuide.value =
           tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to fetch suppliers');
+      throw Exception('Failed to fetch tourguide');
     }
   }
 
@@ -181,7 +182,7 @@ class TourGuideController extends GetxController {
         'email': this.tourguideEmailTextController.text,
         'name': this.tourguideNameTextController.text,
         'dateOfBirth': this.tourguideBirthDayTextController.text,
-        'sex': this.tourguideSexTextController.text.trim() == 'Name' ? 0 : 1,
+        'sex': this.selectGender == 'Nam' ? 0 : 1,
         'address': this.tourguideAddressTextController.text,
         'phoneNumber': this.tourguidePhoneNumerTextController.text
       };
