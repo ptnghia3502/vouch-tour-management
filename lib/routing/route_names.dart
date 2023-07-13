@@ -2,6 +2,9 @@ const rootRoute = "/";
 const dashboardPageDisplayName = "Dashboard";
 const dashboardPageRoute = "/screens/dashboard";
 
+const dashboardSupplierPageDisplayName = "DashboardSupplier";
+const dashboardSupplierPageRoute = "/screens/dashboard_supplier";
+
 const suppliersPageDisplayName = "Suppliers";
 const suppliersPageRoute = "/screens/supplier";
 

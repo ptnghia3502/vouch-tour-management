@@ -9,6 +9,8 @@ import 'package:admin/screens/tourguide/tourguide_screen.dart';
 
 import 'package:flutter/material.dart';
 
+import '../screens/dashboard_supplier/dashboard_supplier_screen.dart';
+
 Route<dynamic>? generateRoute(RouteSettings settings){
   switch (settings.name){
     case dashboardPageRoute:
@@ -25,6 +27,8 @@ Route<dynamic>? generateRoute(RouteSettings settings){
       return _getPageRoute(CategoryScreen());
     case productssupplierPageRoute:
       return _getPageRoute(ProductSupplierScreen());      
+    case dashboardSupplierPageRoute:
+      return _getPageRoute(DashboardSupplierScreen());        
     default:
   }
   return null;

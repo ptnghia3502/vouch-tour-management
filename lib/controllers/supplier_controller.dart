@@ -5,7 +5,9 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import '../Authentication/sharedPreferencesManager.dart';
 import '../models/supplier_model.dart';
+import '../routing/route_names.dart';
 
 class SupplierController extends GetxController {
   static SupplierController instance = Get.find();
@@ -29,58 +31,27 @@ class SupplierController extends GetxController {
   TextEditingController supplierAdressTextController = TextEditingController();
   TextEditingController supplierPhoneNumberTextController =
       TextEditingController();
-
+  //get user login
+  SharedPreferencesManager sharedPreferencesManager =
+      SharedPreferencesManager();
   @override
   Future<void> onInit() async {
-    super.onInit();
-    fetchSupplier();
-  }
-
-//=====================Authentication ======================
-  static Future<String> fetchJwtToken(String email) async {
-    final url = Uri.parse('${BASE_URL}authentication');
-    final body = jsonEncode({
-      'eMail': currentEmail,
-    });
-
-    final response = await http.post(url,
-        headers: {'Content-Type': 'application/json'}, body: body);
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      jwtToken = data['accessToken'];
-      return jwtToken;
-    } else if (response.statusCode == 401) {
-      // Access token expired, try refreshing the token using the refresh token
-      final refreshToken = json.decode(response.body)['refreshToken'];
-      final refreshResponse = await http.post(
-        Uri.parse('${BASE_URL}authentication/refresh'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'refreshToken': refreshToken,
-        }),
-      );
-
-      if (refreshResponse.statusCode == 200) {
-        final refreshData = json.decode(refreshResponse.body);
-        jwtToken = refreshData['accessToken'];
-        currentEmail = email;
-        return jwtToken;
-      } else {
-        throw Exception('Failed to refresh JWT token');
-      }
-    } else {
-      throw Exception('Failed to fetch JWT token');
+    if (sharedPreferencesManager.getString('access_token') != null) {
+      super.onInit();
+      fetchSupplier();
+     } else {
+      Get.offNamed(loginPageRoute);
     }
   }
 
+
+
   //=====================get all supplier======================
   void fetchSupplier() async {
-    String jwtToken = SupplierController.jwtToken;
+    String? jwtToken = SupplierController.jwtToken;
 
     if (jwtToken.isEmpty) {
-      jwtToken = await SupplierController.fetchJwtToken(
-          SupplierController.currentEmail); // Fetch the JWT token if it's empty
+      jwtToken = await sharedPreferencesManager.getString('access_token');
     }
     http.Response response = await http.get(Uri.parse('${BASE_URL}suppliers'),
         headers: {'Authorization': 'Bearer $jwtToken'});
@@ -179,10 +150,9 @@ class SupplierController extends GetxController {
           supplierPhoneNumberTextController.text.isEmpty) {
         return false;
       } else {
-        String jwtToken = SupplierController.jwtToken;
+        String? jwtToken = SupplierController.jwtToken;
         if (jwtToken.isEmpty) {
-          jwtToken = await SupplierController.fetchJwtToken(SupplierController
-              .currentEmail); // Fetch the JWT token if it's empty
+        jwtToken = await sharedPreferencesManager.getString('access_token');// Fetch the JWT token if it's empty
         }
         final Map<String, String> headers = {
           'Content-Type': 'application/json',
@@ -216,11 +186,10 @@ class SupplierController extends GetxController {
   //=====================delete supplier======================
   Future<bool> deleteSupplier(String id) async {
     try {
-      String jwtToken = SupplierController.jwtToken;
+      String? jwtToken = SupplierController.jwtToken;
 
       if (jwtToken.isEmpty) {
-        jwtToken = await SupplierController.fetchJwtToken(SupplierController
-            .currentEmail); // Fetch the JWT token if it's empty
+      jwtToken = await sharedPreferencesManager.getString('access_token'); // Fetch the JWT token if it's empty
       }
       final Map<String, String> headers = {
         'Content-Type': 'application/json',

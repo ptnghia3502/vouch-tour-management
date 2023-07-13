@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesManager {
@@ -37,6 +35,7 @@ class SharedPreferencesManager {
     await prefs.remove('role');
     await prefs.remove('id');
     await prefs.remove('emailCurrent');
+    await prefs.clear();
   }
 
   // Thêm các phương thức khác tùy theo nhu cầu của bạn

@@ -3,8 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../constants.dart';
 import '../../../helpers/text_field_form.dart';
-
-
+import 'package:intl/intl.dart';
 class CreateTourGuideForm extends StatefulWidget {
   const CreateTourGuideForm({super.key});
 
@@ -37,6 +36,7 @@ class _CreateTourGuideFormState extends State<CreateTourGuideForm> {
               textEditingController:
                   tourGuideController.tourguideEmailTextController,
             ),
+            BirthDay(),
             TextFieldForFroms(
               label: 'Địa chỉ',
               validationResult: 'Địa chỉ không được bỏ trống',
@@ -44,50 +44,13 @@ class _CreateTourGuideFormState extends State<CreateTourGuideForm> {
               textEditingController:
                   tourGuideController.tourguideAddressTextController,
             ),
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Container(
-                width: 400,
-                child: TextFormField(
-                  controller:
-                      tourGuideController.tourguideBirthDayTextController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Ngày sinh",
-                    icon: Icon(Icons.calendar_month),
-                  ),
-                  onTap: () async {
-                    DateTime? date = DateTime(1900);
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                    date = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime.now());
-                    tourGuideController.tourguideBirthDayTextController.text =
-                        date!.toIso8601String();
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Ngày sinh không được bỏ trống";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-            ),
             TextFieldForFroms(
                 label: 'Số điện thoại',
                 validationResult: 'Số điện thoại không được bỏ trống',
                 textEditingController:
                     tourGuideController.tourguidePhoneNumerTextController,
                 icondata: Icons.phone),
-            TextFieldForFroms(
-                label: 'Giới tính',
-                validationResult: 'Giới tính không được bỏ trống',
-                textEditingController:
-                    tourGuideController.tourguideSexTextController,
-                icondata: Icons.face),
+            Gender(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -126,6 +89,92 @@ class _CreateTourGuideFormState extends State<CreateTourGuideForm> {
               ],
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class Gender extends StatefulWidget {
+  const Gender({super.key});
+
+  @override
+  State<Gender> createState() => _GenderState();
+}
+
+class _GenderState extends State<Gender> {
+  List<String> _gender = ['Nam', 'Nữ'];
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Container(
+          width: 400,
+          child: DropdownButtonFormField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Giới tính',
+              icon: Icon(Icons.male),
+            ),
+            hint: Text('Nam'),
+            value: tourGuideController.selectGender,
+            onChanged: (newValue) {
+              setState(() {
+                tourGuideController.selectGender = newValue as String;
+              });
+            },
+            items: _gender.map((gender) {
+              return DropdownMenuItem(
+                child: new Text(gender),
+                value: gender,
+              );
+            }).toList(),
+          )),
+    );
+  }
+}
+
+class BirthDay extends StatefulWidget {
+  const BirthDay({super.key});
+
+  @override
+  State<BirthDay> createState() => _BirthDayState();
+}
+
+class _BirthDayState extends State<BirthDay> {
+  DateTime? date = DateTime.now();
+  var myFormat = DateFormat('d-MM-yyyy');
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Container(
+        width: 400,
+        child: TextFormField(
+          controller: tourGuideController.tourguideBirthDayTextController,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: "Ngày sinh",
+            icon: Icon(Icons.calendar_month),
+          ),
+          onTap: () async {
+            date = DateTime(1900);
+            FocusScope.of(context).requestFocus(new FocusNode());
+            date = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime.now(),
+            );
+            tourGuideController.tourguideBirthDayTextController.text =
+                date!.toIso8601String();
+          },
+          validator: (value) {
+            if (value!.isEmpty) {
+              return "Ngày sinh không được bỏ trống";
+            }
+            return null;
+          },
         ),
       ),
     );
