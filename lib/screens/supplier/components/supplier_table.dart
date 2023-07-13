@@ -30,20 +30,8 @@ class SupplierTable extends StatelessWidget {
                     // minWidth: 600,
                     columns: [
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          supplierController.sortList(columnIndex)
-                        },
-                        label: Text(
-                          "Id",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Color.fromARGB(247, 119, 200, 240)),
-                        ),
-                      ),
-                      DataColumn(
-                        onSort: (columnIndex, _) => {
-                          supplierController.sortList(columnIndex)
-                        },
+                        onSort: (columnIndex, _) =>
+                            {supplierController.sortList(columnIndex)},
                         label: Text(
                           "Email",
                           style: TextStyle(
@@ -52,9 +40,8 @@ class SupplierTable extends StatelessWidget {
                         ),
                       ),
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          supplierController.sortList(columnIndex)
-                        },                        
+                        onSort: (columnIndex, _) =>
+                            {supplierController.sortList(columnIndex)},
                         label: Text(
                           "Tên",
                           style: TextStyle(
@@ -63,15 +50,14 @@ class SupplierTable extends StatelessWidget {
                         ),
                       ),
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          supplierController.sortList(columnIndex)
-                        },                        
+                          onSort: (columnIndex, _) =>
+                              {supplierController.sortList(columnIndex)},
                           label: Text(
-                        "Địa Chỉ",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(247, 119, 200, 240)),
-                      )),
+                            "Địa Chỉ",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color.fromARGB(247, 119, 200, 240)),
+                          )),
                       DataColumn(
                           label: Text(
                         "Số Điện Thoại",
@@ -90,10 +76,10 @@ class SupplierTable extends StatelessWidget {
                     rows: supplierController.paginatedSupplier.map((data) {
                       return DataRow(
                         cells: [
-                          DataCell(Text(
-                            data.id,
-                            style: TextStyle(overflow: TextOverflow.ellipsis),
-                          )),
+                          // DataCell(Text(
+                          //   data.id,
+                          //   style: TextStyle(overflow: TextOverflow.ellipsis),
+                          // )),
                           DataCell(Text(data.email)),
                           DataCell(Text(data.supplierName)),
                           DataCell(Text(data.address)),
@@ -123,7 +109,8 @@ class SupplierTable extends StatelessWidget {
                                         width: 700,
                                         child: Padding(
                                             padding: const EdgeInsets.all(20.0),
-                                            child: DeleteSupplierForm(id: data.id)),
+                                            child: DeleteSupplierForm(
+                                                id: data.id)),
                                       ),
                                     );
                                   });
@@ -158,4 +145,3 @@ class SupplierTable extends StatelessWidget {
     );
   }
 }
-

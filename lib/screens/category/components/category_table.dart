@@ -40,21 +40,20 @@ class CategoryTable extends StatelessWidget {
                               color: Color.fromARGB(247, 119, 200, 240)),
                         ),
                       ),
+                      // DataColumn(
+                      //   onSort: (columnIndex, _) => {
+                      //     categoryController.sortList(columnIndex)
+                      //   },
+                      //   label: Text(
+                      //     "Id",
+                      //     style: TextStyle(
+                      //         fontSize: 16,
+                      //         color: Color.fromARGB(247, 119, 200, 240)),
+                      //   ),
+                      // ),
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          categoryController.sortList(columnIndex)
-                        },  
-                        label: Text(
-                          "Id",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Color.fromARGB(247, 119, 200, 240)),
-                        ),
-                      ),
-                      DataColumn(
-                        onSort: (columnIndex, _) => {
-                          categoryController.sortList(columnIndex)
-                        },  
+                        onSort: (columnIndex, _) =>
+                            {categoryController.sortList(columnIndex)},
                         label: Text(
                           "Tên Thể Loại",
                           style: TextStyle(
@@ -68,7 +67,7 @@ class CategoryTable extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
-                      )),                      
+                      )),
                       DataColumn(
                           label: Text(
                         "Xóa",
@@ -85,6 +84,17 @@ class CategoryTable extends StatelessWidget {
                               alignment: Alignment.center,
                               child: CachedNetworkImage(
                                 imageUrl: data.url,
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                        colorFilter: ColorFilter.mode(
+                                            Colors.transparent,
+                                            BlendMode.colorBurn)),
+                                  ),
+                                ),
                                 placeholder: (context, url) =>
                                     new CircularProgressIndicator(),
                                 errorWidget: (context, url, error) =>
@@ -92,11 +102,11 @@ class CategoryTable extends StatelessWidget {
                               ),
                             ),
                           ),
-                          DataCell(Text(
-                            data.id,
-                          )),
+                          // DataCell(Text(
+                          //   data.id,
+                          // )),
                           DataCell(Text(data.categoryName)),
-                    //update
+                          //update
                           DataCell(ElevatedButton(
                             onPressed: () {
                               categoryController.getCategoryById(data.id);
@@ -127,16 +137,15 @@ class CategoryTable extends StatelessWidget {
                                               color: secondaryColor,
                                               child: Column(
                                                 children: <Widget>[
-                                    TextFieldForFroms(
-                                        label: 'Tên Thể Loại',
-                                        validationResult:
-                                            'Tên thể loại không được bỏ trống',
-                                        textEditingController:
-                                            categoryController
-                                                .categoryNameTextController,
-                                        icondata: Icons.message),
-                                        
-                                    UploadImage(),
+                                                  TextFieldForFroms(
+                                                      label: 'Tên Thể Loại',
+                                                      validationResult:
+                                                          'Tên thể loại không được bỏ trống',
+                                                      textEditingController:
+                                                          categoryController
+                                                              .categoryNameTextController,
+                                                      icondata: Icons.message),
+                                                  UploadImage(),
                                                 ],
                                               ),
                                             ),
@@ -166,8 +175,7 @@ class CategoryTable extends StatelessWidget {
                                             if (isUpdated) {
                                               // Xử lý khi xóa thành công
                                               Fluttertoast.showToast(
-                                                msg:
-                                                    'Chỉnh sửa thành công',
+                                                msg: 'Chỉnh sửa thành công',
                                                 toastLength: Toast.LENGTH_SHORT,
                                                 gravity: ToastGravity.BOTTOM,
                                                 timeInSecForIosWeb: 10,
@@ -198,8 +206,8 @@ class CategoryTable extends StatelessWidget {
                                   });
                             },
                             child: Text('Chỉnh sửa'),
-                          )),                    
-                    //delete
+                          )),
+                          //delete
                           DataCell(ElevatedButton(
                             onPressed: () {
                               //popups
@@ -222,9 +230,9 @@ class CategoryTable extends StatelessWidget {
                                       content: Container(
                                         width: 700,
                                         child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: DeleteCategoryForm(id: data.id)
-                                        ),
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: DeleteCategoryForm(
+                                                id: data.id)),
                                       ),
                                     );
                                   });
@@ -237,7 +245,7 @@ class CategoryTable extends StatelessWidget {
               ),
             ),
           ),
-           Row(
+          Row(
             children: [
               ElevatedButton(
                 onPressed: () {
@@ -298,6 +306,3 @@ class TextFieldForFroms extends StatelessWidget {
     );
   }
 }
-
-
-

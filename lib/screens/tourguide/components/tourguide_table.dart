@@ -30,20 +30,8 @@ class TourGuideTable extends StatelessWidget {
                     // minWidth: 600,
                     columns: [
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          tourGuideController.sortList(columnIndex)
-                        },                        
-                        label: Text(
-                          "Id",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Color.fromARGB(247, 119, 200, 240)),
-                        ),
-                      ),
-                      DataColumn(
-                        onSort: (columnIndex, _) => {
-                          tourGuideController.sortList(columnIndex)
-                        },  
+                        onSort: (columnIndex, _) =>
+                            {tourGuideController.sortList(columnIndex)},
                         label: Text(
                           "Tên",
                           style: TextStyle(
@@ -52,9 +40,8 @@ class TourGuideTable extends StatelessWidget {
                         ),
                       ),
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          tourGuideController.sortList(columnIndex)
-                        },  
+                        onSort: (columnIndex, _) =>
+                            {tourGuideController.sortList(columnIndex)},
                         label: Text(
                           "Giới tính",
                           style: TextStyle(
@@ -70,9 +57,8 @@ class TourGuideTable extends StatelessWidget {
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          tourGuideController.sortList(columnIndex)
-                        },  
+                        onSort: (columnIndex, _) =>
+                            {tourGuideController.sortList(columnIndex)},
                         label: Text(
                           "Email",
                           style: TextStyle(
@@ -95,45 +81,41 @@ class TourGuideTable extends StatelessWidget {
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          tourGuideController.sortList(columnIndex)
-                        },  
+                          onSort: (columnIndex, _) =>
+                              {tourGuideController.sortList(columnIndex)},
                           label: Text(
-                        "Số lượng sản phẩm bán được",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(247, 119, 200, 240)),
-                      )),
+                            "Số lượng sản phẩm bán được",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color.fromARGB(247, 119, 200, 240)),
+                          )),
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          tourGuideController.sortList(columnIndex)
-                        },  
+                          onSort: (columnIndex, _) =>
+                              {tourGuideController.sortList(columnIndex)},
                           label: Text(
-                        "Số lượng nhóm",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(247, 119, 200, 240)),
-                      )),
+                            "Số lượng nhóm",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color.fromARGB(247, 119, 200, 240)),
+                          )),
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          tourGuideController.sortList(columnIndex)
-                        },  
+                          onSort: (columnIndex, _) =>
+                              {tourGuideController.sortList(columnIndex)},
                           label: Text(
-                        "Số lượng đơn hàng hoàn thành",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(247, 119, 200, 240)),
-                      )),                      
+                            "Số lượng đơn hàng hoàn thành",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color.fromARGB(247, 119, 200, 240)),
+                          )),
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          tourGuideController.sortList(columnIndex)
-                        },  
+                          onSort: (columnIndex, _) =>
+                              {tourGuideController.sortList(columnIndex)},
                           label: Text(
-                        "Điểm",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(247, 119, 200, 240)),
-                      )),
+                            "Điểm",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color.fromARGB(247, 119, 200, 240)),
+                          )),
                       DataColumn(
                           label: Text(
                         "Admin Id",
@@ -152,14 +134,14 @@ class TourGuideTable extends StatelessWidget {
                     rows: tourGuideController.paginatedTourGuide.map((data) {
                       return DataRow(
                         cells: [
-                          DataCell(ConstrainedBox(
-                              constraints:
-                                  BoxConstraints(maxHeight: 100, maxWidth: 250),
-                              child: Text(
-                                data.id,
-                                style:
-                                    TextStyle(overflow: TextOverflow.ellipsis),
-                              ))),
+                          // DataCell(ConstrainedBox(
+                          //     constraints:
+                          //         BoxConstraints(maxHeight: 100, maxWidth: 250),
+                          //     child: Text(
+                          //       data.id,
+                          //       style:
+                          //           TextStyle(overflow: TextOverflow.ellipsis),
+                          //     ))),
                           DataCell(Text(data.name)),
                           DataCell(Text(data.sex == 0 ? 'Nam' : 'Nữ')),
                           DataCell(Text(data.phoneNumber)),
@@ -168,10 +150,11 @@ class TourGuideTable extends StatelessWidget {
                           DataCell(Text(data.address)),
                           DataCell(Text(data.numberOfProductSold.toString())),
                           DataCell(Text(data.numberOfGroup.toString())),
-                          DataCell(Text(data.numberOfOrderCompleted.toString())),                          
+                          DataCell(
+                              Text(data.numberOfOrderCompleted.toString())),
                           DataCell(Text(data.point.toString())),
                           DataCell(Text(data.adminId)),
-                        //delete
+                          //delete
                           DataCell(ElevatedButton(
                             onPressed: () {
                               //popups
@@ -194,15 +177,15 @@ class TourGuideTable extends StatelessWidget {
                                       content: Container(
                                         width: 700,
                                         child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: DeleteTourGuideForm(id: data.id)
-                                        ),
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: DeleteTourGuideForm(
+                                                id: data.id)),
                                       ),
                                     );
                                   });
                             },
                             child: Text('Xóa'),
-                          )),                          
+                          )),
                         ],
                       );
                     }).toList()),
