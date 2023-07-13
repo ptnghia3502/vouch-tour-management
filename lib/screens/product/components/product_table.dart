@@ -38,16 +38,16 @@ class ProductTable extends StatelessWidget {
                               color: Color.fromARGB(247, 119, 200, 240)),
                         ),
                       ),
-                      DataColumn(
-                        onSort: (columnIndex, _) =>
-                            {productController.sortList(columnIndex)},
-                        label: Text(
-                          "Id",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Color.fromARGB(247, 119, 200, 240)),
-                        ),
-                      ),
+                      // DataColumn(
+                      //   onSort: (columnIndex, _) =>
+                      //       {productController.sortList(columnIndex)},
+                      //   label: Text(
+                      //     "Id",
+                      //     style: TextStyle(
+                      //         fontSize: 16,
+                      //         color: Color.fromARGB(247, 119, 200, 240)),
+                      //   ),
+                      // ),
                       DataColumn(
                         onSort: (columnIndex, _) =>
                             {productController.sortList(columnIndex)},
@@ -114,6 +114,17 @@ class ProductTable extends StatelessWidget {
                               alignment: Alignment.center,
                               child: CachedNetworkImage(
                                 imageUrl: data.images[0].fileURL,
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                        colorFilter: ColorFilter.mode(
+                                            Colors.transparent,
+                                            BlendMode.colorBurn)),
+                                  ),
+                                ),
                                 placeholder: (context, url) =>
                                     new CircularProgressIndicator(),
                                 errorWidget: (context, url, error) =>
@@ -121,9 +132,9 @@ class ProductTable extends StatelessWidget {
                               ),
                             ),
                           ),
-                          DataCell(Text(
-                            data.id,
-                          )),
+                          // DataCell(Text(
+                          //   data.id,
+                          // )),
                           DataCell(Text(data.productName)),
                           DataCell(Text(data.resellPrice.toString())),
                           DataCell(Text(data.retailPrice.toString())),
