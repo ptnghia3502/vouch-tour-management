@@ -91,21 +91,20 @@ class UserController extends GetxController {
             Get.offNamed(adminPageRoute);
             Get.delete<SupplierController>();
             Get.put(SupplierController());
-            Get.delete<TourGuideController>();            
+            Get.delete<TourGuideController>();
             Get.put(TourGuideController());
-            Get.delete<CategoryController>();            
+            Get.delete<CategoryController>();
             Get.put(CategoryController());
-            Get.delete<ProductController>();            
+            Get.delete<ProductController>();
             Get.put(ProductController());
-          } else if (role == 'Suppiler') {
+          } else if (role == 'Supplier') {
             // Navigator.pushReplacement(
             //     context,
             //     new MaterialPageRoute(
             //         builder: (context) => new SupplierRoleScreen()));
             Get.offNamed(supplierRolePageRoute);
-            Get.delete<ProductSupplierController>();            
+            Get.delete<ProductSupplierController>();
             Get.put(ProductSupplierController());
-            
           }
         } else {
           throw Exception('Failed to sign in with Google 1');
