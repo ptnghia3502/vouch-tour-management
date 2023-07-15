@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../Authentication/sharedPreferencesManager.dart';
+import '../models/supplier_chart_model.dart';
 import '../models/supplier_model.dart';
 import '../routing/route_names.dart';
 
@@ -18,8 +19,8 @@ class SupplierController extends GetxController {
   var supplierList = <Supplier>[].obs;
   var foundsupplierList = <Supplier>[].obs;
   //
-  static String jwtToken = '';
-  static String currentEmail = 'hieuvh0804@gmail.com';
+  String? jwtToken = '';
+  //static String currentEmail = 'hieuvh0804@gmail.com';
 
   //sorting
   var isAscending = true.obs;
@@ -39,20 +40,14 @@ class SupplierController extends GetxController {
     if (sharedPreferencesManager.getString('access_token') != null) {
       super.onInit();
       fetchSupplier();
-     } else {
+    } else {
       Get.offNamed(loginPageRoute);
     }
   }
 
-
-
   //=====================get all supplier======================
   void fetchSupplier() async {
-    String? jwtToken = SupplierController.jwtToken;
-
-    if (jwtToken.isEmpty) {
-      jwtToken = await sharedPreferencesManager.getString('access_token');
-    }
+    jwtToken = sharedPreferencesManager.getString('access_token');
     http.Response response = await http.get(Uri.parse('${BASE_URL}suppliers'),
         headers: {'Authorization': 'Bearer $jwtToken'});
     if (response.statusCode == 200) {
@@ -116,13 +111,13 @@ class SupplierController extends GetxController {
     final startIndex = (currentPage.value - 1) * itemsPerPage;
     final endIndex = startIndex + itemsPerPage;
 
-    return supplierList.length >= endIndex 
-            ? foundsupplierList.sublist(startIndex, endIndex)
-            : foundsupplierList.sublist(startIndex);
+    return supplierList.length >= endIndex
+        ? foundsupplierList.sublist(startIndex, endIndex)
+        : foundsupplierList.sublist(startIndex);
   }
 
   void nextPage() {
-    if (currentPage.value * itemsPerPage < supplierList.length){
+    if (currentPage.value * itemsPerPage < supplierList.length) {
       currentPage.value++;
     }
   }
@@ -150,10 +145,7 @@ class SupplierController extends GetxController {
           supplierPhoneNumberTextController.text.isEmpty) {
         return false;
       } else {
-        String? jwtToken = SupplierController.jwtToken;
-        if (jwtToken.isEmpty) {
-        jwtToken = await sharedPreferencesManager.getString('access_token');// Fetch the JWT token if it's empty
-        }
+        jwtToken = sharedPreferencesManager.getString('access_token');
         final Map<String, String> headers = {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $jwtToken'
@@ -186,11 +178,7 @@ class SupplierController extends GetxController {
   //=====================delete supplier======================
   Future<bool> deleteSupplier(String id) async {
     try {
-      String? jwtToken = SupplierController.jwtToken;
-
-      if (jwtToken.isEmpty) {
-      jwtToken = await sharedPreferencesManager.getString('access_token'); // Fetch the JWT token if it's empty
-      }
+      jwtToken = sharedPreferencesManager.getString('access_token');
       final Map<String, String> headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $jwtToken'
@@ -208,5 +196,33 @@ class SupplierController extends GetxController {
       print(e);
     }
     return false;
+  }
+
+  Future<SupplierChartModel> getDataSupplierChart(String? supplierId) async {
+    jwtToken = sharedPreferencesManager.getString('access_token');
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $jwtToken'
+    };
+
+    var url = Uri.parse('${BASE_URL}suppliers/$supplierId/suppliers-report');
+    final fromDate = DateTime.now();
+    final toDate = fromDate.subtract(Duration(days: 30));
+    ;
+    final queryParams = {
+      'fromDate': fromDate,
+      'toDate': toDate,
+    };
+
+    final uri = url.replace(queryParameters: queryParams);
+    http.Response response = await http.get(uri, headers: headers);
+    //final response = await http.get(Uri.parse('your_api_url'));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonData = jsonDecode(response.body);
+      SupplierChartModel data = SupplierChartModel.fromJson(jsonData);
+      return data;
+    } else {
+      throw Exception('Failed to fetch data');
+    }
   }
 }

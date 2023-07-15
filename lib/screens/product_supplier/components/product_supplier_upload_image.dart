@@ -13,7 +13,7 @@ class UploadImage extends StatefulWidget {
 }
 
 class _UploadImageState extends State<UploadImage> {
-  startwebFilePicker() async{
+  startwebFilePicker() async {
     html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
     uploadInput.multiple = false;
     uploadInput.draggable = true;
@@ -27,15 +27,15 @@ class _UploadImageState extends State<UploadImage> {
 
       reader.onLoadEnd.listen((event) {
         setState(() {
-          productsupplierController.bytesData = Base64Decoder().convert(reader.result.toString().split(',').last);
-          productsupplierController.selectedFile = productsupplierController.bytesData;
-
+          productsupplierController.bytesData =
+              Base64Decoder().convert(reader.result.toString().split(',').last);
+          productsupplierController.selectedFile =
+              productsupplierController.bytesData;
         });
       });
       reader.readAsDataUrl(file);
-     });
+    });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +58,12 @@ class _UploadImageState extends State<UploadImage> {
           padding: EdgeInsets.all(10.0),
           child: Container(
             width: 150,
-            child:  MaterialButton(
+            child: MaterialButton(
               color: Colors.blue,
               elevation: 8,
               highlightElevation: 2,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8)
-              ),
+                  borderRadius: BorderRadius.circular(8)),
               textColor: Colors.white,
               child: Text("Chọn Ảnh"),
               onPressed: () {

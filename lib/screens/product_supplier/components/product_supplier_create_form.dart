@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../../constants.dart';
 import '../../../helpers/text_field_form.dart';
 import 'product_supplier_upload_image.dart';
+
 class CreateProductForm extends StatefulWidget {
   const CreateProductForm({super.key});
 
@@ -51,13 +52,13 @@ class _CreateProductFormState extends State<CreateProductForm> {
                 validationResult: 'Trạng thái không được bỏ trống',
                 textEditingController:
                     productsupplierController.productStatusTextController,
-                icondata: Icons.check),   
+                icondata: Icons.check),
             TextFieldForFroms(
                 label: 'Thể Loại',
                 validationResult: 'Thể loại không được bỏ trống',
                 textEditingController:
                     productsupplierController.productCategoryTextController,
-                icondata: Icons.description),               
+                icondata: Icons.description),
             UploadImage(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,7 +87,7 @@ class _CreateProductFormState extends State<CreateProductForm> {
                           textColor: Colors.white,
                         );
                         Navigator.pop(context);
-                      }else{
+                      } else {
                         Fluttertoast.showToast(
                           msg: 'Có lỗi rồi!',
                           toastLength: Toast.LENGTH_SHORT,
@@ -95,7 +96,7 @@ class _CreateProductFormState extends State<CreateProductForm> {
                           backgroundColor: Colors.green,
                           textColor: Colors.white,
                         );
-                        Navigator.pop(context);                        
+                        Navigator.pop(context);
                       }
                     }
                   },
@@ -105,7 +106,7 @@ class _CreateProductFormState extends State<CreateProductForm> {
                   ),
                 ),
               ],
-            )            
+            )
           ],
         ),
       ),

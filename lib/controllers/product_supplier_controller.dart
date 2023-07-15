@@ -19,7 +19,7 @@ class ProductSupplierController extends GetxController {
 
   //paging
   var currentPage = 1.obs;
-  final itemsPerPage = 5;
+  final itemsPerPage = 10;
 
   static String? jwtToken = '';
   static String? supplierId = '';

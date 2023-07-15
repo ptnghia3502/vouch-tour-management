@@ -17,7 +17,7 @@ class TourGuideController extends GetxController {
 
   //paging and searching
   var currentPage = 1.obs;
-  var itemsPerPage = 5;
+  var itemsPerPage = 10;
   TextEditingController searchController = TextEditingController();
 
   //sorting
@@ -38,7 +38,7 @@ class TourGuideController extends GetxController {
       TextEditingController();
   TextEditingController tourguideAddressTextController =
       TextEditingController();
-      String? selectGender = 'Nam';
+  String? selectGender = 'Nam';
 
   //TourGuid Model
   TourGuide? touGuideModel;

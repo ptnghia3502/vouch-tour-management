@@ -36,7 +36,7 @@ void main() async {
 
   runApp(MyApp());
   Get.put(NavigationController());
-  // Get.put(SupplierController());
+  Get.put(SupplierController());
   // Get.put(TourGuideController());
   // Get.put(CategoryController());
   // Get.put(ProductController());

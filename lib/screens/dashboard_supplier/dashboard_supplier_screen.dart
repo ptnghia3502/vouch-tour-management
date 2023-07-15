@@ -1,5 +1,6 @@
 import 'package:admin/responsive.dart';
 import 'package:admin/screens/dashboard/components/my_fields.dart';
+import 'package:admin/screens/dashboard_supplier/components/line_chart_suppiler.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
@@ -7,6 +8,7 @@ import 'components/header.dart';
 
 import 'components/recent_files.dart';
 import 'components/storage_details.dart';
+import 'line_chart_supplierV1.dart';
 
 class DashboardScreenSupplier extends StatelessWidget {
   @override
@@ -41,7 +43,8 @@ class DashboardScreenSupplier extends StatelessWidget {
                 if (!Responsive.isMobile(context))
                   Expanded(
                     flex: 2,
-                    child: StorageDetails(),
+                    //child: StorageDetails(),
+                    child: SupplierChartWidget(),
                   ),
               ],
             )
