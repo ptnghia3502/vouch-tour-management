@@ -99,13 +99,7 @@ class TourGuideController extends GetxController {
         return a.sex.compareTo(b.sex);
       } else if (columnIndex == 4) {
         return a.email.compareTo(b.email);
-      } else if (columnIndex == 7) {
-        return a.numberOfProductSold.compareTo(b.numberOfProductSold);
-      } else if (columnIndex == 8) {
-        return a.numberOfGroup.compareTo(b.numberOfGroup);
-      } else if (columnIndex == 9) {
-        return a.point.compareTo(b.point);
-      }
+      } 
       return 0;
     });
 

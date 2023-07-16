@@ -1,3 +1,5 @@
+import 'package:path/path.dart';
+
 class TourGuide {
   String id;
   String name;
@@ -7,10 +9,8 @@ class TourGuide {
   String status;
   String address;
   String adminId;
-  int numberOfGroup;
-  int numberOfProductSold;
-  int numberOfOrderCompleted;
-  int point;
+  ReportInMonth reportInMonth;
+
 
   //Contructor
   TourGuide(
@@ -22,10 +22,7 @@ class TourGuide {
       required this.email,
       required this.status,
       required this.address,
-      required this.numberOfGroup,
-      required this.numberOfProductSold,
-      required this.numberOfOrderCompleted,
-      required this.point,
+      required this.reportInMonth,
       required this.adminId});
 
   factory TourGuide.fromJson(Map<String, dynamic> json) {
@@ -38,10 +35,7 @@ class TourGuide {
           status : json['status'],
           address : json['address'],
           adminId : json['adminId'],
-          numberOfGroup: json['numberOfGroup'],
-          numberOfProductSold: json['numberOfProductSold'],
-          numberOfOrderCompleted: json['numberOfOrderCompleted'],
-          point: json['point']
+          reportInMonth: json['reportInMonth']
     );
   }
 
@@ -55,11 +49,39 @@ class TourGuide {
     _data['status'] = this.status;
     _data['address'] = this.address;
     _data['adminId'] = this.adminId;
-    _data['numberOfGroup'] = this.numberOfGroup;
-    _data['numberOfProductSold'] = this.numberOfProductSold;
-    _data['numberOfOrderCompleted'] = this.numberOfOrderCompleted;
-    _data['point'] = this.point;
+    _data['reportInMonth'] = this.reportInMonth;
     return _data;
+  }
+
+}
+
+class ReportInMonth{
+  int numberOfGroup;
+  int numberOfOrderCompleted;
+  int numberOfOrderWaiting;
+  int numberOfOrderCanceled;
+  int numberOfProductSold;
+  int point;
+
+  //contructor
+  ReportInMonth({
+    required this.numberOfGroup,
+    required this.numberOfOrderCompleted,
+    required this.numberOfOrderWaiting,
+    required this.numberOfOrderCanceled,
+    required this.numberOfProductSold,
+    required this.point
+  });
+
+  factory ReportInMonth.fromJson(Map<String, dynamic> json){
+    return ReportInMonth(
+      numberOfGroup: json['numberOfGroup'],
+      numberOfOrderCompleted: json['numberOfOrderCompleted'],
+      numberOfOrderWaiting: json['numberOfOrderWaiting'],
+      numberOfOrderCanceled: json['numberOfOrderCanceled'],
+      numberOfProductSold: json['numberOfProductSold'],
+      point: json['point']
+    );
   }
 
 }

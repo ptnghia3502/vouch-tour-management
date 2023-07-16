@@ -1,3 +1,4 @@
+import 'package:admin/controllers/supplier_report_controller.dart';
 import 'package:admin/models/MyFiles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,7 +11,7 @@ class FileInfoCard extends StatelessWidget {
     required this.info,
   }) : super(key: key);
 
-  final CloudStorageInfo info;
+  final ReportInfo info;
 
   @override
   Widget build(BuildContext context) {
@@ -49,22 +50,11 @@ class FileInfoCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          ProgressLine(
-            color: info.color,
-            percentage: info.percentage,
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "${info.numOfFiles} Files",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall!
-                    .copyWith(color: Colors.white70),
-              ),
-              Text(
-                info.totalStorage!,
+                "${info.numof}",
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall!

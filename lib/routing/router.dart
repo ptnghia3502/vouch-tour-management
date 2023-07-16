@@ -15,7 +15,7 @@ Route<dynamic>? generateRoute(RouteSettings settings) {
     case dashboardAdminPageRoute:
       return _getPageRoute(DashboardScreenAdmin());
     case dashboardSupPageRoute:
-      return _getPageRoute(DashboardScreenSupplier());
+      return _getPageRoute(DashboardSupplierScreen());
     case ordersPageRoute:
       return _getPageRoute(OrderScreen());
     case productsPageRoute:

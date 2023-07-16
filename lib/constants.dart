@@ -1,6 +1,7 @@
 import 'package:admin/controllers/category_controller.dart';
 import 'package:admin/controllers/product_controller.dart';
 import 'package:admin/controllers/supplier_controller.dart';
+import 'package:admin/controllers/supplier_report_controller.dart';
 import 'package:admin/controllers/tourguide_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -19,3 +20,4 @@ TourGuideController tourGuideController = TourGuideController.instance;
 CategoryController categoryController = CategoryController.instance;
 ProductController productController = ProductController.instance;
 ProductSupplierController productsupplierController = ProductSupplierController.instance;
+SupplierReportController supplierreportController = SupplierReportController.instance;

@@ -29,9 +29,11 @@ class TourGuideTable extends StatelessWidget {
                     columnSpacing: defaultPadding,
                     // minWidth: 600,
                     columns: [
+
                       DataColumn(
-                        onSort: (columnIndex, _) =>
-                            {tourGuideController.sortList(columnIndex)},
+                        onSort: (columnIndex, _) => {
+                          tourGuideController.sortList(columnIndex)
+                        },  
                         label: Text(
                           "Tên",
                           style: TextStyle(
@@ -80,42 +82,7 @@ class TourGuideTable extends StatelessWidget {
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
-                      DataColumn(
-                          onSort: (columnIndex, _) =>
-                              {tourGuideController.sortList(columnIndex)},
-                          label: Text(
-                            "Số lượng sản phẩm bán được",
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Color.fromARGB(247, 119, 200, 240)),
-                          )),
-                      DataColumn(
-                          onSort: (columnIndex, _) =>
-                              {tourGuideController.sortList(columnIndex)},
-                          label: Text(
-                            "Số lượng nhóm",
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Color.fromARGB(247, 119, 200, 240)),
-                          )),
-                      DataColumn(
-                          onSort: (columnIndex, _) =>
-                              {tourGuideController.sortList(columnIndex)},
-                          label: Text(
-                            "Số lượng đơn hàng hoàn thành",
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Color.fromARGB(247, 119, 200, 240)),
-                          )),
-                      DataColumn(
-                          onSort: (columnIndex, _) =>
-                              {tourGuideController.sortList(columnIndex)},
-                          label: Text(
-                            "Điểm",
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Color.fromARGB(247, 119, 200, 240)),
-                          )),
+                     
                       DataColumn(
                           label: Text(
                         "Admin Id",
@@ -134,25 +101,12 @@ class TourGuideTable extends StatelessWidget {
                     rows: tourGuideController.paginatedTourGuide.map((data) {
                       return DataRow(
                         cells: [
-                          // DataCell(ConstrainedBox(
-                          //     constraints:
-                          //         BoxConstraints(maxHeight: 100, maxWidth: 250),
-                          //     child: Text(
-                          //       data.id,
-                          //       style:
-                          //           TextStyle(overflow: TextOverflow.ellipsis),
-                          //     ))),
                           DataCell(Text(data.name)),
                           DataCell(Text(data.sex == 0 ? 'Nam' : 'Nữ')),
                           DataCell(Text(data.phoneNumber)),
                           DataCell(Text(data.email)),
                           DataCell(Text(data.status)),
                           DataCell(Text(data.address)),
-                          DataCell(Text(data.numberOfProductSold.toString())),
-                          DataCell(Text(data.numberOfGroup.toString())),
-                          DataCell(
-                              Text(data.numberOfOrderCompleted.toString())),
-                          DataCell(Text(data.point.toString())),
                           DataCell(Text(data.adminId)),
                           //delete
                           DataCell(ElevatedButton(

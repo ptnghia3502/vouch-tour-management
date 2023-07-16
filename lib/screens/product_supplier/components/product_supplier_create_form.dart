@@ -1,3 +1,4 @@
+import 'package:admin/models/category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -40,24 +41,26 @@ class _CreateProductFormState extends State<CreateProductForm> {
                 textEditingController:
                     productsupplierController.productRetailPriceTextController,
                 icondata: Icons.price_change),
+                 
             TextFieldForFroms(
                 label: 'Mô Tả',
                 validationResult: 'Mô Tả không được bỏ trống',
                 textEditingController:
                     productsupplierController.productDesTextController,
                 icondata: Icons.description),
+                CategorySelect(),
+            // TextFieldForFroms(
+            //     label: 'Thể Loại',
+            //     validationResult: 'Thể loại không được bỏ trống',
+            //     textEditingController:
+            //         productsupplierController.productCategoryTextController,
+            //     icondata: Icons.category),
             TextFieldForFroms(
                 label: 'Trạng Thái',
                 validationResult: 'Trạng thái không được bỏ trống',
                 textEditingController:
                     productsupplierController.productStatusTextController,
                 icondata: Icons.check),   
-            TextFieldForFroms(
-                label: 'Thể Loại',
-                validationResult: 'Thể loại không được bỏ trống',
-                textEditingController:
-                    productsupplierController.productCategoryTextController,
-                icondata: Icons.description),               
             UploadImage(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -109,6 +112,46 @@ class _CreateProductFormState extends State<CreateProductForm> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CategorySelect extends StatefulWidget {
+  const CategorySelect({super.key});
+
+  @override
+  State<CategorySelect> createState() => _CategorySelectState();
+}
+
+class _CategorySelectState extends State<CategorySelect> {
+  List<Category>? _categories = categoryController.categories;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Container(
+          width: 400,
+          child: DropdownButtonFormField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Thể Loại',
+              icon: Icon(Icons.task),
+            ),
+            value: productsupplierController.productCategory,
+            onChanged: (newValue) {
+              setState(() {
+                 productsupplierController.productCategory = newValue as String;
+              });
+            },
+            items: _categories?.map((cate) {
+              print(cate);
+              return DropdownMenuItem(
+                child: new Text(cate.categoryName),
+                value: cate.id,
+              );
+            }).toList(),
+          )),
     );
   }
 }

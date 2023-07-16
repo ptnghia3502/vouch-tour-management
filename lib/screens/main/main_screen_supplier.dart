@@ -24,9 +24,10 @@ class MainScreenSupplier extends StatelessWidget {
                 child: SideMenuSupplier(),
               ),
             Expanded(
-                // It takes 5/6 part of the screen
-                flex: 5,
-                child: localNavigator(dashboardSupPageRoute)),
+              // It takes 5/6 part of the screen
+              flex: 5,
+              child: localNavigator(productssupplierPageRoute)
+            ),
           ],
         ),
       ),

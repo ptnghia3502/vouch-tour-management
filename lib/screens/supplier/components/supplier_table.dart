@@ -18,7 +18,8 @@ class SupplierTable extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -30,8 +31,9 @@ class SupplierTable extends StatelessWidget {
                     // minWidth: 600,
                     columns: [
                       DataColumn(
-                        onSort: (columnIndex, _) =>
-                            {supplierController.sortList(columnIndex)},
+                        onSort: (columnIndex, _) => {
+                          supplierController.sortList(columnIndex)
+                        },
                         label: Text(
                           "Email",
                           style: TextStyle(
@@ -76,15 +78,10 @@ class SupplierTable extends StatelessWidget {
                     rows: supplierController.paginatedSupplier.map((data) {
                       return DataRow(
                         cells: [
-                          // DataCell(Text(
-                          //   data.id,
-                          //   style: TextStyle(overflow: TextOverflow.ellipsis),
-                          // )),
                           DataCell(Text(data.email)),
                           DataCell(Text(data.supplierName)),
                           DataCell(Text(data.address)),
                           DataCell(Text(data.phoneNumber)),
-
                           //delete
                           DataCell(ElevatedButton(
                             onPressed: () {

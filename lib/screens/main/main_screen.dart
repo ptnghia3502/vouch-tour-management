@@ -25,10 +25,10 @@ class MainScreen extends StatelessWidget {
                 child: SideMenuAdmin(),
               ),
             Expanded(
-                // It takes 5/6 part of the screen
-                flex: 5,
-                child: localNavigator(dashboardAdminPageRoute)
-                ),
+              // It takes 5/6 part of the screen
+              flex: 5,
+              child: localNavigator(dashboardAdminPageRoute)
+            ),
           ],
         ),
       ),
