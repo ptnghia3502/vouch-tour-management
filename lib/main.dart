@@ -5,6 +5,7 @@ import 'package:admin/controllers/navigation_controller.dart';
 import 'package:admin/controllers/product_controller.dart';
 import 'package:admin/controllers/product_supplier_controller.dart';
 import 'package:admin/controllers/supplier_controller.dart';
+// import 'package:admin/controllers/supplier_report_controller.dart';
 import 'package:admin/controllers/tourguide_controller.dart';
 import 'package:admin/routing/route_names.dart';
 import 'package:admin/screens/login/login.dart';
@@ -33,15 +34,14 @@ void main() async {
   SharedPreferencesManager sharedPreferencesManager =
       SharedPreferencesManager();
   await sharedPreferencesManager.initialize();
-
-  runApp(MyApp());
   Get.put(NavigationController());
-  // Get.put(SupplierController());
-  // Get.put(TourGuideController());
-  // Get.put(CategoryController());
-  // Get.put(ProductController());
-  // Get.put(ProductSupplierController());
+  Get.put(SupplierController());
+  Get.put(TourGuideController());
+  Get.put(CategoryController());
+  Get.put(ProductController());
   Get.put(ProductSupplierController());
+  // Get.put(SupplierReportController());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
