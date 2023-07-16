@@ -19,15 +19,21 @@ class CategoryTable extends StatelessWidget {
       decoration: BoxDecoration(
         color: secondaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+          color: Colors.grey,
+          width: 1.0
+        ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
         children: [
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: SingleChildScrollView(
               child: Obx(
                 () => DataTable(
+                 
                     dividerThickness: 1.0,
                     columnSpacing: defaultPadding,
                     // minWidth: 600,
@@ -52,6 +58,7 @@ class CategoryTable extends StatelessWidget {
                       //   ),
                       // ),
                       DataColumn(
+                        
                         onSort: (columnIndex, _) =>
                             {categoryController.sortList(columnIndex)},
                         label: Text(
@@ -80,7 +87,9 @@ class CategoryTable extends StatelessWidget {
                       return DataRow(
                         cells: [
                           DataCell(
-                            Align(
+                           Container(
+                            width: null,
+                            child:  Align(
                               alignment: Alignment.center,
                               child: CachedNetworkImage(
                                 imageUrl: data.url,
@@ -101,6 +110,7 @@ class CategoryTable extends StatelessWidget {
                                     new Icon(Icons.error),
                               ),
                             ),
+                           )
                           ),
                           // DataCell(Text(
                           //   data.id,

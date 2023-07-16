@@ -22,7 +22,13 @@ class ProductSupplierTable extends StatelessWidget {
       decoration: BoxDecoration(
         color: secondaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+          color: Colors.grey,
+          width: 1.0
+        ),
       ),
+      
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -10,7 +10,7 @@
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
-            "args": ["-d", "chrome","--web-port", "5555"]
+            "args": ["-d", "chrome","--web-port", "9000"]
         },
         {
             "name": "vouch-tour-management (profile mode)",

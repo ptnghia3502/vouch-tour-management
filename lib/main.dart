@@ -16,6 +16,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'Authentication/sharedPreferencesManager.dart';
+import 'controllers/supplier_report_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +41,7 @@ void main() async {
   Get.put(CategoryController());
   Get.put(ProductController());
   Get.put(ProductSupplierController());
-  // Get.put(SupplierReportController());
+  Get.put(SupplierReportController());
   runApp(MyApp());
 }
 

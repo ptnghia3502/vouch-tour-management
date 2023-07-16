@@ -79,12 +79,10 @@ class SupplierController extends GetxController {
     }
     foundsupplierList.sort((a, b) {
       if (columnIndex == 0) {
-        return a.id.compareTo(b.id);
-      } else if (columnIndex == 1) {
         return a.email.compareTo(b.email);
-      } else if (columnIndex == 2) {
+      } else if (columnIndex == 1) {
         return a.supplierName.compareTo(b.supplierName);
-      } else if (columnIndex == 3) {
+      } else if (columnIndex == 2) {
         return a.address.compareTo(b.address);
       }
       return 0;

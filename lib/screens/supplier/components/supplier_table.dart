@@ -15,11 +15,15 @@ class SupplierTable extends StatelessWidget {
       padding: EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
         color: secondaryColor,
+        border: Border.all(
+          color: Colors.grey,
+          width: 1.0
+        ),
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
       child: Column(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
         children: [
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,

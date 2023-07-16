@@ -2,9 +2,7 @@ import 'package:admin/controllers/MenuAppController.dart';
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
-
 import '../../../Authentication/sharedPreferencesManager.dart';
 import '../../../constants.dart';
 import '../../../routing/route_names.dart';
@@ -25,13 +23,6 @@ class Header extends StatelessWidget {
             onPressed: context.read<MenuAppController>().controlMenu,
           ),
         if (!Responsive.isMobile(context))
-          Text(
-            "Nhà Cung Cấp",
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(color: Colors.blue, fontSize: 25),
-          ),
         if (!Responsive.isMobile(context))
           Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
         Expanded(child: SearchField()),

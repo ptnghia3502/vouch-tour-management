@@ -17,9 +17,14 @@ class ProductTable extends StatelessWidget {
       decoration: BoxDecoration(
         color: secondaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+          color: Colors.grey,
+          width: 1.0
+        ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,

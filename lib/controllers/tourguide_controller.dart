@@ -92,12 +92,10 @@ class TourGuideController extends GetxController {
     }
     foundTourGuide.sort((a, b) {
       if (columnIndex == 0) {
-        return a.id.compareTo(b.id);
-      } else if (columnIndex == 1) {
         return a.name.compareTo(b.name);
-      } else if (columnIndex == 2) {
+      } else if (columnIndex == 1) {
         return a.sex.compareTo(b.sex);
-      } else if (columnIndex == 4) {
+      } else if (columnIndex == 3) {
         return a.email.compareTo(b.email);
       } 
       return 0;

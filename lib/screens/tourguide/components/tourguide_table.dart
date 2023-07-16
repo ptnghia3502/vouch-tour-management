@@ -16,9 +16,14 @@ class TourGuideTable extends StatelessWidget {
       decoration: BoxDecoration(
         color: secondaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+          color: Colors.grey,
+          width: 1.0
+        ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
         children: [
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -107,7 +112,15 @@ class TourGuideTable extends StatelessWidget {
                           DataCell(Text(data.email)),
                           DataCell(Text(data.status)),
                           DataCell(Text(data.address)),
-                          DataCell(Text(data.adminId)),
+                          DataCell(ConstrainedBox(
+                            constraints: BoxConstraints(
+                                maxWidth: 250, maxHeight: double.infinity),
+                            child: Text(
+                              data.adminId,
+                              style: TextStyle(overflow: TextOverflow.visible),
+                              softWrap: true, //tự động xuống hàng
+                            ),
+                          )),
                           //delete
                           DataCell(ElevatedButton(
                             onPressed: () {

@@ -22,10 +22,12 @@ class TourGuide {
       required this.email,
       required this.status,
       required this.address,
-      required this.reportInMonth,
-      required this.adminId});
+      required this.adminId,
+      required this.reportInMonth,});
 
   factory TourGuide.fromJson(Map<String, dynamic> json) {
+    final reportInMonthJson = json['reportInMonth'];
+
     return TourGuide(
           id : json['id'],
           name : json['name'],
@@ -35,7 +37,7 @@ class TourGuide {
           status : json['status'],
           address : json['address'],
           adminId : json['adminId'],
-          reportInMonth: json['reportInMonth']
+          reportInMonth: ReportInMonth.fromJson(reportInMonthJson)
     );
   }
 

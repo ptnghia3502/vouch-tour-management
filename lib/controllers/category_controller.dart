@@ -130,10 +130,8 @@ class CategoryController extends GetxController {
       isAscending.value = true;
     }
     foundCategoryList.sort((a, b) {
-      if (columnIndex == 0) {
-        return a.id.compareTo(b.id);
-      } else if (columnIndex == 1) {
-        return a.categoryName.compareTo(b.id);
+      if (columnIndex == 1) {
+        return a.categoryName.compareTo(b.categoryName);
       }
       return 0;
     });
@@ -184,6 +182,7 @@ class CategoryController extends GetxController {
   //clear textcontroller
   Future<void> clearTextController() async {
     categoryNameTextController.clear();
+    bytesData = null;
   }
 
   //==================insert Category==============
