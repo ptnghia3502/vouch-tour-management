@@ -19,7 +19,7 @@ class ProductSupplierController extends GetxController {
 
   //paging
   var currentPage = 1.obs;
-  final itemsPerPage = 5;
+  final itemsPerPage = 10;
 
   static String? jwtToken = '';
   static String? supplierId = '';
@@ -41,10 +41,9 @@ class ProductSupplierController extends GetxController {
   TextEditingController productDesTextController = TextEditingController();
   TextEditingController productStatusTextController = TextEditingController();
   TextEditingController productCategoryTextController = TextEditingController();
-  TextEditingController productResellPriceTextController =
-      TextEditingController();
-  TextEditingController productRetailPriceTextController =
-      TextEditingController();
+  TextEditingController productResellPriceTextController = TextEditingController();
+  TextEditingController productRetailPriceTextController = TextEditingController();
+  String productCategory = '';
 
 //get user login
   SharedPreferencesManager sharedPreferencesManager =
@@ -178,11 +177,11 @@ class ProductSupplierController extends GetxController {
       //thêm field cho request
       request.fields.addAll({
         'ProductName': productNameTextController.text,
-        'ResellPrice': productResellPriceTextController.text,
-        'RetailPrice': productRetailPriceTextController.text,
-        'Description': productDesTextController.text,
-        'Status': productStatusTextController.text,
-        'CategoryId': productCategoryTextController.text,
+        'ResellPrice' : productResellPriceTextController.text,
+        'RetailPrice' : productRetailPriceTextController.text,
+        'Description' : productDesTextController.text,
+        'Status' : productStatusTextController.text,
+        'CategoryId' : productCategory,
       });
       //send the request
       var response = await request.send();

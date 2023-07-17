@@ -14,10 +14,11 @@ class TourGuideController extends GetxController {
   //
   var tourguideList = <TourGuide>[].obs;
   var foundTourGuide = <TourGuide>[].obs;
+  var topTourGuide = <TourGuide>[].obs;
 
   //paging and searching
   var currentPage = 1.obs;
-  var itemsPerPage = 5;
+  var itemsPerPage = 10;
   TextEditingController searchController = TextEditingController();
 
   //sorting
@@ -75,9 +76,17 @@ class TourGuideController extends GetxController {
           tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
       foundTourGuide.value =
           tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
+      topTourGuide.value =
+          tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
+          sortTopTourGuide();
     } else {
       throw Exception('Failed to fetch tourguide');
     }
+  }
+  //==================================
+  Future<void> sortTopTourGuide() async {
+    topTourGuide.sort((a, b) => a.reportInMonth.point.compareTo(b.reportInMonth.point));
+    topTourGuide = topTourGuide.reversed.toList().obs;
   }
 
   //==============sorting=============
@@ -92,20 +101,12 @@ class TourGuideController extends GetxController {
     }
     foundTourGuide.sort((a, b) {
       if (columnIndex == 0) {
-        return a.id.compareTo(b.id);
-      } else if (columnIndex == 1) {
         return a.name.compareTo(b.name);
-      } else if (columnIndex == 2) {
+      } else if (columnIndex == 1) {
         return a.sex.compareTo(b.sex);
-      } else if (columnIndex == 4) {
+      } else if (columnIndex == 3) {
         return a.email.compareTo(b.email);
-      } else if (columnIndex == 7) {
-        return a.numberOfProductSold.compareTo(b.numberOfProductSold);
-      } else if (columnIndex == 8) {
-        return a.numberOfGroup.compareTo(b.numberOfGroup);
-      } else if (columnIndex == 9) {
-        return a.point.compareTo(b.point);
-      }
+      } 
       return 0;
     });
 

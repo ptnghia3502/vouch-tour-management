@@ -21,18 +21,7 @@ class ProductHeaderTable extends StatelessWidget {
                   .titleMedium
                   ?.copyWith(color: Colors.lightBlue, fontSize: 22),
             ),
-            ElevatedButton.icon(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.symmetric(
-                  horizontal: defaultPadding * 1.5,
-                  vertical:
-                      defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
-                ),
-              ),
-              onPressed: () {},
-              icon: Icon(Icons.add),
-              label: Text("Add New"),
-            ),
+          
           ],
         ),
       ],

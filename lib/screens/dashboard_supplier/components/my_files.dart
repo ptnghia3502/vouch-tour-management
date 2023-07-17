@@ -1,6 +1,5 @@
 import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
-import 'package:admin/models/MyFiles.dart';
 import '../../../constants.dart';
 import 'file_info_card.dart';
 
@@ -66,14 +65,14 @@ class FileInfoCardGridView extends StatelessWidget {
     return GridView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: demoMyFiles.length,
+      itemCount: 3,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
         crossAxisSpacing: defaultPadding,
         mainAxisSpacing: defaultPadding,
         childAspectRatio: childAspectRatio,
       ),
-      itemBuilder: (context, index) => FileInfoCard(info: demoMyFiles[index]),
+      itemBuilder: (context, index) => FileInfoCard(info: supplierreportController.demoMyFiles?[index]),
     );
   }
 }

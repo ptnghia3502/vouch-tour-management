@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:admin/screens/product_supplier/components/product_supplier_delete_form.dart';
 import 'package:admin/screens/product_supplier/components/product_supplier_update.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fast_image_resizer/fast_image_resizer.dart';
+// import 'package:fast_image_resizer/fast_image_resizer.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,7 +22,13 @@ class ProductSupplierTable extends StatelessWidget {
       decoration: BoxDecoration(
         color: secondaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+          color: Colors.grey,
+          width: 1.0
+        ),
       ),
+      
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

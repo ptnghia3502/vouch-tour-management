@@ -34,7 +34,14 @@
             "type": "dart",
             "flutterMode": "debug",
             "program": "lib/main.dart",
-            "args": ["-d", "chrome","--web-hostname","localhost","--web-port", "9000"]
+            "args": ["-d", "chrome","--web-port", "9000"]
+          },
+          {
+            "name": "Debug with Port 5555",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": ["--dart-flags", "--enable-vm-service:5555"]
           }
     ]
 }

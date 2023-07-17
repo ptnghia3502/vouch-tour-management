@@ -15,11 +15,10 @@ class CloudStorageInfo {
     this.color,
   });
 }
-
 List demoMyFiles = [
   CloudStorageInfo(
-    title: "Documents",
-    numOfFiles: 1328,
+    title: "Number Of Products",
+    numOfFiles: supplierreportController.supplierReportModel?.numberOfOrder,
     svgSrc: "assets/icons/Documents.svg",
     totalStorage: "1.9GB",
     color: primaryColor,

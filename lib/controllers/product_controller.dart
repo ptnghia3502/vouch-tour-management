@@ -87,12 +87,10 @@ class ProductController extends GetxController {
     }
     foundProductList.sort((a, b) {
       if (columnIndex == 1) {
-        return a.id.compareTo(b.id);
-      } else if (columnIndex == 2) {
         return a.productName.compareTo(b.productName);
-      } else if (columnIndex == 3) {
+      } else if (columnIndex == 2) {
         return a.resellPrice.compareTo(b.resellPrice);
-      } else if (columnIndex == 4) {
+      } else if (columnIndex == 3) {
         return a.retailPrice.compareTo(b.retailPrice);
       }
       return 0;

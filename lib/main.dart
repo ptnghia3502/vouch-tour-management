@@ -5,6 +5,7 @@ import 'package:admin/controllers/navigation_controller.dart';
 import 'package:admin/controllers/product_controller.dart';
 import 'package:admin/controllers/product_supplier_controller.dart';
 import 'package:admin/controllers/supplier_controller.dart';
+// import 'package:admin/controllers/supplier_report_controller.dart';
 import 'package:admin/controllers/tourguide_controller.dart';
 import 'package:admin/routing/route_names.dart';
 import 'package:admin/screens/login/login.dart';
@@ -15,6 +16,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'Authentication/sharedPreferencesManager.dart';
+import 'controllers/supplier_report_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,15 +35,14 @@ void main() async {
   SharedPreferencesManager sharedPreferencesManager =
       SharedPreferencesManager();
   await sharedPreferencesManager.initialize();
-
-  runApp(MyApp());
   Get.put(NavigationController());
-  // Get.put(SupplierController());
-  // Get.put(TourGuideController());
-  // Get.put(CategoryController());
-  // Get.put(ProductController());
-  // Get.put(ProductSupplierController());
+  Get.put(SupplierController());
+  Get.put(TourGuideController());
+  Get.put(CategoryController());
+  Get.put(ProductController());
   Get.put(ProductSupplierController());
+  Get.put(SupplierReportController());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

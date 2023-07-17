@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
-import '../../../constants.dart';
+import '../constants.dart';
+class TopTourGuideWidget extends StatelessWidget {
 
-class StorageInfoCard extends StatelessWidget {
-  const StorageInfoCard({
+  const TopTourGuideWidget({
     Key? key,
-    required this.title,
-    required this.svgSrc,
-    required this.amountOfFiles,
-    required this.numOfFiles,
+    required this.name,
+    required this.numberOfOrderCompleted,
+    required this.point
   }) : super(key: key);
 
-  final String title, svgSrc, amountOfFiles;
-  final int numOfFiles;
+  final String name;
+  final int numberOfOrderCompleted;
+  final int point;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class StorageInfoCard extends StatelessWidget {
           SizedBox(
             height: 20,
             width: 20,
-            child: SvgPicture.asset(svgSrc),
+            child: SvgPicture.asset('assets/icons/menu_tourguide.svg'),
           ),
           Expanded(
             child: Padding(
@@ -40,12 +40,12 @@ class StorageInfoCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    this.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    "$numOfFiles Files",
+                   '${this.numberOfOrderCompleted}, completed orders',
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
@@ -55,9 +55,10 @@ class StorageInfoCard extends StatelessWidget {
               ),
             ),
           ),
-          Text(amountOfFiles)
+          Text('${this.point} points')
         ],
       ),
     );
   }
 }
+

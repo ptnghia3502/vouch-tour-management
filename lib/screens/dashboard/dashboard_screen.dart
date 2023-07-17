@@ -1,12 +1,13 @@
 import 'package:admin/responsive.dart';
+import 'package:admin/screens/dashboard/components/cards_list.dart';
 import 'package:admin/screens/dashboard/components/my_fields.dart';
+import 'package:admin/screens/dashboard/components/top_tourguide_details.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
 import 'components/header.dart';
 
-import 'components/recent_files.dart';
-import 'components/storage_details.dart';
+import 'components/line_chart.dart';
 
 class DashboardScreenAdmin extends StatelessWidget {
   @override
@@ -18,6 +19,8 @@ class DashboardScreenAdmin extends StatelessWidget {
         child: Column(
           children: [
             Header(),
+            CardsList(),
+
             SizedBox(height: defaultPadding),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,12 +29,11 @@ class DashboardScreenAdmin extends StatelessWidget {
                   flex: 5,
                   child: Column(
                     children: [
-                      MyFiles(),
                       SizedBox(height: defaultPadding),
-                      RecentFiles(),
+                      LineChartSample1(),
                       if (Responsive.isMobile(context))
                         SizedBox(height: defaultPadding),
-                      if (Responsive.isMobile(context)) StorageDetails(),
+                      if (Responsive.isMobile(context)) TopTourGuideDetails(),
                     ],
                   ),
                 ),
@@ -41,7 +43,7 @@ class DashboardScreenAdmin extends StatelessWidget {
                 if (!Responsive.isMobile(context))
                   Expanded(
                     flex: 2,
-                    child: StorageDetails(),
+                    child: TopTourGuideDetails(),
                   ),
               ],
             )
