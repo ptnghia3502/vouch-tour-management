@@ -190,8 +190,10 @@ class ProductSupplierController extends GetxController {
       if (response.statusCode == 201) {
         fetchProductBySupplierId();
         clearTextController();
+        print('True 201');
         return true;
       }
+      print('False');
       return false;
     } catch (e) {
       print(e);
