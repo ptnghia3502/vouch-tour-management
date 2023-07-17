@@ -14,10 +14,11 @@ class TourGuideController extends GetxController {
   //
   var tourguideList = <TourGuide>[].obs;
   var foundTourGuide = <TourGuide>[].obs;
+  var topTourGuide = <TourGuide>[].obs;
 
   //paging and searching
   var currentPage = 1.obs;
-  var itemsPerPage = 5;
+  var itemsPerPage = 10;
   TextEditingController searchController = TextEditingController();
 
   //sorting
@@ -75,9 +76,17 @@ class TourGuideController extends GetxController {
           tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
       foundTourGuide.value =
           tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
+      topTourGuide.value =
+          tourguideJson.map((json) => TourGuide.fromJson(json)).toList();
+          sortTopTourGuide();
     } else {
       throw Exception('Failed to fetch tourguide');
     }
+  }
+  //==================================
+  Future<void> sortTopTourGuide() async {
+    topTourGuide.sort((a, b) => a.reportInMonth.point.compareTo(b.reportInMonth.point));
+    topTourGuide = topTourGuide.reversed.toList().obs;
   }
 
   //==============sorting=============

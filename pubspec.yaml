@@ -43,6 +43,7 @@ dependencies:
   shared_preferences: ^2.1.2
   image_picker_web: ^3.0.0+1
   path_provider: ^2.0.15
+  responsive_builder: ^0.7.0
   path: ^1.8.3 
   intl: ^0.18.0
 dev_dependencies:
