@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
 import '../../../helpers/text_field_form.dart';
@@ -143,7 +144,6 @@ class BirthDay extends StatefulWidget {
 
 class _BirthDayState extends State<BirthDay> {
   DateTime? date = DateTime.now();
-  // var myFormat = DateFormat('d-MM-yyyy');
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -166,8 +166,9 @@ class _BirthDayState extends State<BirthDay> {
               firstDate: DateTime(1900),
               lastDate: DateTime.now(),
             );
-            tourGuideController.tourguideBirthDayTextController.text =
-                date!.toIso8601String();
+            String formateDate = DateFormat('yyy-MM-dd').format(date!);
+            tourGuideController.tourguideBirthDayTextController.text = formateDate;
+                
           },
           validator: (value) {
             if (value!.isEmpty) {

@@ -40,19 +40,19 @@ class _UpdateProductFormState extends State<UpdateProductForm> {
                 label: 'Giá Bán Lại',
                 validationResult: 'Giá bán lại không được bỏ trống',
                 textEditingController:
-                    productsupplierController.productResellPriceTextController,
+                    productsupplierController.productResellTextController,
                 icondata: Icons.price_change),
             TextFieldForFroms(
                 label: 'Giá Bán Lẻ',
                 validationResult: 'Giá bán lẻ không được bỏ trống',
                 textEditingController:
-                    productsupplierController.productRetailPriceTextController,
+                    productsupplierController.productRetailTextController,
                 icondata: Icons.price_change),
             TextFieldForFroms(
                 label: 'Mô Tả',
                 validationResult: 'Mô Tả không được bỏ trống',
                 textEditingController:
-                    productsupplierController.productDesTextController,
+                    productsupplierController.productDescriptionTextController,
                 icondata: Icons.description),
             TextFieldForFroms(
                 label: 'Trạng Thái',

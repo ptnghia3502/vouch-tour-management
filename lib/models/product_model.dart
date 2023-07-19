@@ -44,25 +44,6 @@ class Product {
     );
   }
 
-  factory Product.fromJsonId(Map<String, dynamic> json, Map<String, dynamic> jsonSupp,
-    Map<String, dynamic> jsonCate
-  ) {
-    var imagesList = json['images'] as List<dynamic>;
-    List<ProductImage> images =
-        imagesList.map((image) => ProductImage.fromJson(image)).toList();
-
-    return Product(
-      id: json['id'],
-      productName: json['productName'],
-      resellPrice: json['resellPrice'],
-      retailPrice: json['retailPrice'],
-      description: json['description'],
-      status: json['status'],
-      images: images,
-      supplier: Supplier.fromJson(jsonSupp),
-      category: Category.fromJson(jsonSupp),
-    );
-  }
 }
 
 class ProductImage {

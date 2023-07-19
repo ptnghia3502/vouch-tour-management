@@ -166,3 +166,44 @@ class TextFieldDetailForFroms extends StatelessWidget {
     );
   }
 }
+
+class TextFieldForNumber extends StatelessWidget {
+  String label;
+  String validationResult;
+  IconData icondata;
+  TextEditingController textEditingController;
+  TextFieldForNumber({
+    super.key,
+    required this.label,
+    required this.validationResult,
+    required this.icondata,
+    required this.textEditingController
+    });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Container(
+        width: 400,
+        child: TextFormField(
+          controller: this.textEditingController,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: this.label,
+            icon: Icon(this.icondata),
+          ),
+          validator: (value) {
+            if (value!.isEmpty) {
+              return this.validationResult;
+            }
+            if (double.tryParse(value) == null) {
+              return 'Số tiền không hợp lệ';
+            }
+            return null;
+          },
+        ),
+      ),
+    );
+  }
+}

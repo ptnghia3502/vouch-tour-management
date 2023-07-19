@@ -29,37 +29,31 @@ class _CreateProductFormState extends State<CreateProductForm> {
                 textEditingController:
                     productsupplierController.productNameTextController,
                 icondata: Icons.message),
-            TextFieldForFroms(
+            TextFieldForNumber(
                 label: 'Giá Bán Lại',
                 validationResult: 'Giá bán lại không được bỏ trống',
                 textEditingController:
-                    productsupplierController.productResellPriceTextController,
+                    productsupplierController.productResellTextController,
                 icondata: Icons.price_change),
-            TextFieldForFroms(
+            TextFieldForNumber(
                 label: 'Giá Bán Lẻ',
                 validationResult: 'Giá bán lẻ không được bỏ trống',
                 textEditingController:
-                    productsupplierController.productRetailPriceTextController,
+                    productsupplierController.productRetailTextController,
                 icondata: Icons.price_change),
                  
             TextFieldForFroms(
                 label: 'Mô Tả',
                 validationResult: 'Mô Tả không được bỏ trống',
                 textEditingController:
-                    productsupplierController.productDesTextController,
+                    productsupplierController.productDescriptionTextController,
                 icondata: Icons.description),
-                CategorySelect(),
-            // TextFieldForFroms(
-            //     label: 'Thể Loại',
-            //     validationResult: 'Thể loại không được bỏ trống',
-            //     textEditingController:
-            //         productsupplierController.productCategoryTextController,
-            //     icondata: Icons.category),
-            TextFieldForFroms(
+            CategorySelect(),
+            TextFieldDetailForFroms(
                 label: 'Trạng Thái',
                 validationResult: 'Trạng thái không được bỏ trống',
                 textEditingController:
-                    productsupplierController.productStatusTextController,
+                    productsupplierController.productStatusCreateTextController,
                 icondata: Icons.check),   
             UploadImage(),
             Row(

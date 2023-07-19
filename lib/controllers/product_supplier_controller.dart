@@ -23,7 +23,6 @@ class ProductSupplierController extends GetxController {
 
   static String? jwtToken = '';
   static String? supplierId = '';
-  //static String currentEmail = 'CauBeThoiTiet@gmail.com';
 
   //sorting
   var isAscending = true.obs;
@@ -37,13 +36,18 @@ class ProductSupplierController extends GetxController {
   //
   Product? productModel;
   Category? categoryModel;
+  //textEditingController
+  TextEditingController productIdTextController = TextEditingController();
   TextEditingController productNameTextController = TextEditingController();
-  TextEditingController productDesTextController = TextEditingController();
+  TextEditingController productResellTextController = TextEditingController();
+  TextEditingController productRetailTextController = TextEditingController();
+  TextEditingController productDescriptionTextController =
+      TextEditingController();
   TextEditingController productStatusTextController = TextEditingController();
+  TextEditingController productStatusCreateTextController = TextEditingController();
+  TextEditingController productSupplierTextController = TextEditingController();
   TextEditingController productCategoryTextController = TextEditingController();
-  TextEditingController productResellPriceTextController = TextEditingController();
-  TextEditingController productRetailPriceTextController = TextEditingController();
-  String productCategory = '';
+  String productCategory = 'Bánh Kẹo';
 
 //get user login
   SharedPreferencesManager sharedPreferencesManager =
@@ -53,6 +57,7 @@ class ProductSupplierController extends GetxController {
     if (sharedPreferencesManager.getString('access_token') != null) {
       super.onInit();
       fetchProductBySupplierId();
+      productStatusCreateTextController.text = 'Hoạt động';
     } else {
       // Get.offNamed(loginPageRoute);
     }
@@ -146,12 +151,14 @@ class ProductSupplierController extends GetxController {
 
   //clear textcontroller
   Future<void> clearTextController() async {
+    productIdTextController.clear();
     productNameTextController.clear();
-    productDesTextController.clear();
+    productResellTextController.clear();
+    productRetailTextController.clear();
+    productDescriptionTextController.clear();
     productStatusTextController.clear();
+    productSupplierTextController.clear();
     productCategoryTextController.clear();
-    productResellPriceTextController.clear();
-    productRetailPriceTextController.clear();
     bytesData = null;
     selectedFile = null;
   }
@@ -177,10 +184,10 @@ class ProductSupplierController extends GetxController {
       //thêm field cho request
       request.fields.addAll({
         'ProductName': productNameTextController.text,
-        'ResellPrice' : productResellPriceTextController.text,
-        'RetailPrice' : productRetailPriceTextController.text,
-        'Description' : productDesTextController.text,
-        'Status' : productStatusTextController.text,
+        'ResellPrice' : productResellTextController.text,
+        'RetailPrice' : productRetailTextController.text,
+        'Description' : productDescriptionTextController.text,
+        'Status' : productStatusCreateTextController.text == 'Hoạt động' ? 'Active' : '',
         'CategoryId' : productCategory,
       });
       //send the request
@@ -224,7 +231,7 @@ class ProductSupplierController extends GetxController {
     return false;
   }
 
-  //==============get producct by id================
+  //==============get product by id================
   Future<void> getProductById(String id) async {
     jwtToken = sharedPreferencesManager.getString('access_token');
     http.Response response = await http.get(
@@ -234,15 +241,16 @@ class ProductSupplierController extends GetxController {
       //data successfully
       var result = jsonDecode(response.body);
       productModel = Product.fromJson(result);
-      productNameTextController.text = result['productName'];
-      productDesTextController.text = result['description'];
-      productStatusTextController.text = result['status'];
-      categoryModel = result['category'];
-      productCategoryTextController.text = categoryModel!.id;
-      productResellPriceTextController.text = result['resellPrice'];
-      productRetailPriceTextController.text = result['retailPrice'];
+      productIdTextController.text = productModel!.id;
+      productNameTextController.text = productModel!.productName;
+      productResellTextController.text = productModel!.resellPrice.toString();
+      productRetailTextController.text = productModel!.retailPrice.toString();
+      productDescriptionTextController.text = productModel!.description;
+      productStatusTextController.text = productModel!.status == 'Active' ? 'Hoạt động' : 'Ngưng hoạt động';
+      productCategoryTextController.text = productModel!.category.id;
+      productSupplierTextController.text = productModel!.supplier.id;
     } else {
-      throw Exception('Failed to fetch suppliers');
+      throw Exception('Failed to fetch product');
     }
   }
 
@@ -267,9 +275,9 @@ class ProductSupplierController extends GetxController {
       request.fields.addAll({
         'CategoryId': productCategoryTextController.text,
         'ProductName': productNameTextController.text,
-        'ResellPrice': productResellPriceTextController.text,
-        'RetailPrice': productRetailPriceTextController.text,
-        'Description': productDesTextController.text,
+        'ResellPrice': productResellTextController.text,
+        'RetailPrice': productRetailTextController.text,
+        'Description': productDescriptionTextController.text,
         'Status': productStatusTextController.text,
         'ProductId': id
       });

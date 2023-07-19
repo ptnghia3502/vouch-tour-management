@@ -170,6 +170,7 @@ class ProductSupplierTable extends StatelessWidget {
                             //update
                             DataCell(ElevatedButton(
                               onPressed: () {
+                                productsupplierController.getProductById(data.id);
                                 //popups
                                 showDialog(
                                     context: context,
