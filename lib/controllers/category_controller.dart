@@ -26,9 +26,9 @@ class CategoryController extends GetxController {
   //
   // String? jwtToken = '';
   //  static String currentEmail = 'hieuvh0804@gmail.com';
-    static String jwtToken = '';
+  String? jwtToken = '';
   static String supplierId = '';
-  static String currentEmail = 'thyvnse162031@fpt.edu.vn';
+  // static String currentEmail = 'thyvnse162031@fpt.edu.vn';
 
   //sorting
   var sortColumnIndex = 0.obs;
@@ -41,6 +41,7 @@ class CategoryController extends GetxController {
 
   //textEditingController
   TextEditingController categoryNameTextController = TextEditingController();
+  TextEditingController categoryIdTextContoller = TextEditingController();
   //get user login
   SharedPreferencesManager sharedPreferencesManager =
       SharedPreferencesManager();
@@ -56,54 +57,10 @@ class CategoryController extends GetxController {
   }
 
   
-//AUTHENTICATION API
-  static Future<String> fetchJwtToken(String email) async {
-    final url = Uri.parse('${BASE_URL}authentication');
-    final body = jsonEncode({
-      'eMail': currentEmail,
-    });
-
-    final response = await http.post(url,
-        headers: {'Content-Type': 'application/json'}, body: body);
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      supplierId = data['id'];
-      jwtToken = data['accessToken'];
-      return jwtToken;
-    } else if (response.statusCode == 401) {
-      // Access token expired, try refreshing the token using the refresh token
-      final refreshToken = json.decode(response.body)['refreshToken'];
-      final refreshResponse = await http.post(
-        Uri.parse('${BASE_URL}authentication/refresh'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'refreshToken': refreshToken,
-        }),
-      );
-
-      if (refreshResponse.statusCode == 200) {
-        final refreshData = json.decode(refreshResponse.body);
-        jwtToken = refreshData['accessToken'];
-        currentEmail = email;
-        return jwtToken;
-      } else {
-        throw Exception('Failed to refresh JWT token');
-      }
-    } else {
-      throw Exception('Failed to fetch JWT token');
-    }
-  }
-
 
 //==============get all category=============
   void fetchCategory() async {
-    // jwtToken = sharedPreferencesManager.getString('access_token');
-    String jwtToken = CategoryController.jwtToken;
-        if (jwtToken.isEmpty) {
-      jwtToken = await CategoryController.fetchJwtToken(
-          CategoryController.currentEmail); // Fetch the JWT token if it's empty
-    }
+    jwtToken = sharedPreferencesManager.getString('access_token');
     http.Response response = await http.get(Uri.parse('${BASE_URL}categories'),
         headers: {'Authorization': 'Bearer $jwtToken'});
     if (response.statusCode == 200) {
@@ -131,7 +88,7 @@ class CategoryController extends GetxController {
     }
     foundCategoryList.sort((a, b) {
       if (columnIndex == 1) {
-        return a.categoryName.compareTo(b.categoryName);
+        return a.categoryName!.compareTo(b.categoryName!);
       }
       return 0;
     });
@@ -182,13 +139,14 @@ class CategoryController extends GetxController {
   //clear textcontroller
   Future<void> clearTextController() async {
     categoryNameTextController.clear();
+    categoryIdTextContoller.clear();
     bytesData = null;
   }
 
   //==================insert Category==============
   Future<bool> insertCategory() async {
     try {
-      // jwtToken = sharedPreferencesManager.getString('access_token');
+      jwtToken = sharedPreferencesManager.getString('access_token');
       //MultiPart request
       var request =
           http.MultipartRequest('POST', Uri.parse('${BASE_URL}categories'));
@@ -221,10 +179,11 @@ class CategoryController extends GetxController {
     return false;
   }
 
+
   //===============delete category===========
   Future<bool> deleteCategory(String id) async {
     try {
-      // jwtToken = sharedPreferencesManager.getString('access_token');
+      jwtToken = sharedPreferencesManager.getString('access_token');
       final Map<String, String> headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $jwtToken'
@@ -244,9 +203,10 @@ class CategoryController extends GetxController {
     return false;
   }
 
+
   //==============get Category by id================
   Future<void> getCategoryById(String id) async {
-    // jwtToken = sharedPreferencesManager.getString('access_token');
+    jwtToken = sharedPreferencesManager.getString('access_token');
     http.Response response = await http.get(
         Uri.parse('${BASE_URL}categories/$id'),
         headers: {'Authorization': 'Bearer $jwtToken'});
@@ -255,18 +215,20 @@ class CategoryController extends GetxController {
       var result = jsonDecode(response.body);
       categoryModel = Category.fromJson(result);
       categoryNameTextController.text = result['categoryName'];
+      categoryIdTextContoller.text = result['id'];
       // http.Response urlReponse = await http.get(Uri.parse(categoryModel!.url));
-      List<int> encodeData = (categoryModel!.url).codeUnits;
+      List<int> encodeData = (categoryModel!.url)!.codeUnits;
       bytesData = Uint8List.fromList(encodeData);
     } else {
       throw Exception('Failed to fetch category');
     }
   }
 
+
   //==============update Category=============
   Future<bool> updateCategory(String id) async {
     try {
-      // jwtToken = sharedPreferencesManager.getString('access_token');
+      jwtToken = sharedPreferencesManager.getString('access_token');
       //multipart request
       var request =
           http.MultipartRequest('PUT', Uri.parse('${BASE_URL}categories'));

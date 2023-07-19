@@ -1,13 +1,8 @@
-import 'dart:typed_data';
-
 import 'package:admin/screens/product_supplier/components/product_supplier_delete_form.dart';
 import 'package:admin/screens/product_supplier/components/product_supplier_update.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-// import 'package:fast_image_resizer/fast_image_resizer.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../constants.dart';
 
 class ProductSupplierTable extends StatelessWidget {
@@ -51,16 +46,6 @@ class ProductSupplierTable extends StatelessWidget {
                                 color: Color.fromARGB(247, 119, 200, 240)),
                           ),
                         ),
-                        // DataColumn(
-                        //   onSort: (columnIndex, _) =>
-                        //       {productsupplierController.sortList(columnIndex)},
-                        //   label: Text(
-                        //     "Id",
-                        //     style: TextStyle(
-                        //         fontSize: 16,
-                        //         color: Color.fromARGB(247, 119, 200, 240)),
-                        //   ),
-                        // ),
                         DataColumn(
                           onSort: (columnIndex, _) =>
                               {productsupplierController.sortList(columnIndex)},
@@ -180,8 +165,8 @@ class ProductSupplierTable extends StatelessWidget {
                               ),
                             )),
                             DataCell(Text(data.status)),
-                            DataCell(Text(data.supplier.supplierName)),
-                            DataCell(Text(data.category.categoryName)),
+                            DataCell(Text(data.supplier.supplierName!)),
+                            DataCell(Text(data.category.categoryName!)),
                             //update
                             DataCell(ElevatedButton(
                               onPressed: () {

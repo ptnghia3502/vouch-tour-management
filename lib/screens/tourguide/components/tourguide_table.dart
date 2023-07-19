@@ -1,3 +1,4 @@
+import 'package:admin/screens/tourguide/components/tourguide_detail_form.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,10 +17,7 @@ class TourGuideTable extends StatelessWidget {
       decoration: BoxDecoration(
         color: secondaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: Border.all(
-          color: Colors.grey,
-          width: 1.0
-        ),
+        border: Border.all(color: Colors.grey, width: 1.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,11 +32,9 @@ class TourGuideTable extends StatelessWidget {
                     columnSpacing: defaultPadding,
                     // minWidth: 600,
                     columns: [
-
                       DataColumn(
-                        onSort: (columnIndex, _) => {
-                          tourGuideController.sortList(columnIndex)
-                        },  
+                        onSort: (columnIndex, _) =>
+                            {tourGuideController.sortList(columnIndex)},
                         label: Text(
                           "Tên",
                           style: TextStyle(
@@ -75,22 +71,14 @@ class TourGuideTable extends StatelessWidget {
                       ),
                       DataColumn(
                           label: Text(
-                        "Trạng Thái",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(247, 119, 200, 240)),
-                      )),
-                      DataColumn(
-                          label: Text(
                         "Địa chỉ",
                         style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
-                     
                       DataColumn(
                           label: Text(
-                        "Admin Id",
+                        "Trạng Thái",
                         style: TextStyle(
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
@@ -110,17 +98,16 @@ class TourGuideTable extends StatelessWidget {
                           DataCell(Text(data.sex == 0 ? 'Nam' : 'Nữ')),
                           DataCell(Text(data.phoneNumber)),
                           DataCell(Text(data.email)),
-                          DataCell(Text(data.status)),
                           DataCell(Text(data.address)),
-                          DataCell(ConstrainedBox(
-                            constraints: BoxConstraints(
-                                maxWidth: 250, maxHeight: double.infinity),
-                            child: Text(
-                              data.adminId,
-                              style: TextStyle(overflow: TextOverflow.visible),
-                              softWrap: true, //tự động xuống hàng
+                          DataCell(
+                            Text(data.status == 'Active'
+                              ? 'Hoạt động'
+                              : 'Ngưng hoạt động',
+                              style: TextStyle(
+                                color: Colors.green
+                              ),  
+                              ),
                             ),
-                          )),
                           //delete
                           DataCell(ElevatedButton(
                             onPressed: () {
@@ -154,6 +141,32 @@ class TourGuideTable extends StatelessWidget {
                             child: Text('Xóa'),
                           )),
                         ],
+                        onLongPress: () => {
+                          tourGuideController.clearTextController(),
+                          tourGuideController.getTourGuideById(data.id),
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: bgColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  scrollable: true,
+                                  title: Center(
+                                    child: Text('CHI TIẾT',
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.white)),
+                                  ),
+                                  content: Container(
+                                    width: 700,
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: DetailTourGuideForm()),
+                                  ),
+                                );
+                              })
+                        },
                       );
                     }).toList()),
               ),

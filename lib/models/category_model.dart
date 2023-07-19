@@ -1,13 +1,13 @@
 class Category {
   String id;
-  String categoryName;
-  String fileName;
-  String url;
+  String? categoryName;
+  String? fileName;
+  String? url;
   Category({
     required this.id,
-    required this.categoryName,
-    required this.fileName,
-    required this.url
+     this.categoryName,
+     this.fileName,
+     this.url
   });
 
   factory Category.fromJson(Map<String, dynamic> json) {

@@ -31,6 +31,7 @@ class TourGuideController extends GetxController {
 
   //textEditing
   TextEditingController tourguideNameTextController = TextEditingController();
+  TextEditingController tourguideIdTextController = TextEditingController();  
   TextEditingController tourguideEmailTextController = TextEditingController();
   TextEditingController tourguidePhoneNumerTextController =
       TextEditingController();
@@ -39,6 +40,10 @@ class TourGuideController extends GetxController {
       TextEditingController();
   TextEditingController tourguideAddressTextController =
       TextEditingController();
+  TextEditingController tourguideAdminIdTextController =
+      TextEditingController();     
+  TextEditingController tourguideStatusTextController =
+      TextEditingController();     
       String? selectGender = 'Nam';
 
   //TourGuid Model
@@ -86,7 +91,7 @@ class TourGuideController extends GetxController {
   //==================================
   Future<void> sortTopTourGuide() async {
     topTourGuide.sort((a, b) => a.reportInMonth.point.compareTo(b.reportInMonth.point));
-    topTourGuide = topTourGuide.reversed.toList().obs;
+    topTourGuide = topTourGuide.reversed.take(10).toList().obs;
   }
 
   //==============sorting=============
@@ -161,6 +166,9 @@ class TourGuideController extends GetxController {
     this.tourguideNameTextController.clear();
     this.tourguideSexTextController.clear();
     this.tourguidePhoneNumerTextController.clear();
+    this.tourguideAdminIdTextController.clear();
+    this.tourguideIdTextController.clear();
+    this.tourguideStatusTextController.clear();
   }
 
   //======================create tourguide==============
@@ -230,16 +238,23 @@ class TourGuideController extends GetxController {
   }
 
   //==============get Tourguid by id================
-  Future<void> getCategoryById(String id) async {
+  Future<void> getTourGuideById(String id) async {
     jwtToken = sharedPreferencesManager.getString('access_token');
     http.Response response = await http.get(
-        Uri.parse('${BASE_URL}categories/$id'),
+        Uri.parse('${BASE_URL}tour-guides/$id'),
         headers: {'Authorization': 'Bearer $jwtToken'});
     if (response.statusCode == 200) {
       //data successfully
       var result = jsonDecode(response.body);
       touGuideModel = TourGuide.fromJson(result);
-      tourguideNameTextController.text = result['tourGuideName'];
+      tourguideIdTextController.text = result['id'];
+      tourguideNameTextController.text = result['name'];
+      tourguideSexTextController.text = result['sex'] == 0 ? 'Nam' : 'Nữ';
+      tourguidePhoneNumerTextController.text = result['phoneNumber'];
+      tourguideEmailTextController.text = result['email'];
+      tourguideStatusTextController.text = touGuideModel!.status == 'Active' ? 'Hoạt động' : 'Ngưng hoạt động';
+      tourguideAddressTextController.text = result['address'];
+      tourguideAdminIdTextController.text = result['adminId'];
       // http.Response urlReponse = await http.get(Uri.parse(categoryModel!.url));
       // bytesData = urlReponse.bodyBytes;
     } else {

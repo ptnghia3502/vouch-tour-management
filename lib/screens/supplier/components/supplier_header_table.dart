@@ -31,6 +31,7 @@ class SupplierHeaderTable extends StatelessWidget {
                 ),
               ),
               onPressed: () {
+                supplierController.clearTextController();
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {

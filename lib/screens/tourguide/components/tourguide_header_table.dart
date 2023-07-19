@@ -32,6 +32,7 @@ class TourGuideHeaderTable extends StatelessWidget {
                 ),
               ),
               onPressed: () {
+                tourGuideController.clearTextController();
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {

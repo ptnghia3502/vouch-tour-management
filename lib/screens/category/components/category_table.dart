@@ -1,4 +1,5 @@
 import 'package:admin/screens/category/components/category_delete_form.dart';
+import 'package:admin/screens/category/components/category_detail_form.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,21 +20,17 @@ class CategoryTable extends StatelessWidget {
       decoration: BoxDecoration(
         color: secondaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: Border.all(
-          color: Colors.grey,
-          width: 1.0
-        ),
+        border: Border.all(color: Colors.grey, width: 1.0),
       ),
       child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: [
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: SingleChildScrollView(
               child: Obx(
                 () => DataTable(
-                 
                     dividerThickness: 1.0,
                     columnSpacing: defaultPadding,
                     // minWidth: 600,
@@ -58,7 +55,6 @@ class CategoryTable extends StatelessWidget {
                       //   ),
                       // ),
                       DataColumn(
-                        
                         onSort: (columnIndex, _) =>
                             {categoryController.sortList(columnIndex)},
                         label: Text(
@@ -86,13 +82,12 @@ class CategoryTable extends StatelessWidget {
                     rows: categoryController.paginatedCategory.map((data) {
                       return DataRow(
                         cells: [
-                          DataCell(
-                           Container(
+                          DataCell(Container(
                             width: null,
-                            child:  Align(
+                            child: Align(
                               alignment: Alignment.center,
                               child: CachedNetworkImage(
-                                imageUrl: data.url,
+                                imageUrl: data.url!,
                                 imageBuilder: (context, imageProvider) =>
                                     Container(
                                   decoration: BoxDecoration(
@@ -110,12 +105,11 @@ class CategoryTable extends StatelessWidget {
                                     new Icon(Icons.error),
                               ),
                             ),
-                           )
-                          ),
+                          )),
                           // DataCell(Text(
                           //   data.id,
                           // )),
-                          DataCell(Text(data.categoryName)),
+                          DataCell(Text(data.categoryName!)),
                           //update
                           DataCell(ElevatedButton(
                             onPressed: () {
@@ -250,6 +244,32 @@ class CategoryTable extends StatelessWidget {
                             child: Text('Xóa'),
                           )),
                         ],
+                        onLongPress: () => {
+                          categoryController.clearTextController(),
+                          categoryController.getCategoryById(data.id),
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: bgColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  scrollable: true,
+                                  title: Center(
+                                    child: Text('CHI TIẾT',
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.white)),
+                                  ),
+                                  content: Container(
+                                    width: 700,
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: DetailCategoryForm()),
+                                  ),
+                                );
+                              })
+                        },
                       );
                     }).toList()),
               ),

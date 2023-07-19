@@ -1,17 +1,17 @@
 class Supplier{
   String id;
-  String email;
-  String supplierName;
-  String address;
-  String phoneNumber;
+  String? email;
+  String? supplierName;
+  String? address;
+  String? phoneNumber;
 
   //Constructor
   Supplier({
     required this.id,
-    required this.email,
-    required this.supplierName,
-    required this.address,
-    required this.phoneNumber,
+     this.email,
+     this.supplierName,
+     this.address,
+     this.phoneNumber,
   });
 
   factory Supplier.fromJson(Map<String, dynamic> json){

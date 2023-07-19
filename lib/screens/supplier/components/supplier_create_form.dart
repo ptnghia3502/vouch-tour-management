@@ -21,7 +21,7 @@ class _CreateSupplierFormState extends State<CreateSupplierForm> {
         color: secondaryColor,
         child: Column(
           children: <Widget>[
-            TextFieldForFroms(
+            TextFieldForEmail(
                 label: 'Email',
                 validationResult: 'Email không được bỏ trống',
                 textEditingController:
@@ -39,7 +39,7 @@ class _CreateSupplierFormState extends State<CreateSupplierForm> {
                 textEditingController:
                     supplierController.supplierAdressTextController,
                 icondata: Icons.home),
-            TextFieldForFroms(
+            TextFieldForPhoneNumber(
                 label: 'Số điện thoại',
                 validationResult: 'Số điện thoại không được bỏ trống',
                 textEditingController:

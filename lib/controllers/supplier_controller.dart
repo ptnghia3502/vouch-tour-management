@@ -26,6 +26,7 @@ class SupplierController extends GetxController {
   var sortColumnIndex = 0.obs;
 
   //texteditingcontroller
+  TextEditingController supplierIdTextController = TextEditingController();  
   TextEditingController supplierNameTextController = TextEditingController();
   TextEditingController supplierEmailTextController = TextEditingController();
   TextEditingController supplierAdressTextController = TextEditingController();
@@ -34,6 +35,8 @@ class SupplierController extends GetxController {
   //get user login
   SharedPreferencesManager sharedPreferencesManager =
       SharedPreferencesManager();
+
+  Supplier? supplierModel; 
   @override
   Future<void> onInit() async {
     if (sharedPreferencesManager.getString('access_token') != null) {
@@ -67,6 +70,28 @@ class SupplierController extends GetxController {
     }
   }
 
+   void getSupplierById(String id) async {
+    String? jwtToken = SupplierController.jwtToken;
+
+    if (jwtToken.isEmpty) {
+      jwtToken = await sharedPreferencesManager.getString('access_token');
+    }
+    http.Response response = await http.get(Uri.parse('${BASE_URL}suppliers/${id}'),
+        headers: {'Authorization': 'Bearer $jwtToken'});
+    if (response.statusCode == 200) {
+      //data successfully
+      var result = jsonDecode(response.body);
+      supplierModel = Supplier.fromJson(result);
+      supplierIdTextController.text = supplierModel!.id;
+      supplierNameTextController.text = supplierModel!.supplierName!;
+      supplierAdressTextController.text = supplierModel!.address!;
+      supplierEmailTextController.text = supplierModel!.email!;
+      supplierPhoneNumberTextController.text = supplierModel!.phoneNumber!;
+    } else {
+      throw Exception('Failed to fetch suppliers');
+    }
+  }
+
   //=================sorting=================================
   Future<void> sortList(int columnIndex) async {
     if (sortColumnIndex.value == columnIndex) {
@@ -79,11 +104,11 @@ class SupplierController extends GetxController {
     }
     foundsupplierList.sort((a, b) {
       if (columnIndex == 0) {
-        return a.email.compareTo(b.email);
+        return a.email!.compareTo(b.email!);
       } else if (columnIndex == 1) {
-        return a.supplierName.compareTo(b.supplierName);
+        return a.supplierName!.compareTo(b.supplierName!);
       } else if (columnIndex == 2) {
-        return a.address.compareTo(b.address);
+        return a.address!.compareTo(b.address!);
       }
       return 0;
     });
@@ -133,6 +158,7 @@ class SupplierController extends GetxController {
 
   //clear TextEditingController
   Future<void> clearTextController() async {
+    supplierIdTextController.clear();
     supplierAdressTextController.clear();
     supplierEmailTextController.clear();
     supplierPhoneNumberTextController.clear();

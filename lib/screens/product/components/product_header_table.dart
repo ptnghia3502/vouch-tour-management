@@ -1,6 +1,4 @@
-import 'package:admin/responsive.dart';
 import 'package:flutter/material.dart';
-import '../../../constants.dart';
 
 class ProductHeaderTable extends StatelessWidget {
   const ProductHeaderTable({

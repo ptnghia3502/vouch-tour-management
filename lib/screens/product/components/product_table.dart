@@ -1,3 +1,4 @@
+import 'package:admin/screens/product/components/product_detail_form.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
@@ -43,16 +44,6 @@ class ProductTable extends StatelessWidget {
                               color: Color.fromARGB(247, 119, 200, 240)),
                         ),
                       ),
-                      // DataColumn(
-                      //   onSort: (columnIndex, _) =>
-                      //       {productController.sortList(columnIndex)},
-                      //   label: Text(
-                      //     "Id",
-                      //     style: TextStyle(
-                      //         fontSize: 16,
-                      //         color: Color.fromARGB(247, 119, 200, 240)),
-                      //   ),
-                      // ),
                       DataColumn(
                         onSort: (columnIndex, _) =>
                             {productController.sortList(columnIndex)},
@@ -91,13 +82,6 @@ class ProductTable extends StatelessWidget {
                       )),
                       DataColumn(
                           label: Text(
-                        "Trạng Thái",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(247, 119, 200, 240)),
-                      )),
-                      DataColumn(
-                          label: Text(
                         "Nhà Cung Cấp",
                         style: TextStyle(
                             fontSize: 16,
@@ -110,6 +94,13 @@ class ProductTable extends StatelessWidget {
                             fontSize: 16,
                             color: Color.fromARGB(247, 119, 200, 240)),
                       )),
+                      DataColumn(
+                          label: Text(
+                        "Trạng Thái",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(247, 119, 200, 240)),
+                      )),                      
                     ],
                     rows: productController.paginatedProduct.map((data) {
                       return DataRow(
@@ -137,9 +128,6 @@ class ProductTable extends StatelessWidget {
                               ),
                             ),
                           ),
-                          // DataCell(Text(
-                          //   data.id,
-                          // )),
                           DataCell(Text(data.productName)),
                           DataCell(Text(data.resellPrice.toString())),
                           DataCell(Text(data.retailPrice.toString())),
@@ -152,10 +140,38 @@ class ProductTable extends StatelessWidget {
                               softWrap: true, //tự động xuống hàng
                             ),
                           )),
-                          DataCell(Text(data.status)),
-                          DataCell(Text(data.supplier.supplierName)),
-                          DataCell(Text(data.category.categoryName)),
+                          DataCell(Text(data.supplier.supplierName!)),
+                          DataCell(Text(data.category.categoryName!)),
+                          DataCell(
+                            Text(data.status == 'Active' ? 'Hoạt động' : 'Không hoạt động',
+                            style: TextStyle(color: Colors.green),)
+                          ),                          
                         ],
+                        onLongPress: () => {
+                          productController.getProductById(data.id),
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: bgColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  scrollable: true,
+                                  title: Center(
+                                    child: Text('CHI TIẾT',
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.white)),
+                                  ),
+                                  content: Container(
+                                    width: 700,
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: DetailProductForm()),
+                                  ),
+                                );
+                              })
+                        },                        
                       );
                     }).toList()),
               ),

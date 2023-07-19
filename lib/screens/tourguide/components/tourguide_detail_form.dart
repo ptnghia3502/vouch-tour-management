@@ -4,14 +4,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../../constants.dart';
 import '../../../helpers/text_field_form.dart';
 // import 'package:intl/intl.dart';
-class CreateTourGuideForm extends StatefulWidget {
-  const CreateTourGuideForm({super.key});
+class DetailTourGuideForm extends StatefulWidget {
+  const DetailTourGuideForm({super.key});
 
   @override
-  State<CreateTourGuideForm> createState() => _CreateTourGuideFormState();
+  State<DetailTourGuideForm> createState() => _DetailTourGuideFormFormState();
 }
 
-class _CreateTourGuideFormState extends State<CreateTourGuideForm> {
+class _DetailTourGuideFormFormState extends State<DetailTourGuideForm> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -22,67 +22,68 @@ class _CreateTourGuideFormState extends State<CreateTourGuideForm> {
         color: secondaryColor,
         child: Column(
           children: <Widget>[
-            TextFieldForFroms(
+            TextFieldDetailForFroms(
+              label: 'Id',
+              validationResult: 'Id không được bỏ trống',
+              icondata: Icons.code,
+              textEditingController:
+                  tourGuideController.tourguideIdTextController,
+            ),            
+            TextFieldDetailForFroms(
               label: 'Tên',
               validationResult: 'Tên không được bỏ trống',
               icondata: Icons.message,
               textEditingController:
                   tourGuideController.tourguideNameTextController,
             ),
-            TextFieldForEmail(
+            TextFieldDetailForFroms(
               label: 'Email',
               validationResult: 'Email không được bỏ trống',
               icondata: Icons.email,
               textEditingController:
                   tourGuideController.tourguideEmailTextController,
             ),
-            BirthDay(),
-            TextFieldForFroms(
+            TextFieldDetailForFroms(
               label: 'Địa chỉ',
               validationResult: 'Địa chỉ không được bỏ trống',
               icondata: Icons.home,
               textEditingController:
                   tourGuideController.tourguideAddressTextController,
             ),
-            TextFieldForPhoneNumber(
+            TextFieldDetailForFroms(
                 label: 'Số điện thoại',
                 validationResult: 'Số điện thoại không được bỏ trống',
                 textEditingController:
                     tourGuideController.tourguidePhoneNumerTextController,
                 icondata: Icons.phone),
-            Gender(),
+            TextFieldDetailForFroms(
+                label: 'Giới tính',
+                validationResult: 'Giới tính không được bỏ trống',
+                textEditingController:
+                    tourGuideController.tourguideSexTextController,
+                icondata: Icons.male),
+            TextFieldDetailForFroms(
+                label: 'AdminId',
+                validationResult: 'AdminId không được bỏ trống',
+                textEditingController:
+                    tourGuideController.tourguideAdminIdTextController,
+                icondata: Icons.admin_panel_settings),    
+            TextFieldDetailForFroms(
+                label: 'Trạng thái',
+                validationResult: 'Trạng thái không được bỏ trống',
+                textEditingController:
+                    tourGuideController.tourguideStatusTextController,
+                icondata: Icons.place),                            
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    'Hủy',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      // Handle delete button press
-                      bool isInserted =
-                          await tourGuideController.insertTourGuide();
-
-                      if (isInserted) {
-                        Fluttertoast.showToast(
-                          msg: 'Thêm mới thành công',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 10,
-                          backgroundColor: Colors.green,
-                          textColor: Colors.white,
-                        );
-                        Navigator.pop(context);
-                      }
-                    }
+                  onPressed: () => {
+                    tourGuideController.clearTextController(),
+                    Navigator.pop(context)
                   },
                   child: Text(
-                    'Gửi',
+                    'Hủy',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

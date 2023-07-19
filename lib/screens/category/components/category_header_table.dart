@@ -33,6 +33,7 @@ class CategoryHeaderTable extends StatelessWidget {
                 ),
               ),
               onPressed: () {
+                categoryController.clearTextController();
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {

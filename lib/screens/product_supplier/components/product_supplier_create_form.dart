@@ -147,7 +147,7 @@ class _CategorySelectState extends State<CategorySelect> {
             items: _categories?.map((cate) {
               print(cate);
               return DropdownMenuItem(
-                child: new Text(cate.categoryName),
+                child: new Text(cate.categoryName!),
                 value: cate.id,
               );
             }).toList(),

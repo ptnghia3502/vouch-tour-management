@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:admin/constants.dart';
 import 'package:admin/models/category_model.dart';
 import 'package:admin/models/global.dart';
 import 'package:admin/models/product_model.dart';
+import 'package:admin/models/supplier_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,7 +25,7 @@ class ProductController extends GetxController {
 
   //paging
   var currentPage = 1.obs;
-  final itemsPerPage = 15;
+  final itemsPerPage = 10;
 
   String? jwtToken = '';
   //static String currentEmail = 'hieuvh0804@gmail.com';
@@ -38,10 +40,26 @@ class ProductController extends GetxController {
   String? filename;
 
   //textEditingController
+  TextEditingController productIdTextController = TextEditingController();
   TextEditingController productNameTextController = TextEditingController();
+  TextEditingController productResellTextController = TextEditingController();
+  TextEditingController productRetailTextController = TextEditingController();
+  TextEditingController productDescriptionTextController =
+      TextEditingController();
+  TextEditingController productStatusTextController = TextEditingController();
+  TextEditingController productSupplierTextController = TextEditingController();
+  TextEditingController productCategoryTextController = TextEditingController();
+
   //clear textcontroller
   Future<void> clearTextController() async {
+    productIdTextController.clear();
     productNameTextController.clear();
+    productResellTextController.clear();
+    productRetailTextController.clear();
+    productDescriptionTextController.clear();
+    productStatusTextController.clear();
+    productSupplierTextController.clear();
+    productCategoryTextController.clear();
   }
 
   //get user login
@@ -52,7 +70,7 @@ class ProductController extends GetxController {
     if (sharedPreferencesManager.getString('access_token') != null) {
       super.onInit();
       fetchProduct();
-     } else {
+    } else {
       Get.offNamed(loginPageRoute);
     }
   }
@@ -208,45 +226,16 @@ class ProductController extends GetxController {
       //data successfully
       var result = jsonDecode(response.body);
       productModel = Product.fromJson(result);
-      productNameTextController.text = result['ProductName'];
-      http.Response urlReponse = await http.get(Uri.parse(categoryModel!.url));
-      bytesData = urlReponse.bodyBytes;
+      productIdTextController.text = productModel!.id;
+      productNameTextController.text = productModel!.productName;
+      productResellTextController.text = productModel!.resellPrice.toString();
+      productRetailTextController.text = productModel!.retailPrice.toString();
+      productDescriptionTextController.text = productModel!.description;
+      productStatusTextController.text = productModel!.status == 'Active' ? 'Hoạt động' : 'Ngưng hoạt động';
+      productCategoryTextController.text = productModel!.category.id;
+      productSupplierTextController.text = productModel!.supplier.id;
     } else {
-      throw Exception('Failed to fetch suppliers');
+      throw Exception('Failed to fetch product');
     }
-  }
-
-  //==============update Category=============
-  Future<bool> updateCategory(String id) async {
-    try {
-      jwtToken = sharedPreferencesManager.getString('access_token');
-      //multipart request
-      var request =
-          http.MultipartRequest('PUT', Uri.parse('${BASE_URL}categories'));
-      Map<String, String> headers = {
-        'Authorization': 'Bearer $jwtToken',
-        'Content-Type': 'multipart/form-data'
-      };
-      //them file
-      request.files.add(await http.MultipartFile.fromBytes(
-          'File', selectedFile!,
-          filename: filename, contentType: MediaType('image', 'png')));
-      //add header
-      request.headers.addAll(headers);
-      //add field
-      request.fields
-          .addAll({'ProductName': productNameTextController.text, 'Id': id});
-
-      //send request
-      var response = await request.send();
-
-      //check statusCode
-      if (response.statusCode == 204) {
-        fetchProduct();
-        return true;
-      }
-      return false;
-    } catch (e) {}
-    return false;
   }
 }
