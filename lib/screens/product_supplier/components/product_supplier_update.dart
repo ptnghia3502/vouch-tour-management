@@ -54,19 +54,6 @@ class _UpdateProductFormState extends State<UpdateProductForm> {
                 textEditingController:
                     productsupplierController.productDescriptionTextController,
                 icondata: Icons.description),
-            TextFieldForFroms(
-                label: 'Trạng Thái',
-                validationResult: 'Trạng thái không được bỏ trống',
-                textEditingController:
-                    productsupplierController.productStatusTextController,
-                icondata: Icons.check),   
-            TextFieldForFroms(
-                label: 'Thể Loại',
-                validationResult: 'Thể loại không được bỏ trống',
-                textEditingController:
-                    productsupplierController.productCategoryTextController,
-                icondata: Icons.description),               
-            UploadImage(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[

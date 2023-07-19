@@ -47,7 +47,7 @@ class ProductSupplierController extends GetxController {
   TextEditingController productStatusCreateTextController = TextEditingController();
   TextEditingController productSupplierTextController = TextEditingController();
   TextEditingController productCategoryTextController = TextEditingController();
-  String productCategory = 'Bánh Kẹo';
+  String productCategory = '';
 
 //get user login
   SharedPreferencesManager sharedPreferencesManager =
