@@ -105,6 +105,8 @@ class UserController extends GetxController {
             Get.offNamed(supplierRolePageRoute);
             Get.delete<ProductSupplierController>();
             Get.put(ProductSupplierController());
+            Get.delete<CategoryController>();
+            Get.put(CategoryController());
           }
         } else {
           throw Exception('Failed to sign in with Google 1');

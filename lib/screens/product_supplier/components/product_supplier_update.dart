@@ -62,7 +62,10 @@ class _UpdateProductFormState extends State<UpdateProductForm> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () =>{
+                    productsupplierController.clearTextController(),
+                    Navigator.pop(context)
+                  },
                   child: Text(
                     'Hủy',
                     style: TextStyle(color: Colors.white),

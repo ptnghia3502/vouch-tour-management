@@ -57,6 +57,7 @@ class ProductSupplierController extends GetxController {
     if (sharedPreferencesManager.getString('access_token') != null) {
       super.onInit();
       fetchProductBySupplierId();
+      productCategory = '';
       productStatusCreateTextController.text = 'Hoạt động';
     } else {
       // Get.offNamed(loginPageRoute);
