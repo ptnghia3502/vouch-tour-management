@@ -95,14 +95,12 @@ class ProductSupplierController extends GetxController {
     }
     foundProductList.sort((a, b) {
       if (columnIndex == 1) {
-        return a.id.compareTo(b.id);
-      } else if (columnIndex == 2) {
         return a.productName.compareTo(b.productName);
-      } else if (columnIndex == 3) {
+      } else if (columnIndex == 2) {
         return a.resellPrice.compareTo(b.resellPrice);
-      } else if (columnIndex == 4) {
+      } else if (columnIndex == 3) {
         return a.retailPrice.compareTo(b.retailPrice);
-      }
+      } 
       return 0;
     });
 
@@ -159,6 +157,7 @@ class ProductSupplierController extends GetxController {
     productStatusTextController.clear();
     productSupplierTextController.clear();
     productCategoryTextController.clear();
+    productCategory = '';
     bytesData = null;
     selectedFile = null;
   }
@@ -197,7 +196,6 @@ class ProductSupplierController extends GetxController {
       if (response.statusCode == 201) {
         fetchProductBySupplierId();
         clearTextController();
-        print('True 201');
         return true;
       }
       print('False');
@@ -249,6 +247,9 @@ class ProductSupplierController extends GetxController {
       productStatusTextController.text = productModel!.status == 'Active' ? 'Hoạt động' : 'Ngưng hoạt động';
       productCategoryTextController.text = productModel!.category.id;
       productSupplierTextController.text = productModel!.supplier.id;
+
+      // List<int> encodeData = (productModel!.images[0].fileURL)!.codeUnits;
+      // bytesData = Uint8List.fromList(encodeData);
     } else {
       throw Exception('Failed to fetch product');
     }

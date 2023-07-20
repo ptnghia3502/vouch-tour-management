@@ -1,8 +1,10 @@
+import 'package:admin/screens/product_supplier/components/product_supplier_create_form.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../constants.dart';
 import '../../../helpers/text_field_form.dart';
+import '../../../models/category_model.dart';
 import 'product_supplier_upload_image.dart';
 class UpdateProductForm extends StatefulWidget {
   String id;
@@ -54,6 +56,8 @@ class _UpdateProductFormState extends State<UpdateProductForm> {
                 textEditingController:
                     productsupplierController.productDescriptionTextController,
                 icondata: Icons.description),
+ 
+            UploadImage(),    
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -107,3 +111,4 @@ class _UpdateProductFormState extends State<UpdateProductForm> {
     );
   }
 }
+

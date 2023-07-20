@@ -157,41 +157,6 @@ class ProductController extends GetxController {
     productList.value = results as List<Product>;
   }
 
-//==================insert Product==============
-  Future<bool> insertProduct() async {
-    try {
-      jwtToken = sharedPreferencesManager.getString('access_token');
-      //MultiPart request
-      var request =
-          http.MultipartRequest('POST', Uri.parse('${BASE_URL}products'));
-      Map<String, String> headers = {
-        'Authorization': 'Bearer $jwtToken',
-        'Content-type': 'multipart/form-data'
-      };
-      //thêm file cho request
-      request.files.add(await http.MultipartFile.fromBytes(
-          'File', selectedFile!,
-          filename: filename, contentType: MediaType('image', 'png')));
-      //thêm hearders
-      request.headers.addAll(headers);
-      //thêm field cho request
-      request.fields.addAll({
-        'ProductName': productNameTextController.text,
-      });
-      //send the request
-      var response = await request.send();
-
-      //check the response status
-      if (response.statusCode == 201) {
-        fetchProduct();
-        return true;
-      }
-      return false;
-    } catch (e) {
-      print(e);
-    }
-    return false;
-  }
 
   //===============delete product===========
   Future<bool> deleteProduct(String id) async {

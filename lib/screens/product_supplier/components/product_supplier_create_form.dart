@@ -48,6 +48,12 @@ class _CreateProductFormState extends State<CreateProductForm> {
                 textEditingController:
                     productsupplierController.productDescriptionTextController,
                 icondata: Icons.description),
+            // TextFieldForFroms(
+            //     label: 'Thể Loại',
+            //     validationResult: 'Thể loại không được bỏ trống',
+            //     textEditingController:
+            //         productsupplierController.productCategoryTextController,
+            //     icondata: Icons.description),                
             CategorySelect(),
             TextFieldDetailForFroms(
                 label: 'Trạng Thái',
@@ -118,7 +124,7 @@ class CategorySelect extends StatefulWidget {
 }
 
 class _CategorySelectState extends State<CategorySelect> {
-  List<Category>? _categories = categoryController.categories;
+  List<Category>? _categories = categoryController.categoryList.value;
 
   @override
   Widget build(BuildContext context) {
@@ -132,16 +138,15 @@ class _CategorySelectState extends State<CategorySelect> {
               labelText: 'Thể Loại',
               icon: Icon(Icons.task),
             ),
-            value: productsupplierController.productCategory,
+            value: Null,
             onChanged: (newValue) {
               setState(() {
                  productsupplierController.productCategory = newValue as String;
               });
             },
             items: _categories?.map((cate) {
-              print(cate);
               return DropdownMenuItem(
-                child: new Text(cate.categoryName!),
+                child: Text(cate.categoryName!),
                 value: cate.id,
               );
             }).toList(),

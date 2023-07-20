@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../constants.dart';
+import '../../product/components/product_detail_form.dart';
 
 class ProductSupplierTable extends StatelessWidget {
   ProductSupplierTable({
@@ -235,6 +236,31 @@ class ProductSupplierTable extends StatelessWidget {
                               child: Text('Xóa'),
                             )),
                           ],
+                          onLongPress: () => {
+                          productController.getProductById(data.id),
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: bgColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  scrollable: true,
+                                  title: Center(
+                                    child: Text('CHI TIẾT',
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.white)),
+                                  ),
+                                  content: Container(
+                                    width: 700,
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: DetailProductForm()),
+                                  ),
+                                );
+                              })
+                        },         
                         );
                       }).toList()),
                 ),
